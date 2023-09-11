@@ -9,11 +9,11 @@ public class Item
     
     public int GameId { get; set; }
     
-    public Dictionary<Language, string> Names { get; set; } = null!;
+    public Dictionary<Languages, string> Names { get; set; } = null!;
     
     public int Level { get; set; } = 1;
 
-    public Dictionary<Language, string> Descriptions { get; set; } = null!;
+    public Dictionary<Languages, string> Descriptions { get; set; } = null!;
 
     public int Pods { get; set; } = 0;
 
