@@ -2,6 +2,6 @@
 
 public class Monster : BaseMonster
 {
-    public Archmonster Archmonster { get; set; } = null!;
-    public int ArchmonsterId { get; set; }
+    public ArchMonster? ArchMonster { get; set; } = null!;
+    public int? ArchmonsterId { get; set; }
 }

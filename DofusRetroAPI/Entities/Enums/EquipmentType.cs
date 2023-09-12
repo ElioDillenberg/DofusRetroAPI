@@ -1,6 +1,6 @@
 namespace DofusRetroAPI.Entities.Enums;
 
-public enum ResourceTypes
+public enum EquipmentType
 {
     Hat,
     Cloak,
@@ -15,6 +15,17 @@ public enum ResourceTypes
     Dragoturkey,
     SoulStone,
     CapturingNet,
-    
-    
+    Staff,
+    Bow,
+    Wand,
+    Sword,
+    Hammer,
+    Shovel,
+    Dagger,
+    Axe,
+    Tool,
+    Pickaxe,
+    Scythe,
+    Crossbow,
+    MagicWeapon
 }

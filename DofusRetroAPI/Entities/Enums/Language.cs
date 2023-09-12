@@ -1,6 +1,6 @@
 ﻿namespace DofusRetroAPI.Entities.Enums;
 
-public enum Languages
+public enum Language
 {
     FR,
     EN,

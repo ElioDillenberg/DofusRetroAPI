@@ -1,0 +1,35 @@
+﻿namespace DofusRetroAPI.Entities.Enums;
+
+public enum CharacteristicType
+{
+    Vitality,
+    Wisdom,
+    Strength,
+    Intelligence,
+    Chance,
+    Agility,
+    ActionPoint,
+    MovementPoint,
+    Range,
+    SummonLimit,
+    CriticalHit,
+    Heal,
+    Prospecting,
+    Pods,
+    Initiative,
+    DamageReflection,
+    TrapDamage,
+    TrapPower,
+    Damage,
+    Power,
+    NeutralResistance,
+    EarthResistance,
+    FireResistance,
+    WaterResistance,
+    AirResistance,
+    NeutralPercentageResistance,
+    EarthPercentageResistance,
+    FirePercentageResistance,
+    WaterPercentageResistance,
+    AirPercentageResistance
+}
