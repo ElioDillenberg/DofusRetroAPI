@@ -2,7 +2,7 @@
 
 namespace DofusRetroAPI.Entities.Items;
 
-public class Resource : Item
+public sealed class Resource : Item
 {
     public ResourceType Type { get; set; }
 }

@@ -1,5 +1,5 @@
 ﻿namespace DofusRetroAPI.Entities.Monsters;
 
-public class BossMonster : BaseMonster
+public sealed class BossMonster : BaseMonster
 {
 }

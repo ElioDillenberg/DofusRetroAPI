@@ -3,7 +3,7 @@ using DofusRetroAPI.Entities.Enums;
 
 namespace DofusRetroAPI.Entities.Items;
 
-public class Item
+public abstract class Item
 {
     public int Id { get; set; }
     
@@ -15,9 +15,14 @@ public class Item
 
     public Dictionary<Language, string> Descriptions { get; set; } = null!;
 
+    // Weight in pods
     public int Pods { get; set; } = 0;
 
+    // If the item can be looted from monsters
     public List<Drop>? DropTable { get; set; } = null!;
     
+    // If the item can be crafted
     public List<Item>? Recipe { get; set; }
+    
+    public int Image { get; set; }
 }

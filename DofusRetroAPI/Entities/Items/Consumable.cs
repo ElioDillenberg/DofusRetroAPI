@@ -2,7 +2,7 @@
 
 namespace DofusRetroAPI.Entities.Items;
 
-public class Consumable : Item
+public sealed class Consumable : Item
 {
     public ConsumableType Type { get; set; }
 }

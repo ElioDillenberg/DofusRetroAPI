@@ -1,7 +1,9 @@
 ﻿namespace DofusRetroAPI.Entities.Enums;
 
-public enum CharacteristicType
+public enum EffectType
 {
+    // All Items Effects
+    Experience,
     Vitality,
     Wisdom,
     Strength,
@@ -13,7 +15,7 @@ public enum CharacteristicType
     Range,
     SummonLimit,
     CriticalHit,
-    Heal,
+    BonusHeal,
     Prospecting,
     Pods,
     Initiative,
@@ -31,5 +33,19 @@ public enum CharacteristicType
     EarthPercentageResistance,
     FirePercentageResistance,
     WaterPercentageResistance,
-    AirPercentageResistance
+    AirPercentageResistance,
+    
+    // Weapon Effects
+    NeutralDamage,
+    EarthDamage,
+    FireDamage,
+    WaterDamage,
+    AirDamage,
+    NeutralLifeSteal,
+    EarthLifeSteal,
+    FireLifeSteal,
+    WaterLifeSteal,
+    AirLifeSteal,
+    Heal,
+    MinusActionPoint
 }
