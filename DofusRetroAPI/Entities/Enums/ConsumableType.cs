@@ -19,6 +19,7 @@ public enum ConsumableType
     Document,
     Skill,
     ExperienceScroll,
+    CharacteristicScroll,
     SpellScroll,
     MountCertificate,
     BowKennelCertificate,
