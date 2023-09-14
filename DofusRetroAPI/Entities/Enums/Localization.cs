@@ -1,4 +1,7 @@
-﻿namespace DofusRetroAPI.Entities.Enums;
+﻿using DofusRetroAPI.Entities.Items.Consumables;
+using DofusRetroAPI.Entities.Items.Resources;
+
+namespace DofusRetroAPI.Entities.Enums;
 
 public static class Localization
 {

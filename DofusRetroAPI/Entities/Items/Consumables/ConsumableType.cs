@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Enums;
+﻿namespace DofusRetroAPI.Entities.Items.Consumables;
 
 public enum ConsumableType
 {

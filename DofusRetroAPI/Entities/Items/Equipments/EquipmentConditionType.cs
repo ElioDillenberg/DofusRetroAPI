@@ -1,6 +1,6 @@
 ﻿namespace DofusRetroAPI.Entities.Enums;
 
-public enum EquipmentConstraintType
+public enum EquipmentConditionType
 {
     Vitality,
     Wisdom,

@@ -1,10 +1,7 @@
 ﻿using DofusRetroAPI.Entities.Enums;
 
-namespace DofusRetroAPI.Entities.Items;
+namespace DofusRetroAPI.Entities.Items.Equipments;
 
-/// <summary>
-/// This entity represents a specific effect for a specific item
-/// </summary>
 public class Effect
 {
     // Id of the effect in the database

@@ -6,6 +6,7 @@ namespace DofusRetroAPI.Entities.Drops;
 
 public class Drop
 {
+    // Database Id
     public int Id { get; set; }
     
     public int DropTableId { get; set; }

@@ -1,4 +1,7 @@
 ﻿using DofusRetroAPI.Entities.Items;
+using DofusRetroAPI.Entities.Items.Consumables;
+using DofusRetroAPI.Entities.Items.Equipments;
+using DofusRetroAPI.Entities.Items.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Database;

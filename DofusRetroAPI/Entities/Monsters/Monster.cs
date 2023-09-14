@@ -2,7 +2,6 @@
 
 public sealed class Monster : BaseMonster
 {
-    // Archmonster related to this monster -> some monsters don't have archmonsters
     public ArchMonster? ArchMonster { get; set; } = null!;
     public int? ArchmonsterId { get; set; }
     

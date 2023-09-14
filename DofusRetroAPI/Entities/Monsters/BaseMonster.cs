@@ -1,6 +1,4 @@
-﻿using DofusRetroAPI.Entities.Enums;
-
-namespace DofusRetroAPI.Entities.Monsters;
+﻿namespace DofusRetroAPI.Entities.Monsters;
 
 public abstract class BaseMonster 
 {
@@ -10,8 +8,8 @@ public abstract class BaseMonster
     // Id as it is in the Dofus Retro client
     public int GameId { get; set; }
     
-    // Name of the Monster 
-    public Dictionary<Language, string> Names { get; set; } = null!;
+    // Name of the Monster
+    public List<MonsterName> Names { get; set; } = null!;
     
     // Ecosystem the monster is a part of
     public Ecosystem Ecosystem { get; set; } = null!;

@@ -6,5 +6,5 @@ public class Ecosystem
     
     public string Name { get; set; } = string.Empty;
 
-    public List<Monster> Monsters = null!;
+    public List<BaseMonster> Monsters = null!;
 }
