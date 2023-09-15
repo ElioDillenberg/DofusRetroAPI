@@ -12,7 +12,7 @@ public abstract class BaseMonster
     public int GameId { get; set; }
     
     // Name of the Monster
-    public List<MonsterName> Names { get; set; } = new();
+    public List<MonsterName> MonsterNames { get; set; } = new();
     
     // Ecosystem the monster is a part of
     public Ecosystem? Ecosystem { get; set; }
@@ -22,4 +22,6 @@ public abstract class BaseMonster
     
     // Characteristics of Monster (Level + Characteristics)
     public List<MonsterCharacteristic> Characteristics { get; set; } = new();
+    
+    // COULD ADD SPELLS HERE, NOT FOR THE MOMENT THO!
 }

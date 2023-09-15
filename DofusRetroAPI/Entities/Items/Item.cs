@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DofusRetroAPI.Entities.Drops;
+using DofusRetroAPI.Entities.Items.Equipments.Sets;
 using DofusRetroAPI.Entities.Items.Recipes;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,11 +30,10 @@ public abstract class Item
     public int Pods { get; set; } = 0;
 
     // If the item can be looted from monsters is has a drop table
-    public List<Drop>? DropTable { get; set; }
+    public List<Drop> DropTable { get; set; } = new();
     
     // If the item can be crafted
     public Recipe? Recipe { get; set; }
-    public int RecipeId { get; set; }
     
     // This is the ID of the png image to be used for that specific item
     [Required]

@@ -1,4 +1,13 @@
+using DofusRetroAPI.Database;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Db Context SqlServer (Windows)
+builder.Services.AddDbContext<DofusRetroDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString(
+        "DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllers();

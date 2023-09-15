@@ -6,11 +6,11 @@ public class Ingredient
     public int Id { get; set; }
 
     // Recipe this ingredient is for
-    public Recipe Recipe { get; set; } = null!;
+    public Recipe Recipe { get; set; }
     public int RecipeId { get; set; }
 
     // Item
-    public Item Item { get; set; } = null!;
+    public Item Item { get; set; }
     public int ItemId { get; set; }
     
     // Quantity of that item needed for that recipe

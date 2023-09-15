@@ -9,5 +9,5 @@ public class ResourceCategory
     public List<Resource> Resources { get; set; } = new();
     
     // Localized names for this category
-    public List<ResourceCategoryName> Names { get; set; } = new();
+    public List<ResourceCategoryName> ResourceCategoryNames { get; set; } = new();
 }

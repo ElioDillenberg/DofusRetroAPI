@@ -8,9 +8,9 @@ public class Card : Item
     public int CardNumber { get; set; }
     
     // Rarity 
-    public CardRarity Type { get; set; }
+    public CardRarity Rarity { get; set; }
     
     // Card FamilyType
-    public CardFamily CardFamily { get; set; } = null!;
+    public CardFamily CardFamily { get; set; }
     public int CardFamilyId { get; set; }
 }

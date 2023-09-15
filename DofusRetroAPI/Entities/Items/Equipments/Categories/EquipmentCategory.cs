@@ -6,7 +6,7 @@ public class EquipmentCategory
     public int Id { get; set; }
     
     // Localized equipment category names
-    public List<EquipmentCategoryName> Names { get; set; } = new();
+    public List<EquipmentCategoryName> EquipmentCategoryNames { get; set; } = new();
 
     // Equipments part of this category
     public List<Equipment> Equipments { get; set; } = new();

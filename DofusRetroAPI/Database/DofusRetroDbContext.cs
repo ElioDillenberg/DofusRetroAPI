@@ -1,11 +1,19 @@
-﻿using DofusRetroAPI.Entities.Items;
+﻿using DofusRetroAPI.Entities.Drops;
+using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
 using DofusRetroAPI.Entities.Items.Cards.Families;
 using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Consumables.Categories;
 using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Equipments.Categories;
+using DofusRetroAPI.Entities.Items.Equipments.Pets;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.FixedStatsPet;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.OrnamentalPets;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters;
 using DofusRetroAPI.Entities.Items.Equipments.Sets;
+using DofusRetroAPI.Entities.Items.Equipments.Weapons;
+using DofusRetroAPI.Entities.Items.Recipes;
 using DofusRetroAPI.Entities.Items.Resources;
 using DofusRetroAPI.Entities.Items.Resources.Categories;
 using DofusRetroAPI.Entities.Localization;
@@ -24,80 +32,107 @@ public class DofusRetroDbContext : DbContext
     // Fluent API
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // TPC Configuration for Items
+        modelBuilder.Entity<Item>().UseTpcMappingStrategy();
         
-        // TCP stands for Table Per Concrete Type
-        // It means each class will have its own table
+        // TPC Configuration for Monsters
+        modelBuilder.Entity<BaseMonster>().UseTpcMappingStrategy();
         
-        // Configure TPC for Equipment
-        modelBuilder.Entity<Equipment>().ToTable("Equipments");
-        modelBuilder.Entity<Equipment>().HasBaseType<Item>();
+        // TPC Configuration for BaseLocalizedName
+        modelBuilder.Entity<BaseLocalizedName>().UseTpcMappingStrategy();
+        
+        // modelBuilder.Entity<Blog>()
+        //     .HasMany(e => e.Posts)
+        //     .WithOne(e => e.Blog)
+        //     .HasForeignKey(e => e.BlogId)
+        //     .HasPrincipalKey(e => e.Id);
+        
+        // TPC Configuration for 
 
-        // Configure TPC for Consumable
-        modelBuilder.Entity<Consumable>().ToTable("Consumables");
-        modelBuilder.Entity<Consumable>().HasBaseType<Item>(); 
+        // Configure Table for PetFood
+        // modelBuilder.Entity<PetFood>().ToTable("PetFood");
 
-        // Configure TPC for Card
-        modelBuilder.Entity<Card>().ToTable("Cards");
-        modelBuilder.Entity<Card>().HasBaseType<Item>();
+        // Configure Discriminator for pet type foods
+        // modelBuilder.Entity<PetFood>()
+        //     .HasDiscriminator<string>("FoodType")
+        //     .HasValue<SoulEaterFood>("SoulEaterFood")
+        //     .HasValue<ResourceEaterFood>("ResourceEaterFood");
 
-        // Configure TPC for Resource
-        modelBuilder.Entity<Resource>().ToTable("Resources");
-        modelBuilder.Entity<Resource>().HasBaseType<Item>();
+        // Add configurations for properties unique to specific pet food types
+        // modelBuilder.Entity<PetEffect>().ToTable("PetEffects");
+
+        // TPC Configuration for Item
         
-        // Configure TPC for Monster
-        modelBuilder.Entity<Monster>().ToTable("Monsters");
-        modelBuilder.Entity<Monster>().HasBaseType<BaseMonster>();
+        // modelBuilder.Entity<Card>().ToTable("Cards");
+        // modelBuilder.Entity<Resource>().ToTable("Resources");
+        // modelBuilder.Entity<Consumable>().ToTable("Consumables");
+        // modelBuilder.Entity<Equipment>().ToTable("Equipments");
         
-        // Configure TPC for ArchMonster
-        modelBuilder.Entity<ArchMonster>().ToTable("ArchMonsters");
-        modelBuilder.Entity<ArchMonster>().HasBaseType<BaseMonster>();
         
-        // Configure TPC for ItemName
-        modelBuilder.Entity<ItemName>().ToTable("ItemNames");
-        modelBuilder.Entity<ItemName>().HasBaseType<BaseLocalizedName>();
+        // modelBuilder.Entity<Monster>().ToTable("Monsters");
+        // modelBuilder.Entity<ArchMonster>().ToTable("ArchMonsters");
+
+        // modelBuilder.Entity<Item>()
+        //     .HasOne(item => item.Recipe)
+        //     .WithOne(recipe => recipe.Item)
+        //     .HasForeignKey<Recipe>(recipe => recipe.ItemId); 
         
-        // Configure TPC for ResourceCategoryName
-        modelBuilder.Entity<ResourceCategoryName>().ToTable("ResourceCategoryNames");
-        modelBuilder.Entity<ResourceCategoryName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for EquipmentCategoryName
-        modelBuilder.Entity<EquipmentCategoryName>().ToTable("EquipmentCategoryNames");
-        modelBuilder.Entity<EquipmentCategoryName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for ConsumableCategoryName
-        modelBuilder.Entity<ConsumableCategoryName>().ToTable("ConsumableCategoryNames");
-        modelBuilder.Entity<ConsumableCategoryName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for SetName
-        modelBuilder.Entity<SetName>().ToTable("SetNames");
-        modelBuilder.Entity<SetName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for CardFamilyName
-        modelBuilder.Entity<CardFamilyName>().ToTable("CardFamilyNames");
-        modelBuilder.Entity<CardFamilyName>().HasBaseType<BaseLocalizedName>();
-        
-        // configure TPC for MonsterName
-        modelBuilder.Entity<MonsterName>().ToTable("MonsterNames");
-        modelBuilder.Entity<MonsterName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for SubAreaName
-        modelBuilder.Entity<SubAreaName>().ToTable("SubAreaNames");
-        modelBuilder.Entity<SubAreaName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for EcosystemName
-        modelBuilder.Entity<EcosystemName>().ToTable("EcosystemNames");
-        modelBuilder.Entity<EcosystemName>().HasBaseType<BaseLocalizedName>();
-        
-        // Configure TPC for BreedName
-        modelBuilder.Entity<BreedName>().ToTable("BreedNames");
-        modelBuilder.Entity<BreedName>().HasBaseType<BaseLocalizedName>();
         
         base.OnModelCreating(modelBuilder);
+        
     }
 
     // Db Sets
+    public DbSet<ItemName> ItemNames => Set<ItemName>();
+    public DbSet<ItemDescription> ItemDescriptions => Set<ItemDescription>();
+    
+    public DbSet<Recipe> Recipes => Set<Recipe>();
+    public DbSet<Ingredient> Ingredients => Set<Ingredient>();
+    
     public DbSet<Consumable> Consumables => Set<Consumable>();
+    public DbSet<ConsumableCategory> ConsumableCategories => Set<ConsumableCategory>();
+    public DbSet<ConsumableCategoryName> ConsumableCategoryNames => Set<ConsumableCategoryName>();
+    
     public DbSet<Resource> Resources => Set<Resource>();
+    public DbSet<ResourceCategory> ResourceCategories => Set<ResourceCategory>();
+    public DbSet<ResourceCategoryName> ResourceCategoryNames => Set<ResourceCategoryName>();
+    
     public DbSet<Equipment> Equipment => Set<Equipment>();
+    public DbSet<EquipmentCategory> EquipmentCategories => Set<EquipmentCategory>();
+    public DbSet<EquipmentCategoryName> EquipmentCategoryNames => Set<EquipmentCategoryName>();
+    public DbSet<SetName> SetNames => Set<SetName>();
+    public DbSet<SetBonus> SetBonuses => Set<SetBonus>();
+    public DbSet<SetEffect> SetEffects => Set<SetEffect>();
+
+    public DbSet<Pet> Pets => Set<Pet>();
+    public DbSet<SoulEater> SoulEaters => Set<SoulEater>();
+    public DbSet<ResourceEater> FoodEaters => Set<ResourceEater>();
+    public DbSet<SoulEaterFood> SoulEaterFoods => Set<SoulEaterFood>();
+    public DbSet<ResourceEaterFood> ResourceEaterFoods => Set<ResourceEaterFood>();
+    public DbSet<OrnamentalPet> OrnamentalPets => Set<OrnamentalPet>();
+    public DbSet<FixedStatsPet> FixedStatsPets => Set<FixedStatsPet>();
+
+    public DbSet<PetFood> PetFoods => Set<PetFood>();
+    public DbSet<PetEffect> PetEffects => Set<PetEffect>(); 
+
+    public DbSet<Weapon> Weapons => Set<Weapon>();
+    
     public DbSet<Card> Cards => Set<Card>();
+    public DbSet<CardFamily> CardFamilies => Set<CardFamily>();
+    public DbSet<CardFamilyName> CardFamilyNames => Set<CardFamilyName>();
+    
+    public DbSet<Drop> Drops => Set<Drop>();
+    
+    public DbSet<Monster> Monsters => Set<Monster>();
+    public DbSet<ArchMonster> ArchMonsters => Set<ArchMonster>();
+    public DbSet<MonsterName> MonsterNames => Set<MonsterName>();
+    
+    public DbSet<Ecosystem> Ecosystems => Set<Ecosystem>();
+    public DbSet<EcosystemName> EcosystemNames => Set<EcosystemName>();
+    
+    public DbSet<Breed> Breeds => Set<Breed>();
+    public DbSet<BreedName> BreedNames => Set<BreedName>();
+    
+    public DbSet<SubArea> SubAreas => Set<SubArea>();
+    public DbSet<SubAreaName> SubAreaNames => Set<SubAreaName>();
 }

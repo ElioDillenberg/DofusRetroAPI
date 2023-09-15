@@ -2,11 +2,6 @@
 
 public sealed class MonsterCharacteristic
 {
-    public MonsterCharacteristic(BaseMonster monster)
-    {
-        Monster = monster;
-    }
-
     public int Id { get; set; }
 
     public BaseMonster Monster { get; set; }

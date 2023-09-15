@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Enums;
+﻿namespace DofusRetroAPI.Entities.Items.Equipments;
 
 public enum EquipmentConditionType
 {
@@ -35,5 +35,6 @@ public enum EquipmentConditionType
     AxeSmithmagus,
     Jewelmagus,
     Shoemagus,
-    Costumagus
+    Costumagus,
+    Subscribtion
 }

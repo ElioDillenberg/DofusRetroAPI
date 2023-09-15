@@ -6,8 +6,8 @@ public class CardFamily
     public int Id { get; set; }
     
     // List of cards part of this family
-    public List<Card> Cards { get; set; } = null!;
+    public List<Card> Cards { get; set; } = new();
 
     // Localized card family names
-    public List<CardFamilyName> Names { get; set; } = null!;
+    public List<CardFamilyName> Names { get; set; } = new();
 }

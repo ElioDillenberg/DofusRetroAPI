@@ -6,8 +6,11 @@ public class Set
     public int Id { get; set; }
     
     // Items that are part of the set
-    public List<Item> Items { get; set; } = new();
+    public List<Equipment> Equipments { get; set; } = new();
     
     // Localized set names
-    public List<SetName> Names { get; set; } = new();
+    public List<SetName> SetNames { get; set; } = new();
+    
+    // Bonuses of the set
+    public List<SetBonus> SetBonuses { get; set; } = new();
 }

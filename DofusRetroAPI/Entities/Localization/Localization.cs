@@ -1,5 +1,5 @@
-﻿using DofusRetroAPI.Entities.Enums;
-using DofusRetroAPI.Entities.Items.Consumables;
+﻿using DofusRetroAPI.Entities.Items.Consumables;
+using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Resources;
 
 namespace DofusRetroAPI.Entities.Localization;

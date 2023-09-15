@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Enums;
+﻿namespace DofusRetroAPI.Entities.Effects;
 
 public enum EffectType
 {
@@ -21,13 +21,13 @@ public enum EffectType
     DamageReflection,
     TrapDamage,
     TrapPower,
-    Damage,
-    Power,
-    NeutralResistance,
-    EarthResistance,
-    FireResistance,
-    WaterResistance,
-    AirResistance,
+    FixedDamage,
+    PercentageDamage,
+    NeutralFixedResistance,
+    EarthFixedResistance,
+    FireFixedResistance,
+    WaterFixedResistance,
+    AirFixedResistance,
     NeutralPercentageResistance,
     EarthPercentageResistance,
     FirePercentageResistance,
