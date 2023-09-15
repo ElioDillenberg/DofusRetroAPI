@@ -1,4 +1,5 @@
 ﻿using DofusRetroAPI.Entities.Enums;
+using DofusRetroAPI.Entities.Localization;
 
 namespace DofusRetroAPI.Entities.Items;
 

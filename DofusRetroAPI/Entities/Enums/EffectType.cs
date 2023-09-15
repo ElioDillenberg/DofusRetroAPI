@@ -3,7 +3,6 @@
 public enum EffectType
 {
     // All Items Effects
-    Experience,
     Vitality,
     Wisdom,
     Strength,

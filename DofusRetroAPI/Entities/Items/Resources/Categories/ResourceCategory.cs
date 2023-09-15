@@ -6,8 +6,8 @@ public class ResourceCategory
     public int Id { get; set; }
     
     // Resources part of this category
-    public List<Resource> Resources { get; set; } = null!;
+    public List<Resource> Resources { get; set; } = new();
     
     // Localized names for this category
-    public List<ResourceCategoryName> Names { get; set; } = null!;
+    public List<ResourceCategoryName> Names { get; set; } = new();
 }

@@ -1,10 +1,12 @@
-﻿namespace DofusRetroAPI.Entities.Monsters;
+﻿using DofusRetroAPI.Entities.Monsters.SubAreas;
+
+namespace DofusRetroAPI.Entities.Monsters;
 
 public sealed class Monster : BaseMonster
 {
-    public ArchMonster? ArchMonster { get; set; } = null!;
+    public ArchMonster? ArchMonster { get; set; }
     public int? ArchmonsterId { get; set; }
     
-    // SubArea the monster is a part of
-    public List<SubArea> SubArea { get; set; } = null!;
+    // SubAreas the monster is a part of
+    public List<SubArea> SubAreas { get; set; } = new();
 }

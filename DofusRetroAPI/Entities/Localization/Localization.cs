@@ -1,10 +1,14 @@
-﻿using DofusRetroAPI.Entities.Items.Consumables;
+﻿using DofusRetroAPI.Entities.Enums;
+using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Resources;
 
-namespace DofusRetroAPI.Entities.Enums;
+namespace DofusRetroAPI.Entities.Localization;
 
 public static class Localization
 {
+    
+    
+    
     public static Dictionary<(EquipmentType, Language), string> EquipmentTypeNames = new()
     {
         // French Localization

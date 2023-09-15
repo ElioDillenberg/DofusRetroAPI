@@ -2,6 +2,11 @@
 
 public sealed class ArchMonster : BaseMonster
 {
-    public Monster Monster { get; set; } = null!;
+    public ArchMonster(Monster monster)
+    {
+        Monster = monster;
+    }
+
+    public Monster Monster { get; set; }
     public int MonsterId { get; set; }
 }

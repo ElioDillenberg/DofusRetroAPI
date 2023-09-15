@@ -2,6 +2,11 @@
 
 public class SetBonus
 {
+    public SetBonus(Set set)
+    {
+        Set = set;
+    }
+
     // Database Id
     public int Id { get; set; }
 
@@ -13,5 +18,5 @@ public class SetBonus
     public int NumberOfItems { get; set; }
     
     // Effects of the bonus
-    public List<Effect> Effects { get; set; } = null!;
+    public List<Effect> Effects { get; set; } = new();
 }

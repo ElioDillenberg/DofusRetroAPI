@@ -6,5 +6,8 @@ public class Set
     public int Id { get; set; }
     
     // Items that are part of the set
-    public List<Item> Items { get; set; } = null!;
+    public List<Item> Items { get; set; } = new();
+    
+    // Localized set names
+    public List<SetName> Names { get; set; } = new();
 }

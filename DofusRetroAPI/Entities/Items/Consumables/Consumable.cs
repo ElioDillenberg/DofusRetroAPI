@@ -4,6 +4,6 @@ namespace DofusRetroAPI.Entities.Items.Consumables;
 
 public sealed class Consumable : Item
 {
-    public ConsumableCategory ConsumableCategory { get; set; } = null!;
+    public ConsumableCategory ConsumableCategory { get; set; } = new();
     public int ConsumableCategoryId { get; set; }
 }

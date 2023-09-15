@@ -1,19 +1,15 @@
-﻿using DofusRetroAPI.Entities.Enums;
+﻿using DofusRetroAPI.Entities.Localization;
 
 namespace DofusRetroAPI.Entities.Items.Equipments.Categories;
 
-public class EquipmentCategoryName
+public sealed class EquipmentCategoryName : BaseLocalizedName
 {
-    // Database Id
-    public int Id { get; set; }
+    public EquipmentCategoryName(EquipmentCategory equipmentCategory)
+    {
+        EquipmentCategory = equipmentCategory;
+    }
 
     // Reference to the category
-    public EquipmentCategory EquipmentCategory { get; set; } = null!;
+    public EquipmentCategory EquipmentCategory { get; set; }
     public int EquipmentCategoryId { get; set; }
-
-    // Language
-    public Language Language { get; set; }
-
-    // Localized name
-    public string Name { get; set; } = string.Empty;
 }

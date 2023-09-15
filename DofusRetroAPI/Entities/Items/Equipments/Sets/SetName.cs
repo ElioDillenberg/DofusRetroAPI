@@ -1,19 +1,15 @@
-﻿using DofusRetroAPI.Entities.Enums;
+﻿using DofusRetroAPI.Entities.Localization;
 
 namespace DofusRetroAPI.Entities.Items.Equipments.Sets;
 
-public class SetName
+public sealed class SetName : BaseLocalizedName
 {
-    // Database Id
-    public int Id { get; set; }
+    public SetName(Set set)
+    {
+        Set = set;
+    }
 
     // Reference to the Set
-    public Set Set { get; set; } = null!;
+    public Set Set { get; set; }
     public int SetId { get; set; }
-    
-    // Language
-    public Language Language { get; set; }
-    
-    // Localized Name
-    public string Name { get; set; } = string.Empty;
 }

@@ -1,15 +1,14 @@
-﻿using DofusRetroAPI.Entities.Enums;
+﻿using DofusRetroAPI.Entities.Localization;
 
 namespace DofusRetroAPI.Entities.Items;
 
-public class ItemName
+public sealed class ItemName : BaseLocalizedName
 {
-    public int Id { get; set; }
-    
-    public Item Item { get; set; } = null!;
-    public int ItemId { get; set; }
-    
-    public Language Language { get; set; }
+    public ItemName(Item item)
+    {
+        Item = item;
+    }
 
-    public string Name { get; set; } = string.Empty;
+    public Item Item { get; set; }
+    public int ItemId { get; set; }
 }
