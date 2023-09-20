@@ -6,14 +6,6 @@ namespace DofusRetroAPI.Entities.Drops;
 
 public class Drop
 {
-    // public Drop(Monster monster, Item item)
-    // {
-    //     Monster = monster;
-    //     MonsterId = monster.Id;
-    //     Item = item;
-    //     ItemId = item.Id;
-    // }
-
     // Database Id
     public int Id { get; set; }
     

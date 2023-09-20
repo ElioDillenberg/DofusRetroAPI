@@ -1,9 +1,6 @@
-﻿using DofusRetroAPI.Entities.Items.Resources.Categories;
+﻿namespace DofusRetroAPI.Entities.Items.Resources;
 
-namespace DofusRetroAPI.Entities.Items.Resources;
-
-public sealed class Resource : Item
+public abstract class BaseResource : Item
 {
-    public ResourceCategory ResourceCategory { get; set; } = new();
-    public int ResourceCategoryId { get; set; }
+    public abstract ResourceType ResourceType { get; }
 }

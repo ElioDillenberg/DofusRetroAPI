@@ -1,0 +1,11 @@
+﻿namespace DofusRetroAPI.Entities.Items.Equipments.Animals.Pets;
+
+public abstract class PetFood
+{
+    public int Id { get; set; }
+
+    public EquipmentEffect Effect { get; set; }
+    public int EquipmentEffectId { get; set; }
+    
+    public int EffectIncrease { get; set; }
+}

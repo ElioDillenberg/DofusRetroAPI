@@ -21,7 +21,7 @@ public enum EquipmentType
     Sword,
     Hammer,
     Shovel,
-    Dagger,
+    Daggers,
     Axe,
     Tool,
     Pickaxe,

@@ -14,8 +14,8 @@ public enum ConsumableType
     ForgetfulnessPotion,
     ForgetfulnessPotionForCollectors,
     PetPotion,
-    Dyeing,
-    GiftItem,
+    Dye,
+    
     Document,
     Skill,
     ExperienceScroll,
@@ -23,7 +23,8 @@ public enum ConsumableType
     SpellScroll,
     MountCertificate,
     BowKennelCertificate,
-    SeekerScroller,
+    SeekerScroll,
+    
     SpiritGem,
     BagOfResources,
     PetEgg,

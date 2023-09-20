@@ -1,13 +1,10 @@
-﻿using DofusRetroAPI.Entities.Items.Equipments.Categories;
-using DofusRetroAPI.Entities.Items.Equipments.Sets;
+﻿using DofusRetroAPI.Entities.Items.Equipments.Sets;
 
 namespace DofusRetroAPI.Entities.Items.Equipments;
 
-public class Equipment : Item
+public abstract class Equipment : Item
 {
-    // Equipment Category : Hat, Cloak, Boots,etc...
-    public EquipmentCategory EquipmentCategory { get; set; }
-    public int EquipmentCategoryId { get; set; }
+    public abstract EquipmentType EquipmentType { get; }
 
     // The constraints to equip the item
     public List<EquipmentCondition>? EquipmentConditions { get; set; } = null;

@@ -1,9 +1,6 @@
-﻿using DofusRetroAPI.Entities.Items.Consumables.Categories;
+﻿namespace DofusRetroAPI.Entities.Items.Consumables;
 
-namespace DofusRetroAPI.Entities.Items.Consumables;
-
-public sealed class Consumable : Item
+public abstract class Consumable : Item
 {
-    public ConsumableCategory ConsumableCategory { get; set; } = new();
-    public int ConsumableCategoryId { get; set; }
+    public abstract ConsumableType ConsumableType { get; }
 }
