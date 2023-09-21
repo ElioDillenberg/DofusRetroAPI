@@ -4,10 +4,10 @@ namespace DofusRetroAPI.Entities.Items.Equipments;
 
 public abstract class Equipment : Item
 {
-    public abstract EquipmentType EquipmentType { get; }
+    public virtual EquipmentType EquipmentType { get; set; }
 
     // The constraints to equip the item
-    public List<EquipmentCondition>? EquipmentConditions { get; set; } = null;
+    public List<EquipmentCondition> EquipmentConditions { get; set; } = new();
     
     // The effects of the item
     public List<EquipmentEffect> EquipmentEffects { get; set; } = new();

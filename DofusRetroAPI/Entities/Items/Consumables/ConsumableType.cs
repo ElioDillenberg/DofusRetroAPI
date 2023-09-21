@@ -24,7 +24,7 @@ public enum ConsumableType
     MountCertificate,
     BowKennelCertificate,
     SeekerScroll,
-    
+                             
     SpiritGem,
     BagOfResources,
     PetEgg,

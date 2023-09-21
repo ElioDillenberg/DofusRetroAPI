@@ -17,7 +17,7 @@ namespace DofusRetroAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -63,7 +63,7 @@ namespace DofusRetroAPI.Migrations
                     b.ToTable("Drops");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Families.CardFamily", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetFood", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,35 +71,25 @@ namespace DofusRetroAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.HasKey("Id");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("CardFamilies");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("EffectIncrease")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ConsumableCategories");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("EquipmentEffectId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.HasKey("Id");
 
-                    b.ToTable("EquipmentCategories");
+                    b.HasIndex("EquipmentEffectId");
+
+                    b.ToTable("PetFoods");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PetFood");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.EquipmentCondition", b =>
@@ -113,10 +103,7 @@ namespace DofusRetroAPI.Migrations
                     b.Property<int>("ConditionType")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
+                    b.Property<int>("EquipmentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Max")
@@ -129,7 +116,7 @@ namespace DofusRetroAPI.Migrations
 
                     b.HasIndex("EquipmentId");
 
-                    b.ToTable("EquipmentCondition");
+                    b.ToTable("EquipmentConditions");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect", b =>
@@ -165,38 +152,9 @@ namespace DofusRetroAPI.Migrations
 
                     b.HasIndex("SetBonusId");
 
-                    b.ToTable("EquipmentEffect");
+                    b.ToTable("EquipmentEffects");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("EquipmentEffect");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.PetFood", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EffectIncrease")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EquipmentEffectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EquipmentEffectId");
-
-                    b.ToTable("PetFoods");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PetFood");
 
                     b.UseTphMappingStrategy();
                 });
@@ -400,19 +358,6 @@ namespace DofusRetroAPI.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ResourceCategories");
-                });
-
             modelBuilder.Entity("DofusRetroAPI.Entities.Localization.BaseLocalizedName", b =>
                 {
                     b.Property<int>("Id")
@@ -609,24 +554,9 @@ namespace DofusRetroAPI.Migrations
                     b.ToTable("MonsterSubArea");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.PetEffect", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters.ResourceEaterFood", b =>
                 {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect");
-
-                    b.Property<int>("ImprovedMax")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PetId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("PetId");
-
-                    b.HasDiscriminator().HasValue("PetEffect");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters.ResourceEaterFood", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.PetFood");
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetFood");
 
                     b.Property<int?>("ResourceEaterId")
                         .HasColumnType("int");
@@ -641,9 +571,9 @@ namespace DofusRetroAPI.Migrations
                     b.HasDiscriminator().HasValue("ResourceEaterFood");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters.SoulEaterFood", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters.SoulEaterFood", b =>
                 {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.PetFood");
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetFood");
 
                     b.Property<int>("MonsterId")
                         .HasColumnType("int");
@@ -658,20 +588,33 @@ namespace DofusRetroAPI.Migrations
                     b.HasDiscriminator().HasValue("SoulEaterFood");
                 });
 
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetEffect", b =>
+                {
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect");
+
+                    b.Property<int>("ImprovedMax")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PetId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PetId");
+
+                    b.HasDiscriminator().HasValue("PetEffect");
+                });
+
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Card", b =>
                 {
                     b.HasBaseType("DofusRetroAPI.Entities.Items.Item");
 
-                    b.Property<int>("CardFamilyId")
+                    b.Property<int>("CardFamily")
                         .HasColumnType("int");
 
                     b.Property<int>("CardNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rarity")
+                    b.Property<int>("CardRarity")
                         .HasColumnType("int");
-
-                    b.HasIndex("CardFamilyId");
 
                     b.ToTable("Cards");
                 });
@@ -680,10 +623,8 @@ namespace DofusRetroAPI.Migrations
                 {
                     b.HasBaseType("DofusRetroAPI.Entities.Items.Item");
 
-                    b.Property<int>("ConsumableCategoryId")
+                    b.Property<int>("ConsumableType")
                         .HasColumnType("int");
-
-                    b.HasIndex("ConsumableCategoryId");
 
                     b.ToTable("Consumables");
                 });
@@ -692,65 +633,25 @@ namespace DofusRetroAPI.Migrations
                 {
                     b.HasBaseType("DofusRetroAPI.Entities.Items.Item");
 
-                    b.Property<int>("EquipmentCategoryId")
+                    b.Property<int>("EquipmentType")
                         .HasColumnType("int");
 
                     b.Property<int?>("SetId")
                         .HasColumnType("int");
 
-                    b.HasIndex("EquipmentCategoryId");
-
                     b.HasIndex("SetId");
 
-                    b.ToTable("Equipment");
+                    b.ToTable((string)null);
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Resource", b =>
                 {
                     b.HasBaseType("DofusRetroAPI.Entities.Items.Item");
 
-                    b.Property<int>("ResourceCategoryId")
+                    b.Property<int>("ResourceType")
                         .HasColumnType("int");
 
-                    b.HasIndex("ResourceCategoryId");
-
-                    b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Families.CardFamilyName", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Localization.BaseLocalizedName");
-
-                    b.Property<int>("CardFamilyId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("CardFamilyId");
-
-                    b.ToTable("CardFamilyNames");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategoryName", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Localization.BaseLocalizedName");
-
-                    b.Property<int>("ConsumableCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ConsumableCategoryId");
-
-                    b.ToTable("ConsumableCategoryNames");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategoryName", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Localization.BaseLocalizedName");
-
-                    b.Property<int>("EquipmentCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("EquipmentCategoryId");
-
-                    b.ToTable("EquipmentCategoryNames");
+                    b.ToTable("BaseResources");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Sets.SetName", b =>
@@ -775,18 +676,6 @@ namespace DofusRetroAPI.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("ItemNames");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategoryName", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Localization.BaseLocalizedName");
-
-                    b.Property<int>("ResourceCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ResourceCategoryId");
-
-                    b.ToTable("ResourceCategoryNames");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Monsters.Breeds.BreedName", b =>
@@ -851,11 +740,18 @@ namespace DofusRetroAPI.Migrations
                     b.ToTable("Monsters");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.Pet", b =>
                 {
                     b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Equipment");
 
                     b.ToTable((string)null);
+                });
+
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Gear.Gear", b =>
+                {
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Equipment");
+
+                    b.ToTable("Gears");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Weapons.Weapon", b =>
@@ -865,30 +761,16 @@ namespace DofusRetroAPI.Migrations
                     b.ToTable("Weapons");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.FixedStatsPet.FixedStatsPet", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters.ResourceEater", b =>
                 {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet");
-
-                    b.ToTable("FixedStatsPets");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.OrnamentalPets.OrnamentalPet", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet");
-
-                    b.ToTable("OrnamentalPets");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters.ResourceEater", b =>
-                {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet");
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.Pet");
 
                     b.ToTable("FoodEaters");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters.SoulEater", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters.SoulEater", b =>
                 {
-                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet");
+                    b.HasBaseType("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.Pet");
 
                     b.ToTable("SoulEaters");
                 });
@@ -912,11 +794,26 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("Monster");
                 });
 
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetFood", b =>
+                {
+                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect", "Effect")
+                        .WithMany()
+                        .HasForeignKey("EquipmentEffectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Effect");
+                });
+
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.EquipmentCondition", b =>
                 {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Equipment", null)
+                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Equipment", "Equipment")
                         .WithMany("EquipmentConditions")
-                        .HasForeignKey("EquipmentId");
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect", b =>
@@ -932,17 +829,6 @@ namespace DofusRetroAPI.Migrations
                         .HasForeignKey("SetBonusId");
 
                     b.Navigation("Equipment");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.PetFood", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.EquipmentEffect", "Effect")
-                        .WithMany()
-                        .HasForeignKey("EquipmentEffectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Effect");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Sets.SetBonus", b =>
@@ -1071,16 +957,9 @@ namespace DofusRetroAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.PetEffect", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters.ResourceEaterFood", b =>
                 {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("PetId");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters.ResourceEaterFood", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters.ResourceEater", null)
+                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters.ResourceEater", null)
                         .WithMany("FoodTable")
                         .HasForeignKey("ResourceEaterId");
 
@@ -1093,7 +972,7 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("Resource");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters.SoulEaterFood", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters.SoulEaterFood", b =>
                 {
                     b.HasOne("DofusRetroAPI.Entities.Monsters.Monster", "Monster")
                         .WithMany()
@@ -1101,94 +980,27 @@ namespace DofusRetroAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters.SoulEater", null)
+                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters.SoulEater", null)
                         .WithMany("FoodTable")
                         .HasForeignKey("SoulEaterId");
 
                     b.Navigation("Monster");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Card", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.PetEffect", b =>
                 {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Cards.Families.CardFamily", "CardFamily")
-                        .WithMany("Cards")
-                        .HasForeignKey("CardFamilyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CardFamily");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Consumables.Consumable", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategory", "ConsumableCategory")
-                        .WithMany("Consumables")
-                        .HasForeignKey("ConsumableCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConsumableCategory");
+                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.Pet", null)
+                        .WithMany("Effects")
+                        .HasForeignKey("PetId");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Equipment", b =>
                 {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategory", "EquipmentCategory")
-                        .WithMany("Equipments")
-                        .HasForeignKey("EquipmentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Sets.Set", "Set")
                         .WithMany("Equipments")
                         .HasForeignKey("SetId");
 
-                    b.Navigation("EquipmentCategory");
-
                     b.Navigation("Set");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Resource", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategory", "ResourceCategory")
-                        .WithMany("Resources")
-                        .HasForeignKey("ResourceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ResourceCategory");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Families.CardFamilyName", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Cards.Families.CardFamily", "CardFamily")
-                        .WithMany("Names")
-                        .HasForeignKey("CardFamilyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CardFamily");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategoryName", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategory", "ConsumableCategory")
-                        .WithMany("ConsumableCategoryNames")
-                        .HasForeignKey("ConsumableCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConsumableCategory");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategoryName", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategory", "EquipmentCategory")
-                        .WithMany("EquipmentCategoryNames")
-                        .HasForeignKey("EquipmentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EquipmentCategory");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Sets.SetName", b =>
@@ -1211,17 +1023,6 @@ namespace DofusRetroAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategoryName", b =>
-                {
-                    b.HasOne("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategory", "ResourceCategory")
-                        .WithMany("ResourceCategoryNames")
-                        .HasForeignKey("ResourceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ResourceCategory");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Monsters.Breeds.BreedName", b =>
@@ -1272,27 +1073,6 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("Monster");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Cards.Families.CardFamily", b =>
-                {
-                    b.Navigation("Cards");
-
-                    b.Navigation("Names");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Consumables.Categories.ConsumableCategory", b =>
-                {
-                    b.Navigation("ConsumableCategoryNames");
-
-                    b.Navigation("Consumables");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Categories.EquipmentCategory", b =>
-                {
-                    b.Navigation("EquipmentCategoryNames");
-
-                    b.Navigation("Equipments");
-                });
-
             modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Sets.Set", b =>
                 {
                     b.Navigation("Equipments");
@@ -1316,13 +1096,6 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("Names");
 
                     b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Resources.Categories.ResourceCategory", b =>
-                {
-                    b.Navigation("ResourceCategoryNames");
-
-                    b.Navigation("Resources");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Monsters.BaseMonster", b =>
@@ -1364,7 +1137,7 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("MonsterNames");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.Pet", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.Pet", b =>
                 {
                     b.Navigation("Effects");
                 });
@@ -1374,12 +1147,12 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("WeaponCharacteristic");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters.ResourceEater", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters.ResourceEater", b =>
                 {
                     b.Navigation("FoodTable");
                 });
 
-            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters.SoulEater", b =>
+            modelBuilder.Entity("DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters.SoulEater", b =>
                 {
                     b.Navigation("FoodTable");
                 });

@@ -1,6 +1,6 @@
 ﻿namespace DofusRetroAPI.Entities.Items.Consumables;
 
-public abstract class Consumable : Item
+public sealed class Consumable : Item
 {
-    public abstract ConsumableType ConsumableType { get; }
+    public ConsumableType ConsumableType { get; set; }
 }

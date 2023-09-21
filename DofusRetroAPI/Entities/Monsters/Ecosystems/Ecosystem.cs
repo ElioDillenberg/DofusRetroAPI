@@ -1,10 +1,21 @@
 ﻿namespace DofusRetroAPI.Entities.Monsters.Ecosystems;
 
-public class Ecosystem
+public enum Ecosystem
 {
-    public int Id { get; set; }
-
-    public List<EcosystemName> EcosystemNames { get; set; } = new();
-
-    public List<BaseMonster> Monsters = new();
+    Archmonsters,
+    BeachCreatures,
+    BeginnerAreaCreatures,
+    BreederVillageCreatures,
+    CityCreatures,
+    DarkCreatures,
+    FieldCreatures,
+    ForestCreatures,
+    HumanoidCreatures,
+    OtomaiIslandCreatures,
+    PandalaCreatures,
+    PlainCreatures,
+    ResourcesProtectors,
+    SwamCreatures,
+    VariousCreatures,
+    WabbitIslandCreatures
 }

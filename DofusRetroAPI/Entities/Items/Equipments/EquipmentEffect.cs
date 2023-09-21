@@ -8,8 +8,8 @@ public class EquipmentEffect
     public int Id { get; set; }
     
     // Reference to the equipment
-    public Equipment Equipment { get; set; }
     public int EquipmentId { get; set; }
+    public Equipment Equipment { get; set; } = null!;
     
     // Type of effect
     public EffectType EffectType { get; set; }

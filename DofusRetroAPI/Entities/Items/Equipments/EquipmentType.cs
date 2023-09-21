@@ -2,6 +2,7 @@ namespace DofusRetroAPI.Entities.Items.Equipments;
 
 public enum EquipmentType
 {
+    // Gear
     Hat,
     Cloak,
     Backpack,
@@ -11,8 +12,12 @@ public enum EquipmentType
     Boots,
     Shield,
     Dofus,
+    
+    // Pets
     Pet,
     Dragoturkey,
+    
+    // Weapons
     SoulStone,
     CapturingNet,
     Staff,

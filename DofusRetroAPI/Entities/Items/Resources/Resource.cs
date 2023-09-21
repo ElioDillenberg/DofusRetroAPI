@@ -1,6 +1,6 @@
 ﻿namespace DofusRetroAPI.Entities.Items.Resources;
 
-public abstract class BaseResource : Item
+public sealed class Resource : Item
 {
-    public abstract ResourceType ResourceType { get; }
+    public ResourceType ResourceType { get; set; }
 }

@@ -2,15 +2,14 @@
 
 namespace DofusRetroAPI.Entities.Items.Cards;
 
-public abstract class Card : Item
+public sealed class Card : Item
 {
     // Card Number
     public int CardNumber { get; set; }
     
     // Rarity 
-    public abstract CardRarity Rarity { get; }
+    public CardRarity CardRarity { get; set; }
     
     // Card FamilyType
     public CardFamily CardFamily { get; set; }
-    public int CardFamilyId { get; set; }
 }
