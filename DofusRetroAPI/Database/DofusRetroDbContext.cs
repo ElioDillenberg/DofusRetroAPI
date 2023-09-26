@@ -3,10 +3,10 @@ using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
 using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Equipments;
-using DofusRetroAPI.Entities.Items.Equipments.Animals.Pets;
-using DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters;
-using DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
+using DofusRetroAPI.Entities.Items.Equipments.Pets;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters;
+using DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters;
 using DofusRetroAPI.Entities.Items.Equipments.Sets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
 using DofusRetroAPI.Entities.Items.Recipes;
@@ -31,15 +31,17 @@ public class DofusRetroDbContext : DbContext
         modelBuilder.Entity<Item>().UseTpcMappingStrategy();
         
         // TPC Configuration for Monsters
-        modelBuilder.Entity<BaseMonster>().UseTpcMappingStrategy();
+        modelBuilder.Entity<Monster>().UseTpcMappingStrategy();
         
         // TPC Configuration for BaseLocalizedName
         modelBuilder.Entity<BaseLocalizedName>().UseTpcMappingStrategy();
         
         base.OnModelCreating(modelBuilder);
-        
     }
 
+    // Localization
+    public DbSet<BaseLocalizedName> LocalizedNames => Set<BaseLocalizedName>();
+    
     // Items
     public DbSet<Item> Items => Set<Item>();
     public DbSet<ItemName> ItemNames => Set<ItemName>();
@@ -75,7 +77,7 @@ public class DofusRetroDbContext : DbContext
     // Sets
     public DbSet<SetName> SetNames => Set<SetName>();
     public DbSet<SetBonus> SetBonuses => Set<SetBonus>();
-    public DbSet<SetEffect> SetEffects => Set<SetEffect>     ();
+    public DbSet<SetEffect> SetEffects => Set<SetEffect>();
     
     // Resources
     public DbSet<Resource> BaseResources => Set<Resource>();
@@ -88,6 +90,8 @@ public class DofusRetroDbContext : DbContext
     
     // Monsters
     public DbSet<Monster> Monsters => Set<Monster>();
-    public DbSet<ArchMonster> ArchMonsters => Set<ArchMonster>();
     public DbSet<MonsterName> MonsterNames => Set<MonsterName>();
+    public DbSet<NormalMonster> NormalMonsters => Set<NormalMonster>();
+    public DbSet<ArchMonster> ArchMonsters => Set<ArchMonster>();
+    public DbSet<MonsterCharacteristic> MonsterCharacteristics => Set<MonsterCharacteristic>();
 }

@@ -1,6 +1,6 @@
 ﻿using DofusRetroAPI.Entities.Items.Resources;
 
-namespace DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.ResourceEaters;
+namespace DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters;
 
 public sealed class ResourceEaterFood : PetFood
 {

@@ -1,6 +1,6 @@
 ﻿using DofusRetroAPI.Entities.Monsters;
 
-namespace DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters;
+namespace DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters;
 
 public class SoulEaterFood : PetFood
 {

@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DofusRetroAPI", "DofusRetroAPI\DofusRetroAPI.csproj", "{5F0A5253-8E65-49D6-8D2F-8A5389E27543}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DofusRetroClassLibrary", "DofusRetroClassLibrary\DofusRetroClassLibrary.csproj", "{C95CA16E-2E35-42D1-B714-822812F66CE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DofusRetroFrontBlazorServer", "DofusRetroFrontBlazorServer\DofusRetroFrontBlazorServer.csproj", "{62D92744-70A2-4A64-80C4-3AE6BD44D551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScraperDofusRetroAPI", "ScraperDofusRetroAPI\ScraperDofusRetroAPI.csproj", "{450D44C6-093B-4847-B5A4-47800522AE55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{5F0A5253-8E65-49D6-8D2F-8A5389E27543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F0A5253-8E65-49D6-8D2F-8A5389E27543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F0A5253-8E65-49D6-8D2F-8A5389E27543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{450D44C6-093B-4847-B5A4-47800522AE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450D44C6-093B-4847-B5A4-47800522AE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{450D44C6-093B-4847-B5A4-47800522AE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{450D44C6-093B-4847-B5A4-47800522AE55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

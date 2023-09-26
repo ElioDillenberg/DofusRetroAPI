@@ -1,12 +1,29 @@
-﻿using DofusRetroAPI.Entities.Monsters.SubAreas;
+﻿using Microsoft.EntityFrameworkCore;
+using DofusRetroAPI.Entities.Monsters.Breeds;
+using DofusRetroAPI.Entities.Monsters.Ecosystems;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
-public sealed class Monster : BaseMonster
+[Index(nameof(GameId), IsUnique = true)]
+public abstract class Monster
 {
-    // Archmonster if it has one
-    public ArchMonster? ArchMonster { get; set; }
+    // Db Id
+    public int Id { get; set; }
     
-    // SubAreas the monster is a part of
-    public List<SubArea> SubAreas { get; set; } = new();
+    // Id as it is in the Dofus Retro client
+    public int GameId { get; set; }
+    
+    // Name of the Monster
+    public List<MonsterName> MonsterNames { get; set; } = new();
+    
+    // Ecosystem the monster is a part of
+    public Ecosystem Ecosystem { get; set; }
+
+    // Breed the monster is a part of
+    public Breed Breed { get; set; }
+    
+    // Characteristics of Monster (Level + Characteristics)
+    public List<MonsterCharacteristic> Characteristics { get; set; } = new();
+    
+    // COULD ADD SPELLS HERE, NOT FOR THE MOMENT THO!
 }

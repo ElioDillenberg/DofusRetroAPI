@@ -14,10 +14,10 @@ namespace DofusRetroAPI.Migrations
                 name: "BaseLocalizedNameSequence");
 
             migrationBuilder.CreateSequence(
-                name: "BaseMonsterSequence");
+                name: "ItemSequence");
 
             migrationBuilder.CreateSequence(
-                name: "ItemSequence");
+                name: "MonsterSequence");
 
             migrationBuilder.CreateTable(
                 name: "BaseResources",
@@ -33,18 +33,6 @@ namespace DofusRetroAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BaseResources", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Breeds",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Breeds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,15 +70,21 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ecosystems",
+                name: "Drops",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DropTableId = table.Column<int>(type: "int", nullable: false),
+                    MonsterId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: false),
+                    DropCap = table.Column<int>(type: "int", nullable: true),
+                    ProspectionThreshold = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ecosystems", x => x.Id);
+                    table.PrimaryKey("PK_Drops", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,7 +133,7 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MonsterCharacteristic",
+                name: "MonsterCharacteristics",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -165,7 +159,35 @@ namespace DofusRetroAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MonsterCharacteristic", x => x.Id);
+                    table.PrimaryKey("PK_MonsterCharacteristics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MonsterNames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseLocalizedNameSequence]"),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MonsterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MonsterNames", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NormalMonsters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [MonsterSequence]"),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    Ecosystem = table.Column<int>(type: "int", nullable: false),
+                    Breed = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NormalMonsters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,78 +217,24 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubAreas",
+                name: "ArchMonsters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubAreas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BreedNames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseLocalizedNameSequence]"),
-                    Language = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    BreedId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BreedNames", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BreedNames_Breeds_BreedId",
-                        column: x => x.BreedId,
-                        principalTable: "Breeds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EcosystemNames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EcosystemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EcosystemNames", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EcosystemNames_Ecosystems_EcosystemId",
-                        column: x => x.EcosystemId,
-                        principalTable: "Ecosystems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Monsters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseMonsterSequence]"),
+                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [MonsterSequence]"),
                     GameId = table.Column<int>(type: "int", nullable: false),
-                    EcosystemId = table.Column<int>(type: "int", nullable: true),
-                    BreedId = table.Column<int>(type: "int", nullable: true)
+                    Ecosystem = table.Column<int>(type: "int", nullable: false),
+                    Breed = table.Column<int>(type: "int", nullable: false),
+                    MonsterId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Monsters", x => x.Id);
+                    table.PrimaryKey("PK_ArchMonsters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Monsters_Breeds_BreedId",
-                        column: x => x.BreedId,
-                        principalTable: "Breeds",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Monsters_Ecosystems_EcosystemId",
-                        column: x => x.EcosystemId,
-                        principalTable: "Ecosystems",
-                        principalColumn: "Id");
+                        name: "FK_ArchMonsters_NormalMonsters_MonsterId",
+                        column: x => x.MonsterId,
+                        principalTable: "NormalMonsters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -440,105 +408,6 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubAreaNames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseLocalizedNameSequence]"),
-                    Language = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubAreaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubAreaNames", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubAreaNames_SubAreas_SubAreaId",
-                        column: x => x.SubAreaId,
-                        principalTable: "SubAreas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ArchMonsters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseMonsterSequence]"),
-                    GameId = table.Column<int>(type: "int", nullable: false),
-                    EcosystemId = table.Column<int>(type: "int", nullable: true),
-                    BreedId = table.Column<int>(type: "int", nullable: true),
-                    MonsterId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArchMonsters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ArchMonsters_Breeds_BreedId",
-                        column: x => x.BreedId,
-                        principalTable: "Breeds",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ArchMonsters_Ecosystems_EcosystemId",
-                        column: x => x.EcosystemId,
-                        principalTable: "Ecosystems",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ArchMonsters_Monsters_MonsterId",
-                        column: x => x.MonsterId,
-                        principalTable: "Monsters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Drops",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DropTableId = table.Column<int>(type: "int", nullable: false),
-                    MonsterId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<int>(type: "int", nullable: false),
-                    DropCap = table.Column<int>(type: "int", nullable: true),
-                    ProspectionThreshold = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Drops", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Drops_Monsters_MonsterId",
-                        column: x => x.MonsterId,
-                        principalTable: "Monsters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MonsterSubArea",
-                columns: table => new
-                {
-                    MonstersId = table.Column<int>(type: "int", nullable: false),
-                    SubAreasId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MonsterSubArea", x => new { x.MonstersId, x.SubAreasId });
-                    table.ForeignKey(
-                        name: "FK_MonsterSubArea_Monsters_MonstersId",
-                        column: x => x.MonstersId,
-                        principalTable: "Monsters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MonsterSubArea_SubAreas_SubAreasId",
-                        column: x => x.SubAreasId,
-                        principalTable: "SubAreas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EquipmentEffects",
                 columns: table => new
                 {
@@ -589,32 +458,6 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MonsterNames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [BaseLocalizedNameSequence]"),
-                    Language = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MonsterId = table.Column<int>(type: "int", nullable: false),
-                    ArchMonsterId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MonsterNames", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MonsterNames_ArchMonsters_ArchMonsterId",
-                        column: x => x.ArchMonsterId,
-                        principalTable: "ArchMonsters",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_MonsterNames_Monsters_MonsterId",
-                        column: x => x.MonsterId,
-                        principalTable: "Monsters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PetFoods",
                 columns: table => new
                 {
@@ -649,12 +492,6 @@ namespace DofusRetroAPI.Migrations
                         principalTable: "FoodEaters",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PetFoods_Monsters_MonsterId",
-                        column: x => x.MonsterId,
-                        principalTable: "Monsters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_PetFoods_SoulEaters_SoulEaterId",
                         column: x => x.SoulEaterId,
                         principalTable: "SoulEaters",
@@ -662,14 +499,10 @@ namespace DofusRetroAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArchMonsters_BreedId",
+                name: "IX_ArchMonsters_GameId",
                 table: "ArchMonsters",
-                column: "BreedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ArchMonsters_EcosystemId",
-                table: "ArchMonsters",
-                column: "EcosystemId");
+                column: "GameId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ArchMonsters_MonsterId",
@@ -679,26 +512,33 @@ namespace DofusRetroAPI.Migrations
                 filter: "[MonsterId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BaseResources_GameId",
+                table: "BaseResources",
+                column: "GameId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BaseResources_Image",
                 table: "BaseResources",
                 column: "Image",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BreedNames_BreedId",
-                table: "BreedNames",
-                column: "BreedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BreedNames_Name",
-                table: "BreedNames",
-                column: "Name",
+                name: "IX_Cards_GameId",
+                table: "Cards",
+                column: "GameId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cards_Image",
                 table: "Cards",
                 column: "Image",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consumables_GameId",
+                table: "Consumables",
+                column: "GameId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -716,11 +556,6 @@ namespace DofusRetroAPI.Migrations
                 name: "IX_Drops_MonsterId",
                 table: "Drops",
                 column: "MonsterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EcosystemNames_EcosystemId",
-                table: "EcosystemNames",
-                column: "EcosystemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquipmentConditions_EquipmentId",
@@ -743,6 +578,12 @@ namespace DofusRetroAPI.Migrations
                 column: "SetBonusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FoodEaters_GameId",
+                table: "FoodEaters",
+                column: "GameId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FoodEaters_Image",
                 table: "FoodEaters",
                 column: "Image",
@@ -752,6 +593,12 @@ namespace DofusRetroAPI.Migrations
                 name: "IX_FoodEaters_SetId",
                 table: "FoodEaters",
                 column: "SetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gears_GameId",
+                table: "Gears",
+                column: "GameId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gears_Image",
@@ -791,14 +638,9 @@ namespace DofusRetroAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MonsterCharacteristic_MonsterId",
-                table: "MonsterCharacteristic",
+                name: "IX_MonsterCharacteristics_MonsterId",
+                table: "MonsterCharacteristics",
                 column: "MonsterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MonsterNames_ArchMonsterId",
-                table: "MonsterNames",
-                column: "ArchMonsterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MonsterNames_MonsterId",
@@ -812,19 +654,10 @@ namespace DofusRetroAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Monsters_BreedId",
-                table: "Monsters",
-                column: "BreedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Monsters_EcosystemId",
-                table: "Monsters",
-                column: "EcosystemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MonsterSubArea_SubAreasId",
-                table: "MonsterSubArea",
-                column: "SubAreasId");
+                name: "IX_NormalMonsters_GameId",
+                table: "NormalMonsters",
+                column: "GameId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PetFoods_EquipmentEffectId",
@@ -879,6 +712,12 @@ namespace DofusRetroAPI.Migrations
                 column: "SetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SoulEaters_GameId",
+                table: "SoulEaters",
+                column: "GameId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SoulEaters_Image",
                 table: "SoulEaters",
                 column: "Image",
@@ -890,20 +729,15 @@ namespace DofusRetroAPI.Migrations
                 column: "SetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubAreaNames_Name",
-                table: "SubAreaNames",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubAreaNames_SubAreaId",
-                table: "SubAreaNames",
-                column: "SubAreaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WeaponCharacteristic_WeaponId",
                 table: "WeaponCharacteristic",
                 column: "WeaponId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Weapons_GameId",
+                table: "Weapons",
+                column: "GameId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -922,7 +756,7 @@ namespace DofusRetroAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BreedNames");
+                name: "ArchMonsters");
 
             migrationBuilder.DropTable(
                 name: "Cards");
@@ -932,9 +766,6 @@ namespace DofusRetroAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Drops");
-
-            migrationBuilder.DropTable(
-                name: "EcosystemNames");
 
             migrationBuilder.DropTable(
                 name: "EquipmentConditions");
@@ -952,13 +783,10 @@ namespace DofusRetroAPI.Migrations
                 name: "ItemNames");
 
             migrationBuilder.DropTable(
-                name: "MonsterCharacteristic");
+                name: "MonsterCharacteristics");
 
             migrationBuilder.DropTable(
                 name: "MonsterNames");
-
-            migrationBuilder.DropTable(
-                name: "MonsterSubArea");
 
             migrationBuilder.DropTable(
                 name: "PetFoods");
@@ -970,16 +798,13 @@ namespace DofusRetroAPI.Migrations
                 name: "SetNames");
 
             migrationBuilder.DropTable(
-                name: "SubAreaNames");
-
-            migrationBuilder.DropTable(
                 name: "WeaponCharacteristic");
 
             migrationBuilder.DropTable(
-                name: "Recipes");
+                name: "NormalMonsters");
 
             migrationBuilder.DropTable(
-                name: "ArchMonsters");
+                name: "Recipes");
 
             migrationBuilder.DropTable(
                 name: "BaseResources");
@@ -994,22 +819,10 @@ namespace DofusRetroAPI.Migrations
                 name: "SoulEaters");
 
             migrationBuilder.DropTable(
-                name: "SubAreas");
-
-            migrationBuilder.DropTable(
                 name: "Weapons");
 
             migrationBuilder.DropTable(
-                name: "Monsters");
-
-            migrationBuilder.DropTable(
                 name: "SetBonuses");
-
-            migrationBuilder.DropTable(
-                name: "Breeds");
-
-            migrationBuilder.DropTable(
-                name: "Ecosystems");
 
             migrationBuilder.DropTable(
                 name: "Set");
@@ -1018,10 +831,10 @@ namespace DofusRetroAPI.Migrations
                 name: "BaseLocalizedNameSequence");
 
             migrationBuilder.DropSequence(
-                name: "BaseMonsterSequence");
+                name: "ItemSequence");
 
             migrationBuilder.DropSequence(
-                name: "ItemSequence");
+                name: "MonsterSequence");
         }
     }
 }

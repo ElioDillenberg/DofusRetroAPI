@@ -1,8 +1,8 @@
 using DofusRetroAPI.Database;
+using DofusRetroAPI.Services.Items.Monster;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
-
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Db Context SqlServer (Windows)
 builder.Services.AddDbContext<DofusRetroDbContext>(options =>
@@ -15,9 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// Add logging middleware
+builder.Logging.AddConsole();
 
-app.MapGet("/", () => "Hello World!");
+// DI Services
+builder.Services.AddScoped<IMonsterService, MonsterService>();
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,6 +33,18 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next(context);
+    }
+    catch (Exception e)
+    {
+        context.Response.StatusCode = 500;
+    }
+});
 
 app.MapControllers();
 

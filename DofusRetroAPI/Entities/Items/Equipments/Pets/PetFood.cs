@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Items.Equipments.Animals.Pets;
+﻿namespace DofusRetroAPI.Entities.Items.Equipments.Pets;
 
 public abstract class PetFood
 {

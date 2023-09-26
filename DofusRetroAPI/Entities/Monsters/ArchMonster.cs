@@ -1,7 +1,7 @@
 ﻿namespace DofusRetroAPI.Entities.Monsters;
 
-public sealed class ArchMonster : BaseMonster
+public sealed class ArchMonster : Monster
 {
     public int MonsterId { get; set; }
-    public Monster Monster { get; set; } = null!;
+    public NormalMonster Monster { get; set; } = null!;
 }

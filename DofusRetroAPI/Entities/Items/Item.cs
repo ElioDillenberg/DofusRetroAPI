@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DofusRetroAPI.Entities.Items;
 
 [Index(nameof(Image), IsUnique = true)]
+[Index(nameof(GameId), IsUnique = true)]
 public abstract class Item
 {
     public int Id { get; set; }

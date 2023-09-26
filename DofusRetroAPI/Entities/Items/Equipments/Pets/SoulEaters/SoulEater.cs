@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Items.Equipments.Animals.Pets.SoulEaters;
+﻿namespace DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters;
 
 public class SoulEater : Pet
 {
