@@ -8,7 +8,7 @@ public class SetEffect
     public int Id { get; set; }
     
     // Reference to the equipment
-    public Set Set { get; set; }
+    public Set Set { get; set; } = null!;
     public int SetId { get; set; }
     
     // Type of effect

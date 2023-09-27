@@ -13,9 +13,6 @@ using DofusRetroAPI.Entities.Items.Recipes;
 using DofusRetroAPI.Entities.Items.Resources;
 using DofusRetroAPI.Entities.Localization;
 using DofusRetroAPI.Entities.Monsters;
-using DofusRetroAPI.Entities.Monsters.Breeds;
-using DofusRetroAPI.Entities.Monsters.Ecosystems;
-using DofusRetroAPI.Entities.Monsters.SubAreas;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Database;

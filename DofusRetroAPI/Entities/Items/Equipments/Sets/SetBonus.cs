@@ -6,7 +6,7 @@ public class SetBonus
     public int Id { get; set; }
 
     // Reference to the Set
-    public Set Set { get; set; }
+    public Set Set { get; set; } = null!;
     public int SetId { get; set; }
     
     // Number of items required to activate the bonus

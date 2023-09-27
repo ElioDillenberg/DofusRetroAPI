@@ -1,6 +1,6 @@
 using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
 
-namespace DofusRetroClassLibrary.DTOs.Monsters.Monster;
+namespace DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
 
 public record GetMonsterDto(
     int Id,

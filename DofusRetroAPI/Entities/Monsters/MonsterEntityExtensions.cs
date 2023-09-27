@@ -1,4 +1,5 @@
 ﻿using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
@@ -56,4 +57,13 @@ public static class MonsterEntityExtensions
         };
     }
     
+    public static GetMonsterNameDto AsGetMonsterNameDto(this MonsterName monsterName)
+    {
+        return new GetMonsterNameDto(
+            Id: monsterName.Id,
+            MonsterId: monsterName.MonsterId,
+            LanguageId: (int)monsterName.Language,
+            Name: monsterName.Name
+        );
+    }
 }

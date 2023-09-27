@@ -5,7 +5,7 @@ public class WeaponCharacteristic
 {
     public int Id { get; set; }
 
-    public Weapon Weapon { get; set; }
+    public Weapon Weapon { get; set; } = null!;
     public int WeaponId { get; set; }
     
     // PA

@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Localization;
+﻿namespace DofusRetroClassLibrary.Enums.Localization;
 
 public enum Language
 {

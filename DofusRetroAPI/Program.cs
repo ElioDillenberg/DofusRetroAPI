@@ -1,5 +1,5 @@
 using DofusRetroAPI.Database;
-using DofusRetroAPI.Services.Items.Monster;
+using DofusRetroAPI.Services.MonsterService;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -33,18 +33,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.Use(async (context, next) =>
-{
-    try
-    {
-        await next(context);
-    }
-    catch (Exception e)
-    {
-        context.Response.StatusCode = 500;
-    }
-});
 
 app.MapControllers();
 

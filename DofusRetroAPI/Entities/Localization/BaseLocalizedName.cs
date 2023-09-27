@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DofusRetroClassLibrary.Enums.Localization;
+using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Localization;
 

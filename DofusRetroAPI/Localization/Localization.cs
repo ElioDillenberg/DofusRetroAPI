@@ -3,8 +3,9 @@ using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Resources;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
+using DofusRetroClassLibrary.Enums.Localization;
 
-namespace DofusRetroAPI.Entities.Localization;
+namespace DofusRetroAPI.Localization;
 
 public static class Localization
 {

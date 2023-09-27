@@ -1,16 +1,17 @@
 using System.Net;
 using DofusRetroAPI.Database;
-using DofusRetroAPI.Entities.Localization;
 using DofusRetroAPI.Entities.Monsters;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
 using DofusRetroClassLibrary.DTOs.Monsters.Archmonster;
 using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
-using DofusRetroClassLibrary.DTOs.Monsters.Monster;
+using DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
 using DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
+using DofusRetroClassLibrary.Enums.Localization;
 using Microsoft.EntityFrameworkCore;
 
-namespace DofusRetroAPI.Services.Items.Monster;
+namespace DofusRetroAPI.Services.MonsterService;
 
 public class MonsterService: IMonsterService
 {
@@ -21,7 +22,6 @@ public class MonsterService: IMonsterService
         _dbContext = context;
     }
 
-    
     public async Task<ServiceResponse<List<GetMonsterDto>>> GetAllMonsters(int languageId)
     {
         ServiceResponse<List<GetMonsterDto>> serviceResponse = new ServiceResponse<List<GetMonsterDto>>();
@@ -33,9 +33,9 @@ public class MonsterService: IMonsterService
                     m.GameId,
                     m.MonsterNames.FirstOrDefault(mn => mn.Language == (Language)languageId)!.Name,
                     (int)m.Ecosystem,
-                    Localization.EcosystemNames![new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
+                    Localization.Localization.EcosystemNames![new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
                     (int)m.Breed,
-                    Localization.EcosystemNames[new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
+                    Localization.Localization.EcosystemNames[new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
                     m.Characteristics
                         .Select(mc => mc.AsGetMonsterCharacteristicDto())
                         .ToList())
@@ -61,30 +61,45 @@ public class MonsterService: IMonsterService
         throw new NotImplementedException();
     }
 
-    public async Task<ServiceResponse<GetMonsterDto>> AddArchMonster(AddArchMonsterDto addArchMonsterDto)
+    public async Task<ServiceResponse<GetMonsterDto>> AddArchMonster(AddArchMonsterDto addArchMonsterDto, int languageId)
     {
         ServiceResponse<GetMonsterDto> serviceResponse = new ServiceResponse<GetMonsterDto>();
         try
         {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), languageId))
+                throw new HttpRequestException(
+                    $"Provided Language {languageId} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
             // Check if GameId is already defined in the Monsters table
-            Entities.Monsters.Monster? tryMonster =
+            Monster? tryMonster =
                 await _dbContext.Monsters
                     .FirstOrDefaultAsync(m => m.GameId == addArchMonsterDto.GameId);
             if (tryMonster != null)
                 throw new HttpRequestException(
-                    $"Provided GameId {addArchMonsterDto.GameId} already exists.",
+                    $"A Monster with provided GameId {addArchMonsterDto.GameId} already exists.",
                     null,
                     HttpStatusCode.Conflict);
             
-            // // Check if the NormalMonster refered exists
+            // Check if the NormalMonster refered exists
             NormalMonster? monster =
                 await _dbContext.NormalMonsters
+                    .Include(m => m.ArchMonster)
                     .FirstOrDefaultAsync(m => m.GameId == addArchMonsterDto.MonsterGameId);
             if (monster == null)
                 throw new HttpRequestException(
-                    $"Provided MonsterId {addArchMonsterDto.MonsterGameId} doest not exist.",
+                    $"NormalMonster with provided GameId {addArchMonsterDto.MonsterGameId} doest not exist.",
                     null,
                     HttpStatusCode.BadRequest);
+            
+            // Check if the NormalMonster already has an Archmonster
+            if (monster.ArchMonster != null)
+                throw new HttpRequestException(
+                    $"Monster with GameId {monster.GameId} already has an Archmonster.",
+                    null,
+                    HttpStatusCode.Conflict);
             
             ArchMonster archMonster = new ArchMonster()
             {
@@ -105,11 +120,11 @@ public class MonsterService: IMonsterService
                 GameId: archMonster.GameId,
                 Name: "NoName",
                 Ecosystem: (int)archMonster.Ecosystem,
-                EcosystemName: Localization.EcosystemNames![
-                    new ValueTuple<Ecosystem, Language>(archMonster.Ecosystem, (Language)addArchMonsterDto.LanguageId)],
+                EcosystemName: Localization.Localization.EcosystemNames![
+                    new ValueTuple<Ecosystem, Language>(archMonster.Ecosystem, (Language)languageId)],
                 Breed: (int)archMonster.Breed,
-                BreedName: Localization.BreedNames![
-                    new ValueTuple<Breed, Language>(archMonster.Breed, (Language)addArchMonsterDto.LanguageId)],
+                BreedName: Localization.Localization.BreedNames![
+                    new ValueTuple<Breed, Language>(archMonster.Breed, (Language)languageId)],
                 new List<GetMonsterCharacteristicDto>()
             );
         }
@@ -122,13 +137,14 @@ public class MonsterService: IMonsterService
         return serviceResponse;
     }
     
-    public async Task<ServiceResponse<GetMonsterCharacteristicDto>> AddMonsterCharacteristic(AddMonsterCharacteristicDto addMonsterCharacteristicDto)
+    public async Task<ServiceResponse<GetMonsterCharacteristicDto>> AddMonsterCharacteristic(
+        AddMonsterCharacteristicDto addMonsterCharacteristicDto)
     {
         ServiceResponse<GetMonsterCharacteristicDto> serviceResponse = new ServiceResponse<GetMonsterCharacteristicDto>();
         try
         {
             // Check if Monster exists
-            Entities.Monsters.Monster? monster = await _dbContext.Monsters
+            Monster? monster = await _dbContext.Monsters
                 .FirstOrDefaultAsync(m => m.GameId == addMonsterCharacteristicDto.MonsterGameId);
             if (monster == null)
                 throw new HttpRequestException(
@@ -160,14 +176,71 @@ public class MonsterService: IMonsterService
         }
         return serviceResponse;
     }
+    
+    public async Task<ServiceResponse<GetMonsterNameDto>> AddMonsterNameDto(AddMonsterNameDto addMonsterNameDto)
+    {
+        ServiceResponse<GetMonsterNameDto> serviceResponse = new ServiceResponse<GetMonsterNameDto>();
+        try
+        {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), addMonsterNameDto.LanguageId))
+                throw new HttpRequestException(
+                    $"Provided Language {addMonsterNameDto.LanguageId} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if Monster exists
+            Monster? monster = await _dbContext.Monsters
+                .FirstOrDefaultAsync(m => m.GameId == addMonsterNameDto.MonsterGameId);
+            if (monster == null)
+                throw new HttpRequestException(
+                    $"Provided MonsterGameId {addMonsterNameDto.MonsterGameId} does not exist.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if MonsterName for Language+Monster already exists
+            MonsterName? monsterName = await _dbContext.MonsterNames
+                .FirstOrDefaultAsync(mn =>
+                    mn.MonsterId == monster.Id &&
+                    mn.Language == (Language)addMonsterNameDto.LanguageId);
+            if (monsterName != null)
+                throw new HttpRequestException(
+                    $"MonsterName for Monster with GameId {addMonsterNameDto.MonsterGameId} and Language {addMonsterNameDto.LanguageId} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
 
-    public async Task<ServiceResponse<GetMonsterDto>> AddNormalMonster(AddNormalMonsterDto addNormalMonsterDto)
+            // Add MonsterName to database
+            monsterName = new MonsterName()
+            {
+                Monster = monster,
+                MonsterId = monster.Id,
+                Language = (Language)addMonsterNameDto.LanguageId,
+                Name = addMonsterNameDto.Name
+            };
+            _dbContext.MonsterNames.Add(monsterName);
+            await _dbContext.SaveChangesAsync();
+
+            // Response
+            serviceResponse.Data = monsterName.AsGetMonsterNameDto();
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<GetMonsterDto>> AddNormalMonster(
+        AddNormalMonsterDto addNormalMonsterDto,
+        int languageId)
     {
         ServiceResponse<GetMonsterDto> serviceResponse = new ServiceResponse<GetMonsterDto>();
         try
         {
             // Check if GameId is already defined in the Monsters table
-            Entities.Monsters.Monster? tryMonster =
+            Monster? tryMonster =
                 await _dbContext.Monsters.FirstOrDefaultAsync(m => m.GameId == addNormalMonsterDto.GameId);
             if (tryMonster != null)
                 throw new HttpRequestException(
@@ -205,12 +278,9 @@ public class MonsterService: IMonsterService
                 GameId: normalMonster.GameId,
                 Name: "NoName",
                 Ecosystem: (int)normalMonster.Ecosystem,
-                EcosystemName: Localization.EcosystemNames![
-                    new ValueTuple<Ecosystem, Language>(normalMonster.Ecosystem,
-                        (Language)addNormalMonsterDto.LanguageId)],
+                EcosystemName: Localization.Localization.EcosystemNames![new ValueTuple<Ecosystem, Language>(normalMonster.Ecosystem, (Language)languageId)],
                 Breed: (int)normalMonster.Breed,
-                BreedName: Localization.BreedNames![
-                    new ValueTuple<Breed, Language>(normalMonster.Breed, (Language)addNormalMonsterDto.LanguageId)],
+                BreedName: Localization.Localization.BreedNames![new ValueTuple<Breed, Language>(normalMonster.Breed, (Language)languageId)],
                 new List<GetMonsterCharacteristicDto>()
             );
         }

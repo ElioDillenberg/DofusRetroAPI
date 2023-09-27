@@ -1,8 +1,7 @@
-namespace DofusRetroClassLibrary.DTOs.Monsters.Monster;
+namespace DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
 
 public record AddMonsterDto(
     int GameId,
-    int LanguageId,
     int EcosystemName,
     int BreedName
 );

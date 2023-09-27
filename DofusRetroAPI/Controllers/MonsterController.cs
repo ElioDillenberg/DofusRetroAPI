@@ -1,8 +1,9 @@
 using DofusRetroAPI.Services;
-using DofusRetroAPI.Services.Items.Monster;
+using DofusRetroAPI.Services.MonsterService;
 using DofusRetroClassLibrary.DTOs.Monsters.Archmonster;
 using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
-using DofusRetroClassLibrary.DTOs.Monsters.Monster;
+using DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
 using DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ public class MonsterController : ControllerBase
     }
     
     [HttpGet]
-    [Route("AllMonsters")]
+    [Route("Monsters")]
     public async Task<ActionResult<ServiceResponse<List<GetMonsterDto>>>> GetAllMonsters(int language = 1)
     {
         ServiceResponse<List<GetMonsterDto>> response = await _service.GetAllMonsters(language);
@@ -29,17 +30,21 @@ public class MonsterController : ControllerBase
 
     [HttpPost]
     [Route("ArchMonster")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddArchMonster(AddArchMonsterDto addArchMonsterDto)
+    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddArchMonster(
+        AddArchMonsterDto addArchMonsterDto,
+        int language = 1)
     {
-        ServiceResponse<GetMonsterDto> response = await _service.AddArchMonster(addArchMonsterDto);
+        ServiceResponse<GetMonsterDto> response = await _service.AddArchMonster(addArchMonsterDto, language);
         return StatusCode((int)response.StatusCode!, response);
     }
     
     [HttpPost]
     [Route("NormalMonster")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddNormalMonster(AddNormalMonsterDto addNormalMonsterDto)
+    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddNormalMonster(
+        AddNormalMonsterDto addNormalMonsterDto,
+        int language = 1)
     {
-        ServiceResponse<GetMonsterDto> response = await _service.AddNormalMonster(addNormalMonsterDto);
+        ServiceResponse<GetMonsterDto> response = await _service.AddNormalMonster(addNormalMonsterDto, language);
         return StatusCode((int)response.StatusCode!, response);
     }
 
@@ -49,6 +54,16 @@ public class MonsterController : ControllerBase
         AddMonsterCharacteristicDto addMonsterCharacteristicDto)
     {
         ServiceResponse<GetMonsterCharacteristicDto> response = await _service.AddMonsterCharacteristic(addMonsterCharacteristicDto);
+        return StatusCode((int)response.StatusCode!, response);
+    }
+
+    [HttpPost]
+    [Route("MonsterName")]
+    public async Task<ActionResult<ServiceResponse<GetMonsterNameDto>>> AddMonsterName(
+        AddMonsterNameDto addMonsterNameDto,
+        int languageId)
+    {
+        ServiceResponse<GetMonsterNameDto> response = await _service.AddMonsterNameDto(addMonsterNameDto);
         return StatusCode((int)response.StatusCode!, response);
     }
 }
