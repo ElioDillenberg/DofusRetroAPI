@@ -1,5 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
+using Newtonsoft.Json;
 
 namespace ScraperDofusRetroAPI.Scrapers;
 using PuppeteerSharp;
@@ -8,6 +10,8 @@ public class MonsterScraper
 {
     private IBrowser _browser = null!;
     private const string EntryUrl = "https://solomonk.fr/fr/monstres/chercher";
+
+    private HttpClient _httpClient = null!;
 
     public MonsterScraper(bool headless)
     {
@@ -23,6 +27,8 @@ public class MonsterScraper
             .ContinueWith(t => _browser = t.Result)
             .GetAwaiter()
             .GetResult();
+
+        _httpClient = new HttpClient();
     }
     
     public async Task ScrapeNormalMonsters()
@@ -68,7 +74,7 @@ public class MonsterScraper
             string innerText = await anchorElement.EvaluateFunctionAsync<string>("element => element.innerText");
             Console.WriteLine(innerText);
         }
-            
+
         // Get Ecosystem Id
         int ecosystemId = await GetEcosystemId(anchorElements[0]);
         if (ecosystemId == -1)
@@ -78,6 +84,12 @@ public class MonsterScraper
         int breedId = await GetBreedId(anchorElements[1]);
         if (breedId == -1)
             Console.WriteLine("Something went wrong getting a breed Id...");
+
+        if (breedId == 78 && ecosystemId == 20)
+        {
+            Console.WriteLine("ArchMonster - no handled for now");
+            return;
+        }
         
         AddNormalMonsterDto addNormalMonsterDto = new AddNormalMonsterDto(
             monsterId,
@@ -85,10 +97,16 @@ public class MonsterScraper
             breedId
         );
         
-        Console.WriteLine($"AddNormalMonsterDto:\n" +
-                          $"MonsterId = {addNormalMonsterDto.Id}\n" +
-                          $"EcosystemId = {addNormalMonsterDto.Ecosystem}\n" +
-                          $"BreedId = {addNormalMonsterDto.Breed}\n");
+        // Console.WriteLine($"AddNormalMonsterDto:\n" +
+        //                   $"MonsterId = {addNormalMonsterDto.Id}\n" +
+        //                   $"EcosystemId = {addNormalMonsterDto.Ecosystem}\n" +
+        //                   $"BreedId = {addNormalMonsterDto.Breed}\n");
+        
+        string jsonToSend = JsonConvert.SerializeObject(addNormalMonsterDto);
+        Console.WriteLine(jsonToSend);
+        StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
+        HttpResponseMessage response = await _httpClient.PostAsync("http://localhost:5067/api/v1/Monster/NormalMonster?language=1", stringContent);
+        Console.WriteLine($"Post request status code = {response.StatusCode}");
     }
 
     private async Task<int> GetEcosystemId(IElementHandle anchorElement)
