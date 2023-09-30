@@ -4,7 +4,6 @@ namespace DofusRetroClassLibrary.DTOs.Monsters.Archmonster;
 
 public record GetArchMonsterDto(
     int Id,
-    int GameId,
     string Name,
     int Ecosystem,
     string EcosystemName,

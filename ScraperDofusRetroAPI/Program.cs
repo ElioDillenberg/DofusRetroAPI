@@ -1,3 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-Console.WriteLine("Hello world!");
+using ScraperDofusRetroAPI.Scrapers;
+
+MonsterScraper monsterScraper = new MonsterScraper(false);
+
+await monsterScraper.ScrapeNormalMonsters();

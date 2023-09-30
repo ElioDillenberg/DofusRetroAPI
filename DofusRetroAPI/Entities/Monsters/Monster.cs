@@ -4,14 +4,11 @@ using DofusRetroAPI.Entities.Monsters.Ecosystems;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
-[Index(nameof(GameId), IsUnique = true)]
+// [Index(nameof(GameId), IsUnique = true)]
 public abstract class Monster
 {
-    // Db Id
+    // PK DB id (same as DofusRetroClient)
     public int Id { get; set; }
-    
-    // Id as it is in the Dofus Retro client
-    public int GameId { get; set; }
     
     // Name of the Monster
     public List<MonsterName> MonsterNames { get; set; } = new();

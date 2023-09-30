@@ -21,10 +21,26 @@ public class MonsterController : ControllerBase
     }
     
     [HttpGet]
-    [Route("Monsters")]
+    [Route("All")]
     public async Task<ActionResult<ServiceResponse<List<GetMonsterDto>>>> GetAllMonsters(int language = 1)
     {
         ServiceResponse<List<GetMonsterDto>> response = await _service.GetAllMonsters(language);
+        return StatusCode((int)response.StatusCode!, response);
+    }
+
+    [HttpGet]
+    [Route("AllArchMonsters")]
+    public async Task<ActionResult<ServiceResponse<List<GetArchMonsterDto>>>> GetAllArchMonsters(int language = 1)
+    {
+        ServiceResponse<List<GetArchMonsterDto>> response = await _service.GetAllArchMonsters(language);
+        return StatusCode((int)response.StatusCode!, response);
+    }
+    
+    [HttpGet]
+    [Route("AllNormalMonsters")]
+    public async Task<ActionResult<ServiceResponse<List<GetNormalMonsterDto>>>> GetAllNormalMonsters(int language = 1)
+    {
+        ServiceResponse<List<GetNormalMonsterDto>> response = await _service.GetAllNormalMonsters(language);
         return StatusCode((int)response.StatusCode!, response);
     }
 

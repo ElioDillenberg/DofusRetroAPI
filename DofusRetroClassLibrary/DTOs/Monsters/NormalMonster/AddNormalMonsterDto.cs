@@ -1,7 +1,7 @@
 ﻿namespace DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
 
 public record AddNormalMonsterDto(
-    int GameId,
+    int Id,
     int Ecosystem,
     int Breed
 );

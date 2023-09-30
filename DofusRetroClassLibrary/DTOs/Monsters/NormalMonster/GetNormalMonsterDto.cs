@@ -4,13 +4,12 @@ namespace DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
 
 public record GetNormalMonsterDto(
     int Id,
-    int GameId,
     string Name,
     int Ecosystem,
     string EcosystemName,
     int Breed,
     string BreedName,
     List<GetMonsterCharacteristicDto> Characteristics,
-    int ArchMonsterId,
-    string ArchMonsterName
+    int? ArchMonsterId,
+    string? ArchMonsterName
 );

@@ -17,5 +17,5 @@ public interface IMonsterService
     // Read
     public Task<ServiceResponse<List<GetMonsterDto>>> GetAllMonsters(int languageId);
     public Task<ServiceResponse<List<GetArchMonsterDto>>> GetAllArchMonsters(int languageId);
-    public Task<ServiceResponse<List<GetMonsterDto>>> GetAllNormalMonsters(int languageId);
+    public Task<ServiceResponse<List<GetNormalMonsterDto>>> GetAllNormalMonsters(int languageId);
 }

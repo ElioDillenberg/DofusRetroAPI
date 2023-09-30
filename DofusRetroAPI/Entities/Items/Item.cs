@@ -7,13 +7,11 @@ using Microsoft.EntityFrameworkCore;
 namespace DofusRetroAPI.Entities.Items;
 
 [Index(nameof(Image), IsUnique = true)]
-[Index(nameof(GameId), IsUnique = true)]
+// [Index(nameof(GameId), IsUnique = true)]
 public abstract class Item
 {
+    // PK DB id (same as DofusRetroClient)
     public int Id { get; set; }
-    
-    // Id in the game's database
-    public int GameId { get; set; }
 
     // List of localized names
     [Required]

@@ -4,7 +4,6 @@ namespace DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
 
 public record GetMonsterDto(
     int Id,
-    int GameId,
     string Name,
     int Ecosystem,
     string EcosystemName,
