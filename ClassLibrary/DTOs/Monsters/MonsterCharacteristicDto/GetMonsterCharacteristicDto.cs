@@ -1,7 +1,8 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
+﻿namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 public record GetMonsterCharacteristicDto(
     int Id,
+    int Rank,
     int MonsterId,
     int Level,
     int HealthPoints,

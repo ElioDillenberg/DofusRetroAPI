@@ -27,11 +27,12 @@ public class DofusRetroDbContext : DbContext
         // TPC Configuration for Items
         modelBuilder.Entity<Item>().UseTpcMappingStrategy();
         
-        // TPC Configuration for Monsters
-        modelBuilder.Entity<Monster>().UseTpcMappingStrategy();
-        
         // TPC Configuration for BaseLocalizedName
         modelBuilder.Entity<BaseLocalizedName>().UseTpcMappingStrategy();
+        
+        modelBuilder.Entity<Monster>()
+            .Property(e => e.Id)
+            .ValueGeneratedNever();
         
         base.OnModelCreating(modelBuilder);
     }
@@ -88,7 +89,5 @@ public class DofusRetroDbContext : DbContext
     // Monsters
     public DbSet<Monster> Monsters => Set<Monster>();
     public DbSet<MonsterName> MonsterNames => Set<MonsterName>();
-    public DbSet<NormalMonster> NormalMonsters => Set<NormalMonster>();
-    public DbSet<ArchMonster> ArchMonsters => Set<ArchMonster>();
     public DbSet<MonsterCharacteristic> MonsterCharacteristics => Set<MonsterCharacteristic>();
 }

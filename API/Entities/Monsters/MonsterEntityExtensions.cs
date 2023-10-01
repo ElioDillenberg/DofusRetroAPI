@@ -1,5 +1,5 @@
-﻿using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
+﻿using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
@@ -10,6 +10,7 @@ public static class MonsterEntityExtensions
     {
         return new GetMonsterCharacteristicDto(
             Id: monsterCharacteristic.Id,
+            Rank: monsterCharacteristic.Rank,
             MonsterId: monsterCharacteristic.MonsterId,
             Level: monsterCharacteristic.Level,
             HealthPoints: monsterCharacteristic.HealthPoints,
@@ -36,6 +37,7 @@ public static class MonsterEntityExtensions
     {
         return new MonsterCharacteristic()
         {
+            Rank = addMonsterCharacteristicDto.Rank,
             MonsterId = monsterId,
             Level = addMonsterCharacteristicDto.Level,
             HealthPoints = addMonsterCharacteristicDto.HealthPoints,

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Localization;
 
-[Index(nameof(Name), IsUnique = true)]
 public abstract class BaseLocalizedName
 {
     public int Id { get; set; }

@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
 // [Index(nameof(GameId), IsUnique = true)]
-public abstract class Monster
+public class Monster
 {
     // PK DB id (same as DofusRetroClient)
     public int Id { get; set; }
@@ -22,5 +22,8 @@ public abstract class Monster
     // Characteristics of Monster (Level + Characteristics)
     public List<MonsterCharacteristic> Characteristics { get; set; } = new();
     
-    // COULD ADD SPELLS HERE, NOT FOR THE MOMENT THO!
+    // In case of normal monster, this is the archmonster,
+    // In case of archmonster, this is the normal monster
+    public int? RelatedMonsterId { get; set; }
+    public Monster? RelatedMonster { get; set; }
 }

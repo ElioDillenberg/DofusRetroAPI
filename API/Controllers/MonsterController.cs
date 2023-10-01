@@ -1,10 +1,8 @@
 using DofusRetroAPI.Services;
 using DofusRetroAPI.Services.MonsterService;
-using DofusRetroClassLibrary.DTOs.Monsters.Archmonster;
-using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
-using DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
-using DofusRetroClassLibrary.DTOs.Monsters.NormalMonster;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DofusRetroAPI.Controllers;
@@ -20,6 +18,9 @@ public class MonsterController : ControllerBase
         _service = service;
     }
     
+    //
+    // Get
+    //
     [HttpGet]
     [Route("All")]
     public async Task<ActionResult<ServiceResponse<List<GetMonsterDto>>>> GetAllMonsters(int language = 1)
@@ -27,45 +28,25 @@ public class MonsterController : ControllerBase
         ServiceResponse<List<GetMonsterDto>> response = await _service.GetAllMonsters(language);
         return StatusCode((int)response.StatusCode!, response);
     }
-
+    
     [HttpGet]
-    [Route("AllArchMonsters")]
-    public async Task<ActionResult<ServiceResponse<List<GetArchMonsterDto>>>> GetAllArchMonsters(int language = 1)
+    [Route("ById")]
+    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> GetMonster(int monsterId, int language = 1)
     {
-        ServiceResponse<List<GetArchMonsterDto>> response = await _service.GetAllArchMonsters(language);
+        ServiceResponse<GetMonsterDto> response = await _service.GetMonsterById(monsterId, language);
         return StatusCode((int)response.StatusCode!, response);
     }
     
-    [HttpGet]
-    [Route("AllNormalMonsters")]
-    public async Task<ActionResult<ServiceResponse<List<GetNormalMonsterDto>>>> GetAllNormalMonsters(int language = 1)
+    // Post
+    [HttpPost]
+    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddMonster(AddMonsterDto addMonsterDto)
     {
-        ServiceResponse<List<GetNormalMonsterDto>> response = await _service.GetAllNormalMonsters(language);
+        ServiceResponse<GetMonsterDto> response = await _service.AddMonster(addMonsterDto);
         return StatusCode((int)response.StatusCode!, response);
     }
 
     [HttpPost]
-    [Route("ArchMonster")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddArchMonster(
-        AddArchMonsterDto addArchMonsterDto,
-        int language = 1)
-    {
-        ServiceResponse<GetMonsterDto> response = await _service.AddArchMonster(addArchMonsterDto, language);
-        return StatusCode((int)response.StatusCode!, response);
-    }
-    
-    [HttpPost]
-    [Route("NormalMonster")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> AddNormalMonster(
-        AddNormalMonsterDto addNormalMonsterDto,
-        int language = 1)
-    {
-        ServiceResponse<GetMonsterDto> response = await _service.AddNormalMonster(addNormalMonsterDto, language);
-        return StatusCode((int)response.StatusCode!, response);
-    }
-
-    [HttpPost]
-    [Route("MonsterCharacteristic")]
+    [Route("Characteristic")]
     public async Task<ActionResult<ServiceResponse<GetMonsterCharacteristicDto>>> AddMonsterCharacteristic(
         AddMonsterCharacteristicDto addMonsterCharacteristicDto)
     {
@@ -74,12 +55,20 @@ public class MonsterController : ControllerBase
     }
 
     [HttpPost]
-    [Route("MonsterName")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterNameDto>>> AddMonsterName(
-        AddMonsterNameDto addMonsterNameDto,
-        int languageId)
+    [Route("Name")]
+    public async Task<ActionResult<ServiceResponse<GetMonsterNameDto>>> AddMonsterName(AddMonsterNameDto addMonsterNameDto)
     {
         ServiceResponse<GetMonsterNameDto> response = await _service.AddMonsterNameDto(addMonsterNameDto);
+        return StatusCode((int)response.StatusCode!, response);
+    }
+    
+    //
+    // Put
+    //
+    [HttpPut]
+    public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> UpdateMonster(UpdateMonsterDto updateMonsterDto)
+    {
+        ServiceResponse<GetMonsterDto> response = await _service.UpdateMonster(updateMonsterDto);
         return StatusCode((int)response.StatusCode!, response);
     }
 }

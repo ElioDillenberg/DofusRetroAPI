@@ -4,4 +4,4 @@ using ScraperDofusRetroAPI.Scrapers;
 
 MonsterScraper monsterScraper = new MonsterScraper(false);
 
-await monsterScraper.ScrapeNormalMonsters();
+await monsterScraper.ScrapeMonsters();

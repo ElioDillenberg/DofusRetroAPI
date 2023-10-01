@@ -4,6 +4,8 @@ public sealed class MonsterCharacteristic
 {
     public int Id { get; set; }
 
+    public int Rank { get; set; }
+
     public Monster Monster { get; set; } = null!;
     public int MonsterId { get; set; }
 

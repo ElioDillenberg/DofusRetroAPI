@@ -1,4 +1,4 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterName;
+﻿namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
 
 public record AddMonsterNameDto(
     int MonsterId,

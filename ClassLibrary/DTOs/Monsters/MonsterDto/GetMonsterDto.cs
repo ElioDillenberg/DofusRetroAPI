@@ -1,6 +1,6 @@
-using DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
-namespace DofusRetroClassLibrary.DTOs.Monsters.GenericMonster;
+namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 
 public record GetMonsterDto(
     int Id,
@@ -9,5 +9,7 @@ public record GetMonsterDto(
     string EcosystemName,
     int Breed,
     string BreedName,
+    int? RelatedMonsterId,
+    string? RelatedMonsterName,
     List<GetMonsterCharacteristicDto> Characteristics
 );

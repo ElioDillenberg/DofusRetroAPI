@@ -1,6 +1,7 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Monsters.Characteristics;
+﻿namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 public record AddMonsterCharacteristicDto(
+    int Rank,
     int MonsterId,
     int Level,
     int HealthPoints,
@@ -9,8 +10,8 @@ public record AddMonsterCharacteristicDto(
     int Experience,
     int Initiative,
     int Strength,
-    int Chance,
     int Intelligence,
+    int Chance,
     int Agility,
     int ActionPointAvoidance,
     int MovementPointAvoidance,
