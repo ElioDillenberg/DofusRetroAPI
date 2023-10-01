@@ -1,6 +1,6 @@
 ﻿namespace DofusRetroAPI.Entities.Items.Cards;
 
-public enum CardRarity
+public enum CardType
 {
     Common,
     Rare,

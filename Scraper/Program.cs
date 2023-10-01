@@ -2,6 +2,8 @@
 
 using ScraperDofusRetroAPI.Scrapers;
 
-MonsterScraper monsterScraper = new MonsterScraper(false);
+// IScraper monsterScraper = new MonsterScraper(false);
+// await monsterScraper.Scrape();
 
-await monsterScraper.ScrapeMonsters();
+IScraper itemScraper = new ItemScraper(false);
+await itemScraper.Scrape();

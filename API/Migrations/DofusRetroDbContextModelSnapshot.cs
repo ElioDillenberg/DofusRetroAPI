@@ -528,7 +528,7 @@ namespace DofusRetroAPI.Migrations
                     b.Property<int>("CardNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("CardRarity")
+                    b.Property<int>("CardType")
                         .HasColumnType("int");
 
                     b.ToTable("Cards");

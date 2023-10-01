@@ -2,5 +2,4 @@
 
 public sealed class Resource : Item
 {
-    public ResourceType ResourceType { get; set; }
 }

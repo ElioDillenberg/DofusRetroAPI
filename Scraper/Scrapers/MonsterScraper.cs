@@ -9,34 +9,15 @@ using PuppeteerSharp;
 
 namespace ScraperDofusRetroAPI.Scrapers;
 
-public class MonsterScraper
+public class MonsterScraper : BaseScraper
 {
-    private IBrowser _browser = null!;
     private const string EntryUrlFr = "https://solomonk.fr/fr/monstres/chercher";
     private const string EntryUrlEn = "https://solomonk.fr/en/monsters/search";
     private const string EntryUrlEs = "https://solomonk.fr/es/monstruos/buscar";
-
-    private HttpClient _httpClient;
-
-    public MonsterScraper(bool headless)
-    {
-        LaunchOptions options = new LaunchOptions
-        {
-            Headless = headless,
-            ExecutablePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-            // ExecutablePath = @"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        };
-        
-        Puppeteer
-            .LaunchAsync(options)
-            .ContinueWith(t => _browser = t.Result)
-            .GetAwaiter()
-            .GetResult();
-
-        _httpClient = new HttpClient();
-    }
     
-    public async Task ScrapeMonsters()
+    public MonsterScraper(bool headless) : base(headless) { }
+    
+    public override async Task Scrape()
     {
         // Open new page
         IPage page = await _browser.NewPageAsync();
@@ -336,39 +317,6 @@ public class MonsterScraper
         }
         return null;
     }
-
-    private async Task ScrollDownABit(IPage page)
-    {
-        await page.Mouse.WheelAsync(0, 2000);
-        
-        await page.WaitForTimeoutAsync(500);
-        
-        await page.Mouse.WheelAsync(0, 2000);
-        
-        await page.WaitForTimeoutAsync(500);
-        
-        await page.Mouse.WheelAsync(0, 2000);
-        
-        await page.WaitForTimeoutAsync(500);
-        
-        await page.Mouse.WheelAsync(0, 2000);
-        
-        await page.WaitForTimeoutAsync(500);
-        
-        await page.Mouse.WheelAsync(0, 2000);
-    }
-
-    private async Task ScrollToBottom(IPage page)
-    {
-        int totalScrolls = 150;
-        for (int i = 0; i < totalScrolls; i++)
-        {
-            await page.Mouse.WheelAsync(0, 8000);
-            await page.WaitForTimeoutAsync(500);
-            Console.WriteLine($"Scroll {i + 1}/{totalScrolls}");
-        }
-    }
-    
     private async Task<IElementHandle[]> ExtractMonsterDataElements(IPage page)
     {
         // Selector for the elements you want to extract

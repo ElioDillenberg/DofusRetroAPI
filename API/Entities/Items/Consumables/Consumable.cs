@@ -2,5 +2,4 @@
 
 public sealed class Consumable : Item
 {
-    public ConsumableType ConsumableType { get; set; }
 }

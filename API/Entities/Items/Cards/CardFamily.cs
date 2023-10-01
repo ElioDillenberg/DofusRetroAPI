@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Items.Cards.Families;
+﻿namespace DofusRetroAPI.Entities.Items.Cards;
 
 public enum CardFamily
 {

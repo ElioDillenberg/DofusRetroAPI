@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DofusRetroAPI.Entities.Drops;
-using DofusRetroAPI.Entities.Items.Equipments.Sets;
 using DofusRetroAPI.Entities.Items.Recipes;
+using DofusRetroAPI.Entities.Items.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Items;
 
 [Index(nameof(Image), IsUnique = true)]
-// [Index(nameof(GameId), IsUnique = true)]
 public abstract class Item
 {
     // PK DB id (same as DofusRetroClient)
@@ -20,6 +19,9 @@ public abstract class Item
     // Level of the item
     [Required]
     public int Level { get; set; } = 1;
+
+    // Type of the item
+    public ItemType Type { get; set; }
 
     // List of localized descriptions
     public List<ItemDescription> Descriptions { get; set; } = new();
