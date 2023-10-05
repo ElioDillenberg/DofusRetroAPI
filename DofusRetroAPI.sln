@@ -4,9 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{C95CA16E-2E35-42D1-B714-822812F66CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontEnd", "FrontEnd\FrontEnd.csproj", "{62D92744-70A2-4A64-80C4-3AE6BD44D551}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "Scraper\Scraper.csproj", "{450D44C6-093B-4847-B5A4-47800522AE55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataHarverster", "DataHarverster\DataHarverster.csproj", "{450D44C6-093B-4847-B5A4-47800522AE55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +20,6 @@ Global
 		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C95CA16E-2E35-42D1-B714-822812F66CE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62D92744-70A2-4A64-80C4-3AE6BD44D551}.Release|Any CPU.Build.0 = Release|Any CPU
 		{450D44C6-093B-4847-B5A4-47800522AE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{450D44C6-093B-4847-B5A4-47800522AE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{450D44C6-093B-4847-B5A4-47800522AE55}.Release|Any CPU.ActiveCfg = Release|Any CPU

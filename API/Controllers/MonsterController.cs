@@ -1,8 +1,8 @@
 using DofusRetroAPI.Services;
 using DofusRetroAPI.Services.MonsterService;
+using DofusRetroClassLibrary.DTOs.Localization;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DofusRetroAPI.Controllers;
@@ -56,9 +56,9 @@ public class MonsterController : ControllerBase
 
     [HttpPost]
     [Route("Name")]
-    public async Task<ActionResult<ServiceResponse<GetMonsterNameDto>>> AddMonsterName(AddMonsterNameDto addMonsterNameDto)
+    public async Task<ActionResult<ServiceResponse<GetLocalizedStringDto>>> AddMonsterName(AddLocalizedStringDto addLocalizedStringDto)
     {
-        ServiceResponse<GetMonsterNameDto> response = await _service.AddMonsterNameDto(addMonsterNameDto);
+        ServiceResponse<GetLocalizedStringDto> response = await _service.AddMonsterNameDto(addLocalizedStringDto);
         return StatusCode((int)response.StatusCode!, response);
     }
     

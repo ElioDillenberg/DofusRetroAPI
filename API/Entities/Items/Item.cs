@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Items;
 
-[Index(nameof(Image), IsUnique = true)]
+[Index(nameof(Id), IsUnique = true)]
 public abstract class Item
 {
     // PK DB id (same as DofusRetroClient)
@@ -21,7 +21,7 @@ public abstract class Item
     public int Level { get; set; } = 1;
 
     // Type of the item
-    public ItemType Type { get; set; }
+    public ItemType ItemType { get; set; }
 
     // List of localized descriptions
     public List<ItemDescription> Descriptions { get; set; } = new();
@@ -37,6 +37,5 @@ public abstract class Item
     public Recipe? Recipe { get; set; }
     
     // This is the ID of the png image to be used for that specific item
-    [Required]
-    public int Image { get; set; }
+    public int? Image { get; set; }
 }

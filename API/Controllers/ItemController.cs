@@ -1,4 +1,6 @@
-﻿using DofusRetroAPI.Services.Items;
+﻿using ClassLibrary.DTOs.Items.ItemDto;
+using DofusRetroAPI.Services;
+using DofusRetroAPI.Services.ItemService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DofusRetroAPI.Controllers;
@@ -13,4 +15,12 @@ public class ItemController : ControllerBase
     {
         _service = service;
     }
+    
+   // Post
+   [HttpPost]
+   public async Task<ActionResult<ServiceResponse<GetItemDto>>> AddItem(AddItemDto addItemDto)
+   {
+       ServiceResponse<GetItemDto> response = await _service.AddItem(addItemDto);
+       return StatusCode((int)response.StatusCode!, response);
+   }
 }

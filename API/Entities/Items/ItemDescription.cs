@@ -1,4 +1,4 @@
-﻿using DofusRetroClassLibrary.Enums.Localization;
+﻿using ClassLibrary.Enums.Localization;
 
 namespace DofusRetroAPI.Entities.Items;
 

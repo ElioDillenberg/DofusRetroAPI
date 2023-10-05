@@ -11,5 +11,6 @@ public record GetMonsterDto(
     string BreedName,
     int? RelatedMonsterId,
     string? RelatedMonsterName,
-    List<GetMonsterCharacteristicDto> Characteristics
+    List<GetMonsterCharacteristicDto> Characteristics,
+    int? Image
 );

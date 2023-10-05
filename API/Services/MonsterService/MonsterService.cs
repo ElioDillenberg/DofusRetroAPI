@@ -1,25 +1,20 @@
 using System.Net;
+using ClassLibrary.Enums.Localization;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Monsters;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
+using DofusRetroClassLibrary.DTOs.Localization;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
-using DofusRetroClassLibrary.Enums.Localization;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Services.MonsterService;
 
-public class MonsterService: IMonsterService
+public class MonsterService: ServiceBase, IMonsterService
 {
-    readonly DofusRetroDbContext _dbContext;
+    public MonsterService(DofusRetroDbContext context) : base(context) { }
     
-    public MonsterService(DofusRetroDbContext context)
-    {
-        _dbContext = context;
-    }
-
     public async Task<ServiceResponse<List<GetMonsterDto>>> GetAllMonsters(int languageId)
     {
         ServiceResponse<List<GetMonsterDto>> serviceResponse = new ServiceResponse<List<GetMonsterDto>>();
@@ -49,8 +44,8 @@ public class MonsterService: IMonsterService
                         : null, 
                     m.Characteristics
                         .Select(mc => mc.AsGetMonsterCharacteristicDto())
-                        .ToList())
-                )
+                        .ToList(),
+                    m.Image))
                  .ToListAsync();
         }
         catch (HttpRequestException e)
@@ -102,7 +97,8 @@ public class MonsterService: IMonsterService
                     : null,
                 Characteristics: monster.Characteristics
                     .Select(mc => mc.AsGetMonsterCharacteristicDto())
-                    .ToList()
+                    .ToList(),
+                Image: monster.Image
             );
         }
         catch (HttpRequestException e)
@@ -153,7 +149,8 @@ public class MonsterService: IMonsterService
                 RelatedMonsterName: "",
                 Characteristics: monster.Characteristics
                     .Select(mc => mc.AsGetMonsterCharacteristicDto())
-                    .ToList()
+                    .ToList(),
+                monster.Image
             );
         }
         catch (HttpRequestException e)
@@ -205,24 +202,24 @@ public class MonsterService: IMonsterService
         return serviceResponse;
     }
     
-    public async Task<ServiceResponse<GetMonsterNameDto>> AddMonsterNameDto(AddMonsterNameDto addMonsterNameDto)
+    public async Task<ServiceResponse<GetLocalizedStringDto>> AddMonsterNameDto(AddLocalizedStringDto addLocalizedStringDto)
     {
-        ServiceResponse<GetMonsterNameDto> serviceResponse = new ServiceResponse<GetMonsterNameDto>();
+        ServiceResponse<GetLocalizedStringDto> serviceResponse = new ServiceResponse<GetLocalizedStringDto>();
         try
         {
             // Check if language exists
-            if (!Enum.IsDefined(typeof(Language), addMonsterNameDto.LanguageId))
+            if (!Enum.IsDefined(typeof(Language), addLocalizedStringDto.LanguageId))
                 throw new HttpRequestException(
-                    $"Provided Language {addMonsterNameDto.LanguageId} is not defined.",
+                    $"Provided Language {addLocalizedStringDto.LanguageId} is not defined.",
                     null,
                     HttpStatusCode.BadRequest);
             
             // Check if Monster exists
             Monster? monster = await _dbContext.Monsters
-                .FirstOrDefaultAsync(m => m.Id == addMonsterNameDto.MonsterId);
+                .FirstOrDefaultAsync(m => m.Id == addLocalizedStringDto.EntityId);
             if (monster == null)
                 throw new HttpRequestException(
-                    $"Monster with Id {addMonsterNameDto.MonsterId} does not exist.",
+                    $"Monster with Id {addLocalizedStringDto.EntityId} does not exist.",
                     null,
                     HttpStatusCode.BadRequest);
             
@@ -230,10 +227,10 @@ public class MonsterService: IMonsterService
             MonsterName? monsterName = await _dbContext.MonsterNames
                 .FirstOrDefaultAsync(mn =>
                     mn.MonsterId == monster.Id &&
-                    mn.Language == (Language)addMonsterNameDto.LanguageId);
+                    mn.Language == (Language)addLocalizedStringDto.LanguageId);
             if (monsterName != null)
                 throw new HttpRequestException(
-                    $"MonsterName for Monster with Id {addMonsterNameDto.MonsterId} and Language {addMonsterNameDto.LanguageId} already exists.",
+                    $"MonsterName for Monster with Id {addLocalizedStringDto.EntityId} and Language {addLocalizedStringDto.LanguageId} already exists.",
                     null,
                     HttpStatusCode.Conflict);
 
@@ -242,8 +239,8 @@ public class MonsterService: IMonsterService
             {
                 Monster = monster,
                 MonsterId = monster.Id,
-                Language = (Language)addMonsterNameDto.LanguageId,
-                Name = addMonsterNameDto.Name
+                Language = (Language)addLocalizedStringDto.LanguageId,
+                Name = addLocalizedStringDto.Name
             };
             _dbContext.MonsterNames.Add(monsterName);
             await _dbContext.SaveChangesAsync();
@@ -266,9 +263,9 @@ public class MonsterService: IMonsterService
         try
         {
             // Check if GameId is already defined in the Monsters table
-            Monster? tryMonster =
+            Monster? monster =
                 await _dbContext.Monsters.FirstOrDefaultAsync(m => m.Id == addMonsterDto.Id);
-            if (tryMonster != null)
+            if (monster != null)
                 throw new HttpRequestException(
                     $"Monster with Id {addMonsterDto.Id} already exists.",
                     null,
@@ -288,7 +285,7 @@ public class MonsterService: IMonsterService
                     null,
                     HttpStatusCode.BadRequest);
             
-            Monster monster = new Monster
+            monster = new Monster
             {
                 Id = addMonsterDto.Id,
                 Breed = (Breed)addMonsterDto.Breed,
@@ -308,7 +305,8 @@ public class MonsterService: IMonsterService
                 BreedName: "",
                 RelatedMonsterId: null,
                 RelatedMonsterName: null,
-                new List<GetMonsterCharacteristicDto>()
+                new List<GetMonsterCharacteristicDto>(),
+                Image: monster.Image
             );
         }
         catch (HttpRequestException e)

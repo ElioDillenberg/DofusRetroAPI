@@ -1,5 +1,5 @@
-﻿using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterNameDto;
+﻿using DofusRetroClassLibrary.DTOs.Localization;
+using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 namespace DofusRetroAPI.Entities.Monsters;
 
@@ -59,11 +59,11 @@ public static class MonsterEntityExtensions
         };
     }
     
-    public static GetMonsterNameDto AsGetMonsterNameDto(this MonsterName monsterName)
+    public static GetLocalizedStringDto AsGetMonsterNameDto(this MonsterName monsterName)
     {
-        return new GetMonsterNameDto(
+        return new GetLocalizedStringDto(
             Id: monsterName.Id,
-            MonsterId: monsterName.MonsterId,
+            EntityId: monsterName.MonsterId,
             LanguageId: (int)monsterName.Language,
             Name: monsterName.Name
         );

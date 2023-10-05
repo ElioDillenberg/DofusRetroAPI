@@ -1,4 +1,4 @@
-﻿namespace DofusRetroAPI.Entities.Items.Resources;
+﻿namespace DofusRetroAPI.Entities.Items;
 
 public enum ItemType
 {

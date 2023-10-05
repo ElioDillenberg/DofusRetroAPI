@@ -5,8 +5,6 @@ using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
-using DofusRetroAPI.Entities.Items.Equipments.Pets.ResourceEaters;
-using DofusRetroAPI.Entities.Items.Equipments.Pets.SoulEaters;
 using DofusRetroAPI.Entities.Items.Equipments.Sets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
 using DofusRetroAPI.Entities.Items.Recipes;
@@ -31,6 +29,10 @@ public class DofusRetroDbContext : DbContext
         modelBuilder.Entity<BaseLocalizedName>().UseTpcMappingStrategy();
         
         modelBuilder.Entity<Monster>()
+            .Property(e => e.Id)
+            .ValueGeneratedNever();
+
+        modelBuilder.Entity<Item>()
             .Property(e => e.Id)
             .ValueGeneratedNever();
         
@@ -65,8 +67,6 @@ public class DofusRetroDbContext : DbContext
     
     // Pets (subset of Equipment) Pets, Dragoturkeys
     public DbSet<Pet> Pets => Set<Pet>();
-    public DbSet<SoulEater> SoulEaters => Set<SoulEater>();
-    public DbSet<ResourceEater> FoodEaters => Set<ResourceEater>();
     public DbSet<SoulEaterFood> SoulEaterFoods => Set<SoulEaterFood>();
     public DbSet<ResourceEaterFood> ResourceEaterFoods => Set<ResourceEaterFood>();
     public DbSet<PetFood> PetFoods => Set<PetFood>();
@@ -78,7 +78,7 @@ public class DofusRetroDbContext : DbContext
     public DbSet<SetEffect> SetEffects => Set<SetEffect>();
     
     // Resources
-    public DbSet<Resource> BaseResources => Set<Resource>();
+    public DbSet<Resource> Resources => Set<Resource>();
 
     // Cards
     public DbSet<Card> Cards => Set<Card>();
