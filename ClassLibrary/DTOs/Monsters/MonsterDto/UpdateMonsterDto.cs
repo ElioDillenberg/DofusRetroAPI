@@ -1,4 +1,4 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
+﻿namespace ClassLibrary.DTOs.Monsters.MonsterDto;
 
 public record UpdateMonsterDto(
     int Id,

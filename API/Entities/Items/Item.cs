@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DofusRetroAPI.Entities.Drops;
+using DofusRetroAPI.Entities.Items.Conditions;
+using DofusRetroAPI.Entities.Items.Effects;
 using DofusRetroAPI.Entities.Items.Recipes;
 using DofusRetroAPI.Entities.Items.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -38,4 +40,14 @@ public abstract class Item
     
     // This is the ID of the png image to be used for that specific item
     public int? Image { get; set; }
+    
+    // This is the vendor price of the item
+    [Required]
+    public int Price { get; set; }
+    
+    // This string represents the conditions needed to use/equip the item
+    public List<ItemCondition> Conditions { get; set; } = new();
+    
+    // This string represents the effects of the item
+    public List<ItemEffect> Effects { get; set; } = new();
 }

@@ -1,6 +1,7 @@
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Services.ItemService;
 using DofusRetroAPI.Services.MonsterService;
+using DofusRetroAPI.Services.SetService;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Logging.AddConsole();
 // DI Services
 builder.Services.AddScoped<IMonsterService, MonsterService>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ISetService, SetService>();
 
 WebApplication app = builder.Build();
 

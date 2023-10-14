@@ -1,16 +1,19 @@
 ﻿using System.Net;
-using ClassLibrary.DTOs.Items.CardDto;
+using ClassLibrary.DTOs.Items.ItemConditionDto;
 using ClassLibrary.DTOs.Items.ItemDto;
+using ClassLibrary.DTOs.Items.ItemEffectDto;
+using ClassLibrary.DTOs.Localization;
+using ClassLibrary.Enums.ItemConditions;
+using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
+using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
 using DofusRetroAPI.Entities.Items.Resources;
-using DofusRetroClassLibrary.DTOs.Items.CardDto;
-using DofusRetroClassLibrary.DTOs.Localization;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Services.ItemService;
@@ -50,6 +53,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Cards.AddAsync(card);
@@ -63,6 +67,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Gears.AddAsync(gear);
@@ -76,6 +81,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Pets.AddAsync(pet);
@@ -89,6 +95,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Weapons.AddAsync(weapon);
@@ -102,6 +109,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Resources.AddAsync(resource);
@@ -115,6 +123,7 @@ public class ItemService : ServiceBase, IItemService
                     Level = addItemDto.Level,
                     ItemType = (ItemType)addItemDto.ItemType,
                     Pods = addItemDto.Pods,
+                    Price = addItemDto.Price,
                     Image = addItemDto.Image
                 };
                 await _dbContext.Consumables.AddAsync(consumable);
@@ -133,10 +142,15 @@ public class ItemService : ServiceBase, IItemService
             serviceResponse.Data = new GetItemDto
             (
                 Id : item.Id,
+                Name: "",
+                Description: "",
                 ItemType : (int)item.ItemType,
                 Level : item.Level,
                 Pods : item.Pods,
-                Image : item.Image
+                Price : item.Price,
+                Image : item.Image,
+                Conditions : null,
+                Effects : null
             );
         }
         catch (HttpRequestException e)
@@ -144,32 +158,268 @@ public class ItemService : ServiceBase, IItemService
             serviceResponse.Message = e.Message;
             serviceResponse.StatusCode = e.StatusCode;
         }
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<GetLocalizedStringDto>> AddItemName(AddLocalizedStringDto addLocalizedStringDto)
+    {
+        ServiceResponse<GetLocalizedStringDto> serviceResponse = new ServiceResponse<GetLocalizedStringDto>();
+        try
+        {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), addLocalizedStringDto.LanguageId))
+                throw new HttpRequestException(
+                    $"Provided Language {addLocalizedStringDto.LanguageId} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if Item exists
+            Item? item = await _dbContext.Items
+                .FirstOrDefaultAsync(i => i.Id == addLocalizedStringDto.EntityId);
+            if (item == null)
+                throw new HttpRequestException(
+                    $"Item with Id {addLocalizedStringDto.EntityId} does not exist.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if ItemName for Language+Item already exists
+            ItemName? itemName = await _dbContext.ItemNames
+                .FirstOrDefaultAsync(mn =>
+                    mn.ItemId == item.Id &&
+                    mn.Language == (Language)addLocalizedStringDto.LanguageId);
+            if (itemName != null)
+                throw new HttpRequestException(
+                    $"ItemName for Item with Id {addLocalizedStringDto.EntityId} and Language {addLocalizedStringDto.LanguageId} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+
+            itemName = new ItemName()
+            {
+                Item = item,
+                ItemId = item.Id,
+                Language = (Language)addLocalizedStringDto.LanguageId,
+                Text = addLocalizedStringDto.Value
+            };
+            _dbContext.ItemNames.Add(itemName);
+            await _dbContext.SaveChangesAsync();
+            
+            // Response
+            serviceResponse.Data = new GetLocalizedStringDto(
+                Id: itemName.Id,
+                EntityId: itemName.ItemId,
+                LanguageId: (int)itemName.Language,
+                Name: itemName.Text
+            );
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
 
         return serviceResponse;
     }
 
-    public Task<ServiceResponse<GetCardDto>> AddCard(AddCardDto addCardDto)
+    public async Task<ServiceResponse<GetLocalizedStringDto>> AddItemDescription(AddLocalizedStringDto addLocalizedStringDto)
     {
-        throw new NotImplementedException();
+        ServiceResponse<GetLocalizedStringDto> serviceResponse = new ServiceResponse<GetLocalizedStringDto>();
+        try
+        {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), addLocalizedStringDto.LanguageId))
+                throw new HttpRequestException(
+                    $"Provided Language {addLocalizedStringDto.LanguageId} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if Item exists
+            Item? item = await _dbContext.Items
+                .FirstOrDefaultAsync(i => i.Id == addLocalizedStringDto.EntityId);
+            if (item == null)
+                throw new HttpRequestException(
+                    $"Item with Id {addLocalizedStringDto.EntityId} does not exist.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if ItemDescription for Language+Item already exists
+            ItemDescription? itemDescription = await _dbContext.ItemDescriptions
+                .FirstOrDefaultAsync(mn =>
+                    mn.ItemId == item.Id &&
+                    mn.Language == (Language)addLocalizedStringDto.LanguageId);
+            if (itemDescription != null)
+                throw new HttpRequestException(
+                    $"ItemDescription for Item with Id {addLocalizedStringDto.EntityId} and Language {addLocalizedStringDto.LanguageId} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+
+            itemDescription = new ItemDescription()
+            {
+                Item = item,
+                ItemId = item.Id,
+                Language = (Language)addLocalizedStringDto.LanguageId,
+                Description = addLocalizedStringDto.Value
+            };
+            _dbContext.ItemDescriptions.Add(itemDescription);
+            await _dbContext.SaveChangesAsync();
+            
+            // Response
+            serviceResponse.Data = new GetLocalizedStringDto(
+                Id: itemDescription.Id,
+                EntityId: itemDescription.ItemId,
+                LanguageId: (int)itemDescription.Language,
+                Name: itemDescription.Description
+            );
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+        
+        return serviceResponse;
     }
 
-    public Task<ServiceResponse<GetLocalizedStringDto>> AddItemNameDto(AddLocalizedStringDto addItemNameDto)
+    public async Task<ServiceResponse<GetItemConditionDto>> AddItemCondition(AddItemConditionDto addItemConditionDto)
     {
-        throw new NotImplementedException();
+        ServiceResponse<GetItemConditionDto> serviceResponse = new ServiceResponse<GetItemConditionDto>();
+        try
+        {
+            // Check if Item exists
+            Item? item = await _dbContext.Items
+                .FirstOrDefaultAsync(i => i.Id == addItemConditionDto.ItemId);
+            if (item == null)
+                throw new HttpRequestException(
+                    $"Item with Id {addItemConditionDto.ItemId} does not exist.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if ItemCondition for Item already exists
+            ItemCondition? itemCondition = await _dbContext.ItemConditions
+                .FirstOrDefaultAsync(mn =>
+                    mn.ItemId == item.Id &&
+                    mn.ConditionType == (ConditionType)addItemConditionDto.ConditionType &&
+                    mn.ConditionSign == (ConditionSign)addItemConditionDto.ConditionSignType &&
+                    mn.Value == addItemConditionDto.Value);
+            
+            if (itemCondition != null)
+                throw new HttpRequestException(
+                    $"ItemCondition for Item with Id {addItemConditionDto.ItemId} and ConditionType {addItemConditionDto.ConditionType} and Sign {addItemConditionDto.ConditionSignType} and Value {addItemConditionDto.Value} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+            
+            itemCondition = new ItemCondition()
+            {
+                Item = item,
+                ItemId = item.Id,
+                ConditionType = (ConditionType)addItemConditionDto.ConditionType,
+                ConditionSign = (ConditionSign)addItemConditionDto.ConditionSignType,
+                Value = addItemConditionDto.Value
+            };
+            _dbContext.ItemConditions.Add(itemCondition);
+            await _dbContext.SaveChangesAsync();
+            
+            // Add all the localized texts for the condition
+            foreach (Language language in Enum.GetValues(typeof(Language)))
+            {
+                ItemConditionText itemConditionText = new ItemConditionText()
+                {
+                    ItemCondition = itemCondition,
+                    ItemConditionId = itemCondition.Id,
+                    Language = language,
+                    Text = itemCondition.BuildStringCondition(language)
+                };
+                _dbContext.ItemConditionTexts.Add(itemConditionText);
+            }
+            await _dbContext.SaveChangesAsync();
+            
+            // Response
+            serviceResponse.Data = itemCondition.AsGetItemConditionDto(1);
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+        return serviceResponse;
     }
 
-    public Task<ServiceResponse<GetLocalizedStringDto>> AddItemDescriptionDto(AddLocalizedStringDto addItemDescriptionDto)
+    public async Task<ServiceResponse<GetItemEffectDto>> AddItemEffect(AddItemEffectDto addItemEffectDto)
     {
-        throw new NotImplementedException();
+        ServiceResponse<GetItemEffectDto> serviceResponse = new ServiceResponse<GetItemEffectDto>();
+        try
+        {
+            
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+        return serviceResponse;
     }
 
-    public Task<ServiceResponse<List<GetItemDto>>> GetAllItems(int language)
+    public async Task<ServiceResponse<GetItemDto>> GetItemById(int itemId, int language)
     {
-        throw new NotImplementedException();
-    }
+        ServiceResponse<GetItemDto> serviceResponse = new ServiceResponse<GetItemDto>();
+        try
+        {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), language))
+                throw new HttpRequestException(
+                    $"Provided Language {language} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
 
-    public Task<ServiceResponse<GetItemDto>> GetItemById(int itemId, int language)
-    {
-        throw new NotImplementedException();
+            // Check if Item exists
+            Item? item = await _dbContext.Items
+                .Include(i => i.Names)
+                .Include(i => i.Descriptions)
+                .Include(item => item.Conditions)
+                .Include(item => item.Effects)
+                .FirstOrDefaultAsync(i => i.Id == itemId);
+            if (item == null)
+                throw new HttpRequestException($"Item with Id {itemId} does not exist.",
+                    null,
+                    HttpStatusCode.NotFound);
+
+            serviceResponse.Data = new GetItemDto(
+                Id: item.Id,
+                Name: item.Names.FirstOrDefault(n => n.Language == (Language)language) != null
+                    ? item.Names.First(n => n.Language == (Language)language).Text
+                    : string.Empty,
+                Description: item.Descriptions.FirstOrDefault(n => n.Language == (Language)language) != null
+                    ? item.Descriptions.First(n => n.Language == (Language)language).Description
+                    : string.Empty,
+                ItemType: (int)item.ItemType,
+                Level: item.Level,
+                Pods: item.Pods,
+                Price: item.Price,
+                Image: item.Image,
+                Conditions: item.Conditions
+                    .Select(c => c.AsGetItemConditionDto(language))
+                    .ToList(),
+                Effects: item.Effects
+                    .Select(e => new GetItemEffectDto(
+                        Id: e.Id,
+                        ItemId: e.ItemId,
+                        EffectType: (int)e.EffectType,
+                        MinValue: e.MinValue,
+                        MaxValue: e.MaxValue
+                    ))
+                    .ToList()
+            );
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+
+        return serviceResponse;
     }
 }

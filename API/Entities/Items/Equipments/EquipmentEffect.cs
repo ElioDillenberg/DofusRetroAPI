@@ -1,4 +1,5 @@
-﻿using DofusRetroAPI.Entities.Effects;
+﻿using ClassLibrary.Enums.Effects;
+using DofusRetroAPI.Entities.Items.Effects;
 
 namespace DofusRetroAPI.Entities.Items.Equipments;
 

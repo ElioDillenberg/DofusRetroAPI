@@ -1,12 +1,9 @@
-﻿using DofusRetroAPI.Entities.Items.Equipments.Sets;
+﻿using DofusRetroAPI.Entities.Sets;
 
 namespace DofusRetroAPI.Entities.Items.Equipments;
 
 public abstract class Equipment : Item
 {
-    // The constraints to equip the item
-    public List<EquipmentCondition> EquipmentConditions { get; set; } = new();
-     
     // The effects of the item
     public List<EquipmentEffect> EquipmentEffects { get; set; } = new();
     

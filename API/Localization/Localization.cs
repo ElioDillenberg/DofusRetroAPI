@@ -1,4 +1,9 @@
-﻿using ClassLibrary.Enums.Localization;
+﻿using ClassLibrary.Enums.Alignments;
+using ClassLibrary.Enums.Classes;
+using ClassLibrary.Enums.Effects;
+using ClassLibrary.Enums.Genders;
+using ClassLibrary.Enums.ItemConditions;
+using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
 using DofusRetroAPI.Entities.Monsters.Breeds;
@@ -6,9 +11,9 @@ using DofusRetroAPI.Entities.Monsters.Ecosystems;
 
 namespace DofusRetroAPI.Localization;
 
-public static class Localization
+public static class LocalizedStrings
 {
-    static Localization()
+    static LocalizedStrings()
     {
         if (ItemTypeNames == null || ItemTypeNames.Count == 0)
             ItemTypeNames = new ()
@@ -845,13 +850,305 @@ public static class Localization
                 {(CardFamily.FreaksOfNature, Language.ES), "Curiosidades de la naturaleza"},
                 {(CardFamily.MinorDivinities, Language.ES), "Divinidades menores"}
             };
+        
+        if (PlayableClassNames == null || PlayableClassNames.Count == 0)
+        {
+            PlayableClassNames = new Dictionary<(PlayableClass, Language), string>()
+            {
+                {(PlayableClass.Feca, Language.FR), "Feca"},
+                {(PlayableClass.Osamodas, Language.FR), "Osamodas"},
+                {(PlayableClass.Enutrof, Language.FR), "Enutrof"},
+                {(PlayableClass.Sram, Language.FR), "Sram"},
+                {(PlayableClass.Xelor, Language.FR), "Xelor"},
+                {(PlayableClass.Ecaflip, Language.FR), "Ecaflip"},
+                {(PlayableClass.Eniripsa, Language.FR), "Eniripsa"},
+                {(PlayableClass.Iop, Language.FR), "Iop"},
+                {(PlayableClass.Cra, Language.FR), "Cra"},
+                {(PlayableClass.Sadida, Language.FR), "Sadida"},
+                {(PlayableClass.Sacrieur, Language.FR), "Sacrieur"},
+                {(PlayableClass.Pandawa, Language.FR), "Pandawa"},
+                
+                {(PlayableClass.Feca, Language.EN), "Feca"},
+                {(PlayableClass.Osamodas, Language.EN), "Osamodas"},
+                {(PlayableClass.Enutrof, Language.EN), "Enutrof"},
+                {(PlayableClass.Sram, Language.EN), "Sram"},
+                {(PlayableClass.Xelor, Language.EN), "Xelor"},
+                {(PlayableClass.Ecaflip, Language.EN), "Ecaflip"},
+                {(PlayableClass.Eniripsa, Language.EN), "Eniripsa"},
+                {(PlayableClass.Iop, Language.EN), "Iop"},
+                {(PlayableClass.Cra, Language.EN), "Cra"},
+                {(PlayableClass.Sadida, Language.EN), "Sadida"},
+                {(PlayableClass.Sacrieur, Language.EN), "Sacrier"},
+                {(PlayableClass.Pandawa, Language.EN), "Pandawa"},
+                
+                {(PlayableClass.Feca, Language.ES), "Feca"},
+                {(PlayableClass.Osamodas, Language.ES), "Osamodas"},
+                {(PlayableClass.Enutrof, Language.ES), "Anutrof"},
+                {(PlayableClass.Sram, Language.ES), "Sram"},
+                {(PlayableClass.Xelor, Language.ES), "Xelor"},
+                {(PlayableClass.Ecaflip, Language.ES), "Zurcarák"},
+                {(PlayableClass.Eniripsa, Language.ES), "Aniripsa"},
+                {(PlayableClass.Iop, Language.ES), "Yopuka"},
+                {(PlayableClass.Cra, Language.ES), "Ocra"},
+                {(PlayableClass.Sadida, Language.ES), "Sadida"},
+                {(PlayableClass.Sacrieur, Language.ES), "Sacrógrito"},
+                {(PlayableClass.Pandawa, Language.ES), "Pandawa"},
+            };
+        }
+
+        if (EffectNames == null || EffectNames.Count == 0)
+        {
+            Console.WriteLine("INIT EFFECT NAMES!");
+            EffectNames = new Dictionary<(EffectType, Language), string>()
+            {
+                // Main effects
+                {(EffectType.Vitality, Language.FR), "Vitalité"},
+                {(EffectType.Wisdom, Language.FR), "Sagesse"},
+                {(EffectType.Strength, Language.FR), "Force"},
+                {(EffectType.Intelligence, Language.FR), "Intelligence"},
+                {(EffectType.Chance, Language.FR), "Chance"},
+                {(EffectType.Agility, Language.FR ), "Agilité"},
+                {(EffectType.ActionPoint, Language.FR), "PA"},
+                {(EffectType.MovementPoint, Language.FR), "PM"},
+                {(EffectType.Range, Language.FR), "PO"},
+                {(EffectType.SummonLimit, Language.FR), "Invocation"},
+                {(EffectType.CriticalHit, Language.FR), "CC"},
+                {(EffectType.BonusHeal, Language.FR), "Soin"},
+                {(EffectType.Prospecting, Language.FR), "Prospection"},
+                {(EffectType.Pods, Language.FR), "Pods"},
+                {(EffectType.Initiative, Language.FR), "Initiative"},
+                {(EffectType.DamageReflection, Language.FR), "Renvoi de dommages"},
+                {(EffectType.TrapDamage, Language.FR), "Dommages aux pièges"},
+                {(EffectType.TrapPower, Language.FR), "% dommages aux pièges"},
+                {(EffectType.FixedDamage, Language.FR), "Dommages"},
+                {(EffectType.PercentageDamage, Language.FR), "% dommages"},
+                {(EffectType.NeutralFixedResistance, Language.FR), "Rés Neutre"},
+                {(EffectType.EarthFixedResistance, Language.FR), "Rés Terre"},
+                {(EffectType.FireFixedResistance, Language.FR), "Rés Feu"},
+                {(EffectType.WaterFixedResistance, Language.FR), "Rés Eau"},
+                {(EffectType.AirFixedResistance, Language.FR), "Rés Air"},
+                {(EffectType.NeutralPercentageResistance, Language.FR), "% rés Neutre"},
+                {(EffectType.EarthPercentageResistance, Language.FR), "% rés Terre"},
+                {(EffectType.FirePercentageResistance, Language.FR), "% rés Feu"},
+                {(EffectType.WaterPercentageResistance, Language.FR), "% rés Eau"},
+                {(EffectType.AirPercentageResistance, Language.FR), "% rés Air"},
+                
+                // Weapon Effects
+                {(EffectType.HuntingWeapon, Language.FR), "Arme de chasse"},
+                {(EffectType.NeutralDamage, Language.FR), "Dommages (neutre)"},
+                {(EffectType.EarthDamage, Language.FR), "Dommages (terre)"},
+                {(EffectType.FireDamage, Language.FR), "Dommages (feu)"},
+                {(EffectType.WaterDamage, Language.FR), "Dommages (eau)"},
+                {(EffectType.AirDamage, Language.FR), "Dommages (air)"},
+                {(EffectType.NeutralLifeSteal, Language.FR), "Vol de vie (neutre)"},
+                {(EffectType.EarthLifeSteal, Language.FR), "Vol de vie (terre)"},
+                {(EffectType.FireLifeSteal, Language.FR), "Vol de vie (feu)"},
+                {(EffectType.WaterLifeSteal, Language.FR), "Vol de vie (eau)"},
+                {(EffectType.AirLifeSteal, Language.FR), "Vol de vie (air)"},
+                {(EffectType.Heal, Language.FR), "PDV rendus"},
+                {(EffectType.MinusActionPoint, Language.FR), "PA perdus à la cible"},
+                
+                // Other effects
+                {(EffectType.EnhancesPetCapacity, Language.FR), "Augmente les capacités d'un familier"},
+                
+                //
+                // English
+                //
+                // Main effects
+                {(EffectType.Vitality, Language.EN), "Vitality"},
+                {(EffectType.Wisdom, Language.EN), "Wisdom"},
+                {(EffectType.Strength, Language.EN), "Strength"},
+                {(EffectType.Intelligence, Language.EN), "Intelligence"},
+                {(EffectType.Chance, Language.EN), "Chance"},
+                {(EffectType.Agility, Language.EN), "Agility"},
+                {(EffectType.ActionPoint, Language.EN), "AP"},
+                {(EffectType.MovementPoint, Language.EN), "MP"},
+                {(EffectType.Range, Language.EN), "Range"},
+                {(EffectType.SummonLimit, Language.EN), "Summonable creatures"},
+                {(EffectType.CriticalHit, Language.EN), "Critical Hits"},
+                {(EffectType.BonusHeal, Language.EN), "Heals"},
+                {(EffectType.Prospecting, Language.EN), "Prospecting"},
+                {(EffectType.Pods, Language.EN), "Pods"},
+                {(EffectType.Initiative, Language.EN), "Initiative"},
+                {(EffectType.DamageReflection, Language.EN), "Reflected damage"},
+                {(EffectType.TrapDamage, Language.EN), "Trap damage"},
+                {(EffectType.TrapPower, Language.EN), "% trap damage"},
+                {(EffectType.FixedDamage, Language.EN), "Damage"},
+                {(EffectType.PercentageDamage, Language.EN), "% damage"},
+                {(EffectType.NeutralFixedResistance, Language.EN), "Neutral res"},
+                {(EffectType.EarthFixedResistance, Language.EN), "Earth res"},
+                {(EffectType.FireFixedResistance, Language.EN), "Fire res"},
+                {(EffectType.WaterFixedResistance, Language.EN), "Water res"},
+                {(EffectType.AirFixedResistance, Language.EN), "Air res"},
+                {(EffectType.NeutralPercentageResistance, Language.EN), "% neutral res"},
+                {(EffectType.EarthPercentageResistance, Language.EN), "% earth res"},
+                {(EffectType.FirePercentageResistance, Language.EN), "% fire res"},
+                {(EffectType.WaterPercentageResistance, Language.EN), "% water res"},
+                {(EffectType.AirPercentageResistance, Language.EN), "% air res"},
+                
+                // Weapon Effects
+                {(EffectType.HuntingWeapon, Language.EN), "Hunting weapon"},
+                {(EffectType.NeutralDamage, Language.EN), "Damage (neutral)"},
+                {(EffectType.EarthDamage, Language.EN), "Damage (earth)"},
+                {(EffectType.FireDamage, Language.EN), "Damage (fire)"},
+                {(EffectType.WaterDamage, Language.EN), "Damage (water)"},
+                {(EffectType.AirDamage, Language.EN), "Damage (air)"},
+                {(EffectType.NeutralLifeSteal, Language.EN), "Steals (neutral)"},
+                {(EffectType.EarthLifeSteal, Language.EN), "Steals (earth)"},
+                {(EffectType.FireLifeSteal, Language.EN), "Steals (fire)"},
+                {(EffectType.WaterLifeSteal, Language.EN), "Steals (water)"},
+                {(EffectType.AirLifeSteal, Language.EN), "Steals (air)"},
+                {(EffectType.Heal, Language.EN), "HP restored"},
+                {(EffectType.MinusActionPoint, Language.EN), "Lost AP for the target"},
+                
+                // Other effects
+                {(EffectType.EnhancesPetCapacity, Language.EN), "Increases the capacity of a pet"},
+                
+                //
+                // Spanish
+                //
+                // Main effects
+                {(EffectType.Vitality, Language.ES), "Vitalidad"},
+                {(EffectType.Wisdom, Language.ES), "Sabiduría"},
+                {(EffectType.Strength, Language.ES), "Fuerza"},
+                {(EffectType.Intelligence, Language.ES), "Inteligencia"},
+                {(EffectType.Chance, Language.ES), "Suerte"},
+                {(EffectType.Agility, Language.ES), "Agilidad"},
+                {(EffectType.ActionPoint, Language.ES), "PA"},
+                {(EffectType.MovementPoint, Language.ES), "PM"},
+                {(EffectType.Range, Language.ES), "Alcance"},
+                {(EffectType.SummonLimit, Language.ES), "Criaturas invocables"},
+                {(EffectType.CriticalHit, Language.ES), "Golpes críticos"},
+                {(EffectType.BonusHeal, Language.ES), "Curaciones"},
+                {(EffectType.Prospecting, Language.ES), "Prospección"},
+                {(EffectType.Pods, Language.ES), "Pods"},
+                {(EffectType.Initiative, Language.ES), "Iniciativa"},
+                {(EffectType.DamageReflection, Language.ES), "Reenvía daños"},
+                {(EffectType.TrapDamage, Language.ES), "Daños con las trampas"},
+                {(EffectType.TrapPower, Language.ES), "% de daños con las trampas"},
+                {(EffectType.FixedDamage, Language.ES), "Daños"},
+                {(EffectType.PercentageDamage, Language.ES), "% daños"},
+                {(EffectType.NeutralFixedResistance, Language.ES), "Res neutral"},
+                {(EffectType.EarthFixedResistance, Language.ES), "Res fuerza"},
+                {(EffectType.FireFixedResistance, Language.ES), "Res fuego"},
+                {(EffectType.WaterFixedResistance, Language.ES), "Res agua"},
+                {(EffectType.AirFixedResistance, Language.ES), "Res aire"},
+                {(EffectType.NeutralPercentageResistance, Language.ES), "% res neutral"},
+                {(EffectType.EarthPercentageResistance, Language.ES), "% res fuerza"},
+                {(EffectType.FirePercentageResistance, Language.ES), "% res fuego"},
+                {(EffectType.WaterPercentageResistance, Language.ES), "% res agua"},
+                {(EffectType.AirPercentageResistance, Language.ES), "% res aire"},
+                
+                // Weapon Effects
+                 {(EffectType.HuntingWeapon, Language.ES), "Arma de caza"},
+                {(EffectType.NeutralDamage, Language.ES), "Daños (neutrale)"},
+                {(EffectType.EarthDamage, Language.ES), "Daños (earth)"},
+                {(EffectType.FireDamage, Language.ES), "Daños (fire)"},
+                {(EffectType.WaterDamage, Language.ES), "Daños (water)"},
+                {(EffectType.AirDamage, Language.ES), "Daños (air)"},
+                {(EffectType.NeutralLifeSteal, Language.ES), "Roba (neutral)"},
+                {(EffectType.EarthLifeSteal, Language.ES), "Roba (earth)"},
+                {(EffectType.FireLifeSteal, Language.ES), "Roba (fire)"},
+                {(EffectType.WaterLifeSteal, Language.ES), "Roba (water)"},
+                {(EffectType.AirLifeSteal, Language.ES), "Roba (air)"},
+                {(EffectType.Heal, Language.ES), "HP restored"},
+                {(EffectType.MinusActionPoint, Language.ES), "Lost AP for the target"},
+                
+                // Other effects
+                {(EffectType.EnhancesPetCapacity, Language.ES), "Increases the capacity of a pet"}
+            };
+            Console.WriteLine($"EffectNames.Count = {EffectNames.Count}");
+        }
+
+        if (ConditionTypeNames == null || ConditionTypeNames.Count == 0)
+        {
+            ConditionTypeNames = new Dictionary<(ConditionType, Language), string>()
+            {
+                //
+                // FR
+                //
+                {(ConditionType.CharacterLevel, Language.FR), "Niveau"},
+                {(ConditionType.Class, Language.FR), "Classe"},
+                {(ConditionType.Job, Language.FR), "Métier"},
+                {(ConditionType.InZone, Language.FR), "Se trouver dans la zone"},
+                {(ConditionType.Alignment, Language.FR), "Alignement"},
+                {(ConditionType.AlignmentLevel, Language.FR), "Niveau d'alignement"},
+                {(ConditionType.PvpRank, Language.FR), "Grade"},
+                {(ConditionType.SubscribtionStatus, Language.FR), "Abonné"},
+                {(ConditionType.Gift, Language.FR), "Don"},
+                {(ConditionType.CharacterName, Language.FR), "Nom"},
+                {(ConditionType.Gender, Language.FR), "Sexe"},
+                
+                //
+                // EN
+                //
+                {(ConditionType.CharacterLevel, Language.EN), "Level"},
+                {(ConditionType.Class, Language.EN), "Class"},
+                {(ConditionType.Job, Language.EN), "Profession"},
+                {(ConditionType.InZone, Language.EN), "Be in the zone"},
+                {(ConditionType.Alignment, Language.EN), "Alignment"},
+                {(ConditionType.AlignmentLevel, Language.EN), "Alignment level"},
+                {(ConditionType.PvpRank, Language.EN), "Rank"},
+                {(ConditionType.SubscribtionStatus, Language.EN), "Subscription"},
+                {(ConditionType.Gift, Language.EN), "Gift"},
+                {(ConditionType.CharacterName, Language.EN), "Name"},
+                {(ConditionType.Gender, Language.EN), "Gender"},
+                
+                //
+                // ES
+                //
+                {(ConditionType.CharacterLevel, Language.ES), "Nivel"},
+                {(ConditionType.Class, Language.ES), "Clase"},
+                {(ConditionType.Job, Language.ES), "Oficio"},
+                {(ConditionType.InZone, Language.ES), "Estar en la zona"},
+                {(ConditionType.Alignment, Language.ES), "Alineación"},
+                {(ConditionType.AlignmentLevel, Language.ES), "Nivel de alineación"},
+                {(ConditionType.PvpRank, Language.ES), "Grado"},
+                {(ConditionType.SubscribtionStatus, Language.ES), "Abonado"},
+                {(ConditionType.Gift, Language.ES), "Don"},
+                {(ConditionType.CharacterName, Language.ES), "Nombre"},
+                {(ConditionType.Gender, Language.ES), "Sexo"},
+            };
+        }
+
+        if (AlignmentNames == null || AlignmentNames.Count == 0)
+        {
+            AlignmentNames = new Dictionary<(Alignment, Language), string>()
+            {
+                {(Alignment.Neutral, Language.FR), "Neutre"},
+                {(Alignment.Bonta, Language.FR), "Bontarien"},
+                {(Alignment.Brakmar, Language.FR), "Brakmarien"},
+                {(Alignment.Mercenary, Language.FR), "Mercenaire"},
+                
+                {(Alignment.Neutral, Language.EN), "Neutral"},
+                {(Alignment.Bonta, Language.EN), "Bontarian"},
+                {(Alignment.Brakmar, Language.EN), "Brakmarian"},
+                {(Alignment.Mercenary, Language.EN), "Mercenary"},
+                
+                {(Alignment.Neutral, Language.ES), "Neutral"},
+                {(Alignment.Bonta, Language.ES), "Bontariano"},
+                {(Alignment.Brakmar, Language.ES), "Brakmariano"},
+                {(Alignment.Mercenary, Language.ES), "Mercenario"},
+            };
+        }
+
+        if (GenderNames == null || GenderNames.Count == 0)
+        {
+            GenderNames = new Dictionary<(Gender, Language), string>()
+            {
+                { (Gender.Male, Language.FR), "Male" },
+                { (Gender.Male, Language.EN), "Male" },
+                { (Gender.Male, Language.ES), "Masculino" },
+                { (Gender.Female, Language.FR), "Femelle" },
+                { (Gender.Female, Language.EN), "Female" },
+                { (Gender.Female, Language.ES), "Femenino" }
+            };
+        }
     }
+    
+    public static Dictionary<(Gender, Language), string>? GenderNames { get; }
 
     public static Dictionary<(ItemType, Language), string>? ItemTypeNames { get; }
-
-    // public static Dictionary<(ItemType, Language), string>? ItemTypeNames { get; }
-
-    // public static Dictionary<(ItemType, Language), string>? ItemTypeNames { get; }
     
     public static Dictionary<(Ecosystem, Language), string>? EcosystemNames { get; }
 
@@ -859,6 +1156,14 @@ public static class Localization
     
     public static Dictionary<(CardFamily, Language), string>? CardFamilyNames { get; }
     
+    public static Dictionary<(PlayableClass, Language), string>? PlayableClassNames { get; }
+    
+    public static Dictionary<(Alignment, Language), string>? AlignmentNames { get; }
+    
+    public static Dictionary<(EffectType, Language), string>? EffectNames { get; }
+    
+    public static Dictionary<(ConditionType, Language), string>? ConditionTypeNames { get; }
+
     // public static Dictionary<(SubArea, Language), string> SubAreaNames = new()
     // {
     //     // English names

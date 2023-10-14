@@ -2,8 +2,9 @@
 
 public record AddItemDto(
     int Id,
-    int Level,
     int ItemType,
+    int Level,
     int Pods,
+    int Price,
     int Image
 );

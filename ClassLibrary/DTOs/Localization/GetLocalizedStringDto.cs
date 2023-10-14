@@ -1,4 +1,4 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Localization;
+﻿namespace ClassLibrary.DTOs.Localization;
 
 public record GetLocalizedStringDto(
     int Id,

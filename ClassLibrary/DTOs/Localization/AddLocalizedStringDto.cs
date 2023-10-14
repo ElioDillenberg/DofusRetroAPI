@@ -1,7 +1,7 @@
-﻿namespace DofusRetroClassLibrary.DTOs.Localization;
+﻿namespace ClassLibrary.DTOs.Localization;
 
 public record AddLocalizedStringDto(
     int EntityId,
     int LanguageId,
-    string Name
+    string Value
 );

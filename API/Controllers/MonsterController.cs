@@ -1,6 +1,7 @@
+using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.Monsters.MonsterDto;
 using DofusRetroAPI.Services;
 using DofusRetroAPI.Services.MonsterService;
-using DofusRetroClassLibrary.DTOs.Localization;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DofusRetroAPI.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/v1/monster")]
 public class MonsterController : ControllerBase
 {
     private readonly IMonsterService _service;
@@ -22,7 +23,7 @@ public class MonsterController : ControllerBase
     // Get
     //
     [HttpGet]
-    [Route("All")]
+    [Route("all")]
     public async Task<ActionResult<ServiceResponse<List<GetMonsterDto>>>> GetAllMonsters(int language = 1)
     {
         ServiceResponse<List<GetMonsterDto>> response = await _service.GetAllMonsters(language);
@@ -30,7 +31,7 @@ public class MonsterController : ControllerBase
     }
     
     [HttpGet]
-    [Route("ById")]
+    [Route("byId")]
     public async Task<ActionResult<ServiceResponse<GetMonsterDto>>> GetMonster(int monsterId, int language = 1)
     {
         ServiceResponse<GetMonsterDto> response = await _service.GetMonsterById(monsterId, language);
@@ -46,7 +47,7 @@ public class MonsterController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Characteristic")]
+    [Route("characteristic")]
     public async Task<ActionResult<ServiceResponse<GetMonsterCharacteristicDto>>> AddMonsterCharacteristic(
         AddMonsterCharacteristicDto addMonsterCharacteristicDto)
     {
@@ -55,7 +56,7 @@ public class MonsterController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Name")]
+    [Route("name")]
     public async Task<ActionResult<ServiceResponse<GetLocalizedStringDto>>> AddMonsterName(AddLocalizedStringDto addLocalizedStringDto)
     {
         ServiceResponse<GetLocalizedStringDto> response = await _service.AddMonsterNameDto(addLocalizedStringDto);

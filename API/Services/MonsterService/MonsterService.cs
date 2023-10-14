@@ -1,10 +1,12 @@
 using System.Net;
-using ClassLibrary.Enums.Localization;
+using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.Monsters.MonsterDto;
+using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Monsters;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
-using DofusRetroClassLibrary.DTOs.Localization;
+using DofusRetroAPI.Localization;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +32,16 @@ public class MonsterService: ServiceBase, IMonsterService
                 .Select(m => new GetMonsterDto(
                     m.Id,
                     m.MonsterNames.FirstOrDefault(mn => mn.Language == (Language)languageId) != null
-                        ? m.MonsterNames.First(mn => mn.Language == (Language)languageId).Name
+                        ? m.MonsterNames.First(mn => mn.Language == (Language)languageId).Text
                         : string.Empty,
                     (int)m.Ecosystem,
-                    Localization.Localization.EcosystemNames![new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
+                    LocalizedStrings.EcosystemNames![new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
                     (int)m.Breed,
-                    Localization.Localization.EcosystemNames[new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
+                    LocalizedStrings.EcosystemNames[new ValueTuple<Ecosystem, Language>(m.Ecosystem, (Language)languageId)],
                     m.RelatedMonsterId,
                     m.RelatedMonster != null
                         ? m.RelatedMonster.MonsterNames.FirstOrDefault(mn => mn.Language == (Language)languageId) != null
-                            ? m.RelatedMonster.MonsterNames.First(mn => mn.Language == (Language)languageId).Name
+                            ? m.RelatedMonster.MonsterNames.First(mn => mn.Language == (Language)languageId).Text
                             : string.Empty
                         : null, 
                     m.Characteristics
@@ -64,9 +66,9 @@ public class MonsterService: ServiceBase, IMonsterService
         {
             Monster? monster = await _dbContext.Monsters
                 .Include(m => m.MonsterNames)
+                .Include(m => m.Characteristics)
                 .Include(m => m.RelatedMonster)
                 .ThenInclude(rm => rm.MonsterNames)
-                .Include(m => m.Characteristics)
                 .FirstOrDefaultAsync(m => m.Id == monsterId);
             if (monster == null)
                 throw new HttpRequestException(
@@ -83,16 +85,16 @@ public class MonsterService: ServiceBase, IMonsterService
             serviceResponse.Data = new GetMonsterDto(
                 Id: monster.Id,
                 Name: monster.MonsterNames.FirstOrDefault(mn => mn.Language == (Language)languageId) != null
-                    ? monster.MonsterNames.First(mn => mn.Language == (Language)languageId).Name
+                    ? monster.MonsterNames.First(mn => mn.Language == (Language)languageId).Text
                     : string.Empty,
                 Ecosystem: (int)monster.Ecosystem,
-                EcosystemName: Localization.Localization.EcosystemNames![new ValueTuple<Ecosystem, Language>(monster.Ecosystem, (Language)languageId)],
+                EcosystemName: LocalizedStrings.EcosystemNames![new ValueTuple<Ecosystem, Language>(monster.Ecosystem, (Language)languageId)],
                 Breed: (int)monster.Breed,
-                BreedName: Localization.Localization.BreedNames![new ValueTuple<Breed, Language>(monster.Breed, (Language)languageId)],
+                BreedName: LocalizedStrings.BreedNames![new ValueTuple<Breed, Language>(monster.Breed, (Language)languageId)],
                 RelatedMonsterId: monster.RelatedMonsterId,
                 RelatedMonsterName: monster.RelatedMonster != null
                     ? monster.RelatedMonster.MonsterNames.FirstOrDefault(mn => mn.Language == (Language)languageId) != null
-                        ? monster.RelatedMonster.MonsterNames.First(mn => mn.Language == (Language)languageId).Name
+                        ? monster.RelatedMonster.MonsterNames.First(mn => mn.Language == (Language)languageId).Text
                         : string.Empty
                     : null,
                 Characteristics: monster.Characteristics
@@ -240,7 +242,7 @@ public class MonsterService: ServiceBase, IMonsterService
                 Monster = monster,
                 MonsterId = monster.Id,
                 Language = (Language)addLocalizedStringDto.LanguageId,
-                Name = addLocalizedStringDto.Name
+                Text = addLocalizedStringDto.Value
             };
             _dbContext.MonsterNames.Add(monsterName);
             await _dbContext.SaveChangesAsync();

@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{C95CA16E-2E35-42D1-B714-822812F66CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataHarverster", "DataHarverster\DataHarverster.csproj", "{450D44C6-093B-4847-B5A4-47800522AE55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataHarvester", "DataHarvester\DataHarvester.csproj", "{450D44C6-093B-4847-B5A4-47800522AE55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

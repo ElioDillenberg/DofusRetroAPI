@@ -1,4 +1,4 @@
-﻿using DofusRetroClassLibrary.DTOs.Localization;
+﻿using ClassLibrary.DTOs.Localization;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 namespace DofusRetroAPI.Entities.Monsters;
@@ -65,7 +65,7 @@ public static class MonsterEntityExtensions
             Id: monsterName.Id,
             EntityId: monsterName.MonsterId,
             LanguageId: (int)monsterName.Language,
-            Name: monsterName.Name
+            Name: monsterName.Text
         );
     }
 }

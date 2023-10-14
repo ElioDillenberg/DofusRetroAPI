@@ -1,16 +1,17 @@
 ﻿using DofusRetroAPI.Entities.Drops;
 using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
+using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Consumables;
 using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
-using DofusRetroAPI.Entities.Items.Equipments.Sets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
 using DofusRetroAPI.Entities.Items.Recipes;
 using DofusRetroAPI.Entities.Items.Resources;
 using DofusRetroAPI.Entities.Localization;
 using DofusRetroAPI.Entities.Monsters;
+using DofusRetroAPI.Entities.Sets;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Database;
@@ -35,6 +36,10 @@ public class DofusRetroDbContext : DbContext
         modelBuilder.Entity<Item>()
             .Property(e => e.Id)
             .ValueGeneratedNever();
+
+        modelBuilder.Entity<Set>()
+            .Property(e => e.Id)
+            .ValueGeneratedNever();
         
         base.OnModelCreating(modelBuilder);
     }
@@ -46,6 +51,11 @@ public class DofusRetroDbContext : DbContext
     public DbSet<Item> Items => Set<Item>();
     public DbSet<ItemName> ItemNames => Set<ItemName>();
     public DbSet<ItemDescription> ItemDescriptions => Set<ItemDescription>();
+    
+    public DbSet<ItemCondition> ItemConditions => Set<ItemCondition>();
+    public DbSet<ItemConditionText> ItemConditionTexts => Set<ItemConditionText>();
+    
+    public DbSet<EquipmentEffect> ItemEffects => Set<EquipmentEffect>();
 
     // Recipes
     public DbSet<Recipe> Recipes => Set<Recipe>();
@@ -55,9 +65,8 @@ public class DofusRetroDbContext : DbContext
     public DbSet<Consumable> Consumables => Set<Consumable>();
 
     // Equipments
-    public DbSet<Equipment> Equipment => Set<Equipment>();
-    public DbSet<EquipmentEffect> EquipmentEffects => Set<EquipmentEffect>();
-    public DbSet<EquipmentCondition> EquipmentConditions => Set<EquipmentCondition>();
+    public DbSet<Equipment> Equipments => Set<Equipment>();
+    
     
     // Weapons (subset of Equipment) Daggers, Swords, Axes, Hammers, Shovels, Bows, Wands, Staffs, Daggers, Scythes, Tools, SoulStones, CapturingNets, MagicWeapons
     public DbSet<Weapon> Weapons => Set<Weapon>();
@@ -73,9 +82,9 @@ public class DofusRetroDbContext : DbContext
     public DbSet<PetEffect> PetEffects => Set<PetEffect>();
     
     // Sets
+    public DbSet<Set> Sets => Set<Set>();
     public DbSet<SetName> SetNames => Set<SetName>();
     public DbSet<SetBonus> SetBonuses => Set<SetBonus>();
-    public DbSet<SetEffect> SetEffects => Set<SetEffect>();
     
     // Resources
     public DbSet<Resource> Resources => Set<Resource>();
