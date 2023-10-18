@@ -379,6 +379,7 @@ public class ItemService : ServiceBase, IItemService
                 .Include(i => i.Names)
                 .Include(i => i.Descriptions)
                 .Include(item => item.Conditions)
+                .ThenInclude(itemCondiditon => itemCondiditon.ConditionTexts)
                 .Include(item => item.Effects)
                 .FirstOrDefaultAsync(i => i.Id == itemId);
             if (item == null)

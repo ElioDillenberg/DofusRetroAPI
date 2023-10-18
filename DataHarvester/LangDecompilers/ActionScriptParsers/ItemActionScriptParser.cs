@@ -15,10 +15,8 @@ public class ItemActionScriptParser : ActionScriptParserBase
     public override async Task ParseDecompiledFiles()
     {
         // Get all directories in the decompiled files directory that start with "items_"
-        Console.WriteLine($"Getting directories : _decompiledFilesDirectoryBasePath = {_decompiledFilesDirectoryBasePath}");
         string[] itemSourceDirectories = Directory.GetDirectories($"{_decompiledFilesDirectoryBasePath}", "items_*");
         
-        Console.WriteLine("Hello World!");
         // Add the frame_1 folder to the path
         for (int i = 0; i < itemSourceDirectories.Length; i++)
             itemSourceDirectories[i] = String.Concat(itemSourceDirectories[i], "\\frame_1");
@@ -54,7 +52,7 @@ public class ItemActionScriptParser : ActionScriptParserBase
                     ItemType: item.Value.ItemType,
                     Level: item.Value.Level,
                     Pods: item.Value.Pods,
-                    Price: item.Value.Price,
+                    Price: item.Value.Price / 10, // For some reason we need to divide the price by 10 to get the price in kamas
                     Image: item.Value.GfxId
                 );
                 string jsonToSend = JsonConvert.SerializeObject(addItemDto);
