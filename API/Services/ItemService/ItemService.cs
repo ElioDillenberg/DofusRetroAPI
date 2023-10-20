@@ -150,7 +150,7 @@ public class ItemService : ServiceBase, IItemService
                 Price : item.Price,
                 Image : item.Image,
                 Conditions : null,
-                Effects : null
+                Stats : null
             );
         }
         catch (HttpRequestException e)
@@ -346,9 +346,9 @@ public class ItemService : ServiceBase, IItemService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetItemEffectDto>> AddItemEffect(AddItemEffectDto addItemEffectDto)
+    public async Task<ServiceResponse<GetItemStatDto>> AddItemStat(AddItemStatDto addItemStatDto)
     {
-        ServiceResponse<GetItemEffectDto> serviceResponse = new ServiceResponse<GetItemEffectDto>();
+        ServiceResponse<GetItemStatDto> serviceResponse = new ServiceResponse<GetItemStatDto>();
         try
         {
             
@@ -380,7 +380,7 @@ public class ItemService : ServiceBase, IItemService
                 .Include(i => i.Descriptions)
                 .Include(item => item.Conditions)
                 .ThenInclude(itemCondiditon => itemCondiditon.ConditionTexts)
-                .Include(item => item.Effects)
+                .Include(item => item.Stats)
                 .FirstOrDefaultAsync(i => i.Id == itemId);
             if (item == null)
                 throw new HttpRequestException($"Item with Id {itemId} does not exist.",
@@ -403,11 +403,11 @@ public class ItemService : ServiceBase, IItemService
                 Conditions: item.Conditions
                     .Select(c => c.AsGetItemConditionDto(language))
                     .ToList(),
-                Effects: item.Effects
-                    .Select(e => new GetItemEffectDto(
+                Stats: item.Stats
+                    .Select(e => new GetItemStatDto(
                         Id: e.Id,
                         ItemId: e.ItemId,
-                        EffectType: (int)e.EffectType,
+                        StatType: (int)e.StatType,
                         MinValue: e.MinValue,
                         MaxValue: e.MaxValue
                     ))

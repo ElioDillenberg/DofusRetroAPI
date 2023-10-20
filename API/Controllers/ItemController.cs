@@ -52,10 +52,10 @@ public class ItemController : ControllerBase
     }
     
     [HttpPost]
-    [Route("effect")]
-    public async Task<ActionResult<ServiceResponse<GetItemEffectDto>>> AddItemEffect(AddItemEffectDto addItemEffectDto)
+    [Route("stat")]
+    public async Task<ActionResult<ServiceResponse<GetItemStatDto>>> AddItemStat(AddItemStatDto addItemStatDto)
     {
-        ServiceResponse<GetItemEffectDto> response = await _service.AddItemEffect(addItemEffectDto);
+        ServiceResponse<GetItemStatDto> response = await _service.AddItemStat(addItemStatDto);
         return StatusCode((int)response.StatusCode!, response); 
     }
     

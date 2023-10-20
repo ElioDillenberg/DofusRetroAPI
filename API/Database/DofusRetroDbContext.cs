@@ -3,6 +3,7 @@ using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
 using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Consumables;
+using DofusRetroAPI.Entities.Items.Effects;
 using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
@@ -27,7 +28,7 @@ public class DofusRetroDbContext : DbContext
         modelBuilder.Entity<Item>().UseTpcMappingStrategy();
         
         // TPC Configuration for BaseLocalizedName
-        modelBuilder.Entity<BaseLocalizedName>().UseTpcMappingStrategy();
+        modelBuilder.Entity<BaseLocalizedText>().UseTpcMappingStrategy();
         
         modelBuilder.Entity<Monster>()
             .Property(e => e.Id)
@@ -45,7 +46,7 @@ public class DofusRetroDbContext : DbContext
     }
 
     // Localization
-    public DbSet<BaseLocalizedName> LocalizedNames => Set<BaseLocalizedName>();
+    public DbSet<BaseLocalizedText> LocalizedTexts => Set<BaseLocalizedText>();
     
     // Items
     public DbSet<Item> Items => Set<Item>();
@@ -55,7 +56,7 @@ public class DofusRetroDbContext : DbContext
     public DbSet<ItemCondition> ItemConditions => Set<ItemCondition>();
     public DbSet<ItemConditionText> ItemConditionTexts => Set<ItemConditionText>();
     
-    public DbSet<EquipmentEffect> ItemEffects => Set<EquipmentEffect>();
+    public DbSet<ItemStat> ItemStats => Set<ItemStat>();
 
     // Recipes
     public DbSet<Recipe> Recipes => Set<Recipe>();

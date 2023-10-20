@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Enums.Effects;
+﻿using ClassLibrary.Enums.Stats;
 using DofusRetroAPI.Entities.Items.Effects;
 
 namespace DofusRetroAPI.Entities.Items.Equipments;
@@ -13,7 +13,7 @@ public class EquipmentEffect
     public Equipment Equipment { get; set; } = null!;
     
     // Type of effect
-    public EffectType EffectType { get; set; }
+    public StatType StatType { get; set; }
     
     // Minimal value of the effect
     public int Max { get; set; } 

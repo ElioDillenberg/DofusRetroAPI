@@ -49,5 +49,5 @@ public abstract class Item
     public List<ItemCondition> Conditions { get; set; } = new();
     
     // This string represents the effects of the item
-    public List<ItemEffect> Effects { get; set; } = new();
+    public List<ItemStat> Stats { get; set; } = new();
 }

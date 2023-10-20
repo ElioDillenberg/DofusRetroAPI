@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Enums.Effects;
+﻿using ClassLibrary.Enums.Stats;
 using DofusRetroAPI.Entities.Items.Effects;
 
 namespace DofusRetroAPI.Entities.Sets;
@@ -13,7 +13,7 @@ public class SetBonusEffect
     public SetBonus SetBonus { get; set; } = null!;
     
     // Type of effect
-    public EffectType EffectType { get; set; }
+    public StatType StatType { get; set; }
     
     // Minimal value of the effect
     public int Min { get; set; } 

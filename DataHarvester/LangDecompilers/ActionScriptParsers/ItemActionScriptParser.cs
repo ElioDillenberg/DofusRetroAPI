@@ -26,11 +26,11 @@ public class ItemActionScriptParser : ActionScriptParserBase
 
         // Add the ItemConditions to the API
         await AddItemConditionsToApi(itemSourceDirectories);
-        
+
         // Add the localized names and descriptions to the API
-        // await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.FR, "_fr");
-        // await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.EN, "_en");
-        // await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.ES, "_es");
+        await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.FR, "_fr");
+        await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.EN, "_en");
+        await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.ES, "_es");
     }
 
     private async Task AddItemsToApi(string[] itemSourceDirectories)
@@ -61,7 +61,7 @@ public class ItemActionScriptParser : ActionScriptParserBase
             }
         }
     }
-
+    
     private async Task AddItemConditionsToApi(string[] itemSourceDirectories)
     {
         // Retrieve the ItemJsons from the french source file
@@ -87,7 +87,6 @@ public class ItemActionScriptParser : ActionScriptParserBase
                         string jsonToSend = JsonConvert.SerializeObject(addItemConditionDto);
                         StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
                         HttpResponseMessage responseMessage = await _httpClient.PostAsync("http://localhost:5067/api/v1/item/condition", stringContent);
-                        Console.WriteLine(responseMessage.StatusCode);
                     }
                 }
             }

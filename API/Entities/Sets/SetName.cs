@@ -2,7 +2,7 @@
 
 namespace DofusRetroAPI.Entities.Sets;
 
-public sealed class SetName : BaseLocalizedName
+public sealed class SetName : BaseLocalizedText
 {
     // Reference to the Set
     public Set Set { get; set; } = null!;

@@ -12,7 +12,7 @@ public interface IItemService
     public Task<ServiceResponse<GetLocalizedStringDto>> AddItemName(AddLocalizedStringDto addItemNameDto);
     public Task<ServiceResponse<GetLocalizedStringDto>> AddItemDescription(AddLocalizedStringDto addItemDescriptionDto);
     public Task<ServiceResponse<GetItemConditionDto>> AddItemCondition(AddItemConditionDto addItemConditionDto);
-    public Task<ServiceResponse<GetItemEffectDto>> AddItemEffect(AddItemEffectDto addItemEffectDto);
+    public Task<ServiceResponse<GetItemStatDto>> AddItemStat(AddItemStatDto addItemStatDto);
     
     // Read
     public Task<ServiceResponse<GetItemDto>> GetItemById(int itemId, int language);

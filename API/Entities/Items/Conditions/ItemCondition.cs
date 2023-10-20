@@ -2,10 +2,10 @@
 using ClassLibrary.DTOs.Items.ItemConditionDto;
 using ClassLibrary.Enums.Alignments;
 using ClassLibrary.Enums.Classes;
-using ClassLibrary.Enums.Effects;
 using ClassLibrary.Enums.Genders;
 using ClassLibrary.Enums.ItemConditions;
 using ClassLibrary.Enums.Languages;
+using ClassLibrary.Enums.Stats;
 using DofusRetroAPI.Localization;
 
 namespace DofusRetroAPI.Entities.Items.Conditions;
@@ -149,64 +149,43 @@ public static class ItemConditionExtensions
         switch (conditionType)
         {
             case ConditionType.Vitality:
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Vitality, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Vitality, language)];
                 break;
             case ConditionType.Wisdom:
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Wisdom, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Wisdom, language)];
                 break;
             case ConditionType.Strength:
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Strength, language)];
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Strength, language)];
                 break;
             case ConditionType.Intelligence:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                Console.WriteLine($"LocalizedStrings.EffectNames[(EffectType.Intelligence, language)] = {LocalizedStrings.EffectNames[(EffectType.Intelligence, language)]}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Intelligence, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Intelligence, language)];
                 break;
             case ConditionType.Chance:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Chance, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Chance, language)];
                 break;
             case ConditionType.Agility:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Agility, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Agility, language)];
                 break;
             case ConditionType.BaseVitality:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Vitality, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Vitality, language)];
                 break;
             case ConditionType.BaseWisdom:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Wisdom, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Wisdom, language)];
                 break;
             case ConditionType.BaseStrength:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Strength, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Strength, language)];
                 break;
             case ConditionType.BaseIntelligence:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Intelligence, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Intelligence, language)];
                 break;
             case ConditionType.BaseChance:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Chance, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Chance, language)];
                 break;
             case ConditionType.BaseAgility:
-                Console.WriteLine("Let's debug!");
-                Console.WriteLine($"LocalizedStrings.EffectNames = {LocalizedStrings.EffectNames}");
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.Agility, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.Agility, language)];
                 break;
             case ConditionType.MovementPoint:
-                conditionTypeString = LocalizedStrings.EffectNames![new ValueTuple<EffectType, Language>(EffectType.MovementPoint, language)];
+                conditionTypeString = LocalizedStrings.StatNames![new ValueTuple<StatType, Language>(StatType.MovementPoint, language)];
                 break;
             case ConditionType.CharacterLevel:
                 conditionTypeString = LocalizedStrings.ConditionTypeNames![(ConditionType.CharacterLevel, language)];
