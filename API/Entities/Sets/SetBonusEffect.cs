@@ -1,5 +1,4 @@
 ﻿using ClassLibrary.Enums.Stats;
-using DofusRetroAPI.Entities.Items.Effects;
 
 namespace DofusRetroAPI.Entities.Sets;
 

@@ -2,6 +2,7 @@
 
 public class Pet : Equipment
 {
+    // TODO WIP
     public List<PetEffect> PetEffects { get; set; } = new();
     
     public bool SoulEater { get; set; }

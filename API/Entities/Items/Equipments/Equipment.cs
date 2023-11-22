@@ -5,7 +5,7 @@ namespace DofusRetroAPI.Entities.Items.Equipments;
 public abstract class Equipment : Item
 {
     // The effects of the item
-    public List<EquipmentEffect> EquipmentEffects { get; set; } = new();
+    // public List<EquipmentEffect> EquipmentEffects { get; set; } = new();
     
     // If the item is part of a set
     public Set? Set { get; set; }

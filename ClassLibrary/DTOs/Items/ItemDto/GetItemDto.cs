@@ -13,5 +13,5 @@ public record GetItemDto(
     int Price,
     int? Image,
     List<GetItemConditionDto>? Conditions,
-    List<GetItemStatDto>? Stats
+    List<GetItemEffectDto>? Effects
 );

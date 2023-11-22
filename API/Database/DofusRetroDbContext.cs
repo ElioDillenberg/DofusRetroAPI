@@ -56,7 +56,8 @@ public class DofusRetroDbContext : DbContext
     public DbSet<ItemCondition> ItemConditions => Set<ItemCondition>();
     public DbSet<ItemConditionText> ItemConditionTexts => Set<ItemConditionText>();
     
-    public DbSet<ItemStat> ItemStats => Set<ItemStat>();
+    public DbSet<ItemEffect> ItemEffects => Set<ItemEffect>();
+    public DbSet<ItemEffectTypeText> ItemEffectTypeTexts => Set<ItemEffectTypeText>();
 
     // Recipes
     public DbSet<Recipe> Recipes => Set<Recipe>();

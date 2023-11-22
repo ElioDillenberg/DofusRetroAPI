@@ -3,7 +3,6 @@ using DofusRetroAPI.Entities.Drops;
 using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Effects;
 using DofusRetroAPI.Entities.Items.Recipes;
-using DofusRetroAPI.Entities.Items.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Items;
@@ -49,5 +48,5 @@ public abstract class Item
     public List<ItemCondition> Conditions { get; set; } = new();
     
     // This string represents the effects of the item
-    public List<ItemStat> Stats { get; set; } = new();
+    public List<ItemEffect> Effects { get; set; } = new();
 }

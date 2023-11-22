@@ -4,12 +4,14 @@ using ClassLibrary.DTOs.Items.ItemDto;
 using ClassLibrary.DTOs.Items.ItemEffectDto;
 using ClassLibrary.DTOs.Localization;
 using ClassLibrary.Enums.ItemConditions;
+using ClassLibrary.Enums.ItemEffects;
 using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Items.Cards;
 using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Consumables;
+using DofusRetroAPI.Entities.Items.Effects;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
@@ -150,7 +152,7 @@ public class ItemService : ServiceBase, IItemService
                 Price : item.Price,
                 Image : item.Image,
                 Conditions : null,
-                Stats : null
+                Effects : null
             );
         }
         catch (HttpRequestException e)
@@ -346,12 +348,59 @@ public class ItemService : ServiceBase, IItemService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetItemStatDto>> AddItemStat(AddItemStatDto addItemStatDto)
+    public async Task<ServiceResponse<GetItemEffectDto>> AddItemEffect(AddItemEffectDto addItemEffectDto)
     {
-        ServiceResponse<GetItemStatDto> serviceResponse = new ServiceResponse<GetItemStatDto>();
+        ServiceResponse<GetItemEffectDto> serviceResponse = new ServiceResponse<GetItemEffectDto>();
         try
         {
+            // Check if Item exists
+            Item? item = await _dbContext.Items
+                .FirstOrDefaultAsync(i => i.Id == addItemEffectDto.ItemId);
+            if (item == null)
+                throw new HttpRequestException(
+                    $"Item with Id {addItemEffectDto.ItemId} does not exist.",
+                    null,
+                    HttpStatusCode.BadRequest);
             
+            // Check if ItemEffectType exists
+            if (!Enum.IsDefined(typeof(ItemEffectType), addItemEffectDto.EffectType))
+                throw new HttpRequestException(
+                    $"Provided ItemEffectType {addItemEffectDto.EffectType} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if ItemEffect for Item already exists
+            ItemEffect? itemEffect = await _dbContext.ItemEffects
+                .FirstOrDefaultAsync(mn =>
+                    mn.ItemId == item.Id &&
+                    mn.EffectType == (ItemEffectType)addItemEffectDto.EffectType &&
+                    mn.MinValue == addItemEffectDto.MinValue &&
+                    mn.MaxValue == addItemEffectDto.MaxValue);
+            if (itemEffect != null)
+                throw new HttpRequestException(
+                    $"ItemEffect for Item with Id {addItemEffectDto.ItemId} and EffectType {addItemEffectDto.EffectType} and MinValue {addItemEffectDto.MinValue} and MaxValue {addItemEffectDto.MaxValue} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+            
+            itemEffect = new ItemEffect()
+            {
+                Item = item,
+                ItemId = item.Id,
+                EffectType = (ItemEffectType)addItemEffectDto.EffectType,
+                MinValue = addItemEffectDto.MinValue,
+                MaxValue = addItemEffectDto.MaxValue
+            };
+            _dbContext.ItemEffects.Add(itemEffect);
+            await _dbContext.SaveChangesAsync();
+            
+            // Response
+            serviceResponse.Data = new GetItemEffectDto(
+                Id: itemEffect.Id,
+                ItemId: itemEffect.ItemId,
+                EffectType: (int)itemEffect.EffectType,
+                MinValue: itemEffect.MinValue,
+                MaxValue: itemEffect.MaxValue
+            );
         }
         catch (HttpRequestException e)
         {
@@ -359,6 +408,69 @@ public class ItemService : ServiceBase, IItemService
             serviceResponse.Message = e.Message;
             serviceResponse.StatusCode = e.StatusCode;
         }
+        return serviceResponse;
+    }
+
+    /// <summary>
+    /// Add a localized ItemEffectText to the database, it will be used to display the effect of an ItemEffect in the approriate language
+    /// </summary>
+    /// <param name="addItemEffectText"></param>
+    /// <returns></returns>
+    /// <exception cref="HttpRequestException"></exception>
+    public async Task<ServiceResponse<GetLocalizedStringDto>> AddItemEffectText(AddLocalizedStringDto addItemEffectText)
+    {
+        ServiceResponse<GetLocalizedStringDto> serviceResponse = new ServiceResponse<GetLocalizedStringDto>();
+        try
+        {
+            // Check if language exists
+            if (!Enum.IsDefined(typeof(Language), addItemEffectText.LanguageId))
+                throw new HttpRequestException(
+                    $"Provided Language {addItemEffectText.LanguageId} is not defined.",
+                    null,
+                    HttpStatusCode.BadRequest);
+            
+            // Check if ItemEffectType exists
+            if (!Enum.IsDefined(typeof(ItemEffectType), addItemEffectText.EntityId))
+                throw new HttpRequestException(
+                    $"ItemEffectText for ItemEffectType with Id {addItemEffectText.EntityId} and Language {addItemEffectText.LanguageId} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+            
+            // Check if ItemEffectText for Language+EffectType already exists
+            ItemEffectTypeText? itemEffectTypeText = await _dbContext.ItemEffectTypeTexts
+                .FirstOrDefaultAsync(ief =>
+                    ief.Id == addItemEffectText.EntityId &&
+                    ief.Language == (Language)addItemEffectText.LanguageId);
+            if (itemEffectTypeText != null)
+                throw new HttpRequestException(
+                    $"ItemEffectText for ItemEffectType with Id {addItemEffectText.EntityId} and Language {addItemEffectText.LanguageId} already exists.",
+                    null,
+                    HttpStatusCode.Conflict);
+
+            itemEffectTypeText = new ItemEffectTypeText()
+            {
+                Id = addItemEffectText.EntityId,
+                Language = (Language)addItemEffectText.LanguageId,
+                Text = addItemEffectText.Value
+            };
+            _dbContext.ItemEffectTypeTexts.Add(itemEffectTypeText);
+            await _dbContext.SaveChangesAsync();
+            
+            // Response
+            serviceResponse.Data = new GetLocalizedStringDto(
+                Id: itemEffectTypeText.Id,
+                EntityId: (int)itemEffectTypeText.EffectType,
+                LanguageId: (int)itemEffectTypeText.Language,
+                Name: itemEffectTypeText.Text
+            );
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine(e);
+            serviceResponse.Message = e.Message;
+            serviceResponse.StatusCode = e.StatusCode;
+        }
+        
         return serviceResponse;
     }
 
@@ -380,7 +492,7 @@ public class ItemService : ServiceBase, IItemService
                 .Include(i => i.Descriptions)
                 .Include(item => item.Conditions)
                 .ThenInclude(itemCondiditon => itemCondiditon.ConditionTexts)
-                .Include(item => item.Stats)
+                .Include(item => item.Effects)
                 .FirstOrDefaultAsync(i => i.Id == itemId);
             if (item == null)
                 throw new HttpRequestException($"Item with Id {itemId} does not exist.",
@@ -403,11 +515,11 @@ public class ItemService : ServiceBase, IItemService
                 Conditions: item.Conditions
                     .Select(c => c.AsGetItemConditionDto(language))
                     .ToList(),
-                Stats: item.Stats
-                    .Select(e => new GetItemStatDto(
+                Effects: item.Effects
+                    .Select(e => new GetItemEffectDto(
                         Id: e.Id,
                         ItemId: e.ItemId,
-                        StatType: (int)e.StatType,
+                        EffectType: (int)e.EffectType,
                         MinValue: e.MinValue,
                         MaxValue: e.MaxValue
                     ))

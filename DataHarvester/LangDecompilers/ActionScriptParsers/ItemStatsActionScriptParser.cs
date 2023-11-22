@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using ClassLibrary.DTOs.Items.ItemEffectDto;
-using ClassLibrary.Enums.Stats;
+using ClassLibrary.Enums.ItemEffects;
 using Newtonsoft.Json;
 
 namespace DataHarvester.LangDecompilers.ActionScriptParsers;
@@ -32,21 +32,19 @@ public class ItemStatsActionScriptParser : ActionScriptParserBase
 
         foreach (KeyValuePair<int, string> rawItemStat in rawItemStatsData)
         {
-            if (rawItemStat.Key > 50)
-                return;
             int itemId = rawItemStat.Key;
             string[] itemStats = CleanItemStatString(rawItemStat.Value);
             foreach (string itemStat in itemStats)
             {
-                Console.WriteLine($"ItemId = {itemId}, ItemStat = {itemStat}");
-                // Build the AddItemStatDto
-                AddItemStatDto? addItemStatDto = ExtractItemStatDto(itemId, itemStat);
-                if (addItemStatDto == null)
+                // Build the AddItemEffectDto
+                AddItemEffectDto? addItemEffectDto = ExtractItemStatDto(itemId, itemStat);
+                if (addItemEffectDto == null)
                     continue;
 
-                string jsonToSend = JsonConvert.SerializeObject(addItemStatDto);
+                string jsonToSend = JsonConvert.SerializeObject(addItemEffectDto);
                 StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
-                await _httpClient.PostAsync("http://localhost:5067/api/v1/item/stat", stringContent);    
+                HttpResponseMessage response =  await _httpClient.PostAsync("http://localhost:5067/api/v1/item/effect", stringContent);
+                Console.WriteLine($"Response.Status = {response.StatusCode}");
             }
         }
     }
@@ -85,39 +83,60 @@ public class ItemStatsActionScriptParser : ActionScriptParserBase
         }
     }
     
-    private AddItemStatDto? ExtractItemStatDto(int itemId, string itemStat)
+    private AddItemEffectDto? ExtractItemStatDto(int itemId, string itemStat)
     {
-        AddItemStatDto? addItemStatDto = null;
+        AddItemEffectDto? addItemEffectDto = null;
+        
+        // Protecting from empty strings
+        if (itemStat == "")
+        {
+            Console.WriteLine($"ItemId[{itemId}] -> itemStat is empty");
+            return null;
+        }
 
+        // Separate the itemStat string into its 4 components
         string[] substrings = SplitItemStatString(itemStat);
         
-        // Convert hexadecimal StatType string component to int (decimal)
-        int statTypeInt = int.Parse(substrings[0], System.Globalization.NumberStyles.HexNumber);
-        // Now we check that we have a defined StatType enum for this value, otherwise skip this stat all together by returning null
-        StatType statType;
-        if (Enum.IsDefined(typeof(StatType), statTypeInt))
-            statType = (StatType)statTypeInt;
-        else 
+        // Convert hexadecimal ItemEffectType string component to int (decimal)
+        int effectTypeInt;
+        if (!int.TryParse(substrings[0], System.Globalization.NumberStyles.HexNumber, null, out effectTypeInt))
+        {
+            Console.WriteLine($"ItemId[{itemId}] -> ItemEffectType {substrings[0]} could not be parsed to a decimal int from a hexadecimal string.");
             return null;
+        }
+            
+        // Now we check that we have a defined ItemEffectType enum for this value, otherwise skip this stat all together by returning null
+        ItemEffectType effectType;
+        if (Enum.IsDefined(typeof(ItemEffectType), effectTypeInt))
+            effectType = (ItemEffectType)effectTypeInt;
+        else
+        {
+            Console.WriteLine($"ItemId[{itemId}] -> ItemEffectType {effectTypeInt} is not defined in the ItemEffectType enum.");
+            return null;
+        }
         
         // Convert hexadecimal StatMinValue string component to int (decimal)
-        int statMinValue = int.Parse(substrings[1], System.Globalization.NumberStyles.HexNumber);
+        int effectMinValue; 
+        if (substrings[1] == "null" || substrings[1] == "")
+            effectMinValue = 0;
+        else if (!int.TryParse(substrings[1], System.Globalization.NumberStyles.HexNumber, null, out effectMinValue))
+            effectMinValue = -1;
         
         // Convert hexadecimal StatMaxValue string component to int (decimal)
-        int statMaxValue;
-        if (substrings[2] == "null")
-            statMaxValue = statMinValue;
-        else 
-            statMaxValue = int.Parse(substrings[2], System.Globalization.NumberStyles.HexNumber);
+        int effectMaxValue;
+        if (substrings[2] == "null"  || substrings[2] == "")
+            effectMaxValue = effectMinValue;
+        else if (!int.TryParse(substrings[2], System.Globalization.NumberStyles.HexNumber, null, out effectMaxValue))
+            effectMaxValue = -1;
         
-        addItemStatDto = new AddItemStatDto(
+        // Create the AddItemEffectDto and return
+        addItemEffectDto = new AddItemEffectDto(
             ItemId: itemId,
-            StatType: (int)statType,
-            StatMinValue: statMinValue,
-            StatMaxValue: statMaxValue
+            EffectType: (int)effectType,
+            MinValue: effectMinValue,
+            MaxValue: effectMaxValue
         );
-
-        return addItemStatDto;
+        return addItemEffectDto;
     }
     
     private string[] SplitItemStatString(string itemStat)
@@ -128,13 +147,11 @@ public class ItemStatsActionScriptParser : ActionScriptParserBase
         
         // Split the input string based on '#'
         string[] substrings = itemStatWithNull.Split('#');
-        foreach (string str in substrings)
-            Console.WriteLine(str);
 
         // Process the substrings to include '#' as separate substrings
         StringBuilder resultBuilder = new StringBuilder();
         foreach (string substring in substrings)
-        {
+        { 
             if (!string.IsNullOrEmpty(substring))
                 resultBuilder.Append(substring).Append('#');
         }

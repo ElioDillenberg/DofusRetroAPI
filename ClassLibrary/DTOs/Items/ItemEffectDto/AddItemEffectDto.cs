@@ -1,9 +1,8 @@
 ﻿namespace ClassLibrary.DTOs.Items.ItemEffectDto;
 
-public record GetItemStatDto(
-    int Id,
+public record AddItemEffectDto(
     int ItemId,
-    int StatType,
+    int EffectType,
     int MinValue,
     int MaxValue
 );
