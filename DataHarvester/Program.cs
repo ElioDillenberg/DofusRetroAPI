@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ClassLibrary.DTOs.Items.ItemConditionDto;
+using ClassLibrary.Enums.Languages;
 using DataHarvester;
 using DataHarvester.LangDecompilers.ActionScriptParsers;
 using DataHarvester.LangDecompilers.SwfDecompiling;
@@ -14,11 +15,15 @@ using Newtonsoft.Json;
 // IScraper itemScraper = new ItemScraper(false);
 // await itemScraper.Scrape();
 
-// SwfDecompiler swfDecompiler = new SwfDecompiler(); 
-// swfDecompiler.DecompileItems(SwfSourceFileType.ItemStats, Language.FR);
+// SwfDecompiler swfDecompiler = new SwfDecompiler();
+// swfDecompiler.DecompileFiles(SwfSourceFileType.ItemEffects, Language.FR);
+// swfDecompiler.DecompileFiles(SwfSourceFileType.ItemEffects, Language.EN);
+// swfDecompiler.DecompileFiles(SwfSourceFileType.ItemEffects, Language.ES);
+
+// swfDecompiler.DecompileItems(SwfSourceFileType.ItemsStats, Language.FR);
 // swfDecompiler.DecompileItems(SwfSourceFileType.ItemStats, Language.EN);
 // swfDecompiler.DecompileItems(SwfSourceFileType.ItemStats, Language.ES);
-//
+
 // swfDecompiler.DecompileItems(SwfSourceFileType.ItemSets, Language.FR);
 // swfDecompiler.DecompileItems(SwfSourceFileType.ItemSets, Language.EN);
 // swfDecompiler.DecompileItems(SwfSourceFileType.ItemSets, Language.ES);
@@ -29,8 +34,11 @@ using Newtonsoft.Json;
 // IActionScriptParser setActionScriptParser = new SetActionScriptParser();
 // await setActionScriptParser.ParseDecompiledFiles();
 
-IActionScriptParser itemStatsActionScriptParser = new ItemStatsActionScriptParser();
-await itemStatsActionScriptParser.ParseDecompiledFiles();
+// IActionScriptParser itemStatsActionScriptParser = new ItemStatsActionScriptParser();
+// await itemStatsActionScriptParser.ParseDecompiledFiles();
+
+IActionScriptParser itemEffectsActionScriptParser = new EffectsActionScriptParser();
+await itemEffectsActionScriptParser.ParseDecompiledFiles();
 
 // SandBox.ParseConditionString("Sc=15&(PB=2|PB=96|PB=480)&(Sc!1003|PB!2)&(Sc!1006|PB!96)", 1);
 // SandBox.ParseConditionString("Sc=15&(PB=2|PB=96|PB=480)&(Sc!1003|PB!2)&(Sc!1006|PB!96)", 1);

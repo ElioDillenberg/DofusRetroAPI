@@ -167,13 +167,13 @@ public class ItemActionScriptParser : ActionScriptParserBase
         Language language,
         string languageFileExtension)
     {
-        // Retrieve the ItemJsons from the french source file
+        // Retrieve the ItemJsons from the target language source file
         Dictionary<int, ItemJson>? rawItemData = null;
         string? languageDirectory = itemSourceDirectories.FirstOrDefault(x => x.Contains(languageFileExtension));
         if (languageDirectory != null)
             rawItemData = ParseItemFiles(languageDirectory);
 
-        // Now map all the ItemJson objects to AddItemDto objects to send them to the API
+        // Now map all the ItemJson objects to AddLocalizedStringDto objects to send them to the API
         if (rawItemData != null)
         {
             foreach (KeyValuePair<int, ItemJson> item in rawItemData)
@@ -209,7 +209,7 @@ public class ItemActionScriptParser : ActionScriptParserBase
         Dictionary<int, ItemJson> result = new Dictionary<int, ItemJson>();
         string[] files = Directory.GetFiles(folderPath, "*.as");
         foreach (string file in files)
-            ParseFileForItemData(file);    
+            ParseFileForItemData(file);
         return result;
         
         void ParseFileForItemData(string filePath)
@@ -242,7 +242,7 @@ public class ItemActionScriptParser : ActionScriptParserBase
         }
     }
     
-    public string ProcessString(string input)
+    private string ProcessString(string input)
     {
         string result = input.Replace("\" + \"", "");
         return result;

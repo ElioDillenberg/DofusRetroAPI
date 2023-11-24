@@ -449,9 +449,9 @@ public class ItemService : ServiceBase, IItemService
 
             itemEffectTypeText = new ItemEffectTypeText()
             {
-                Id = addItemEffectText.EntityId,
                 Language = (Language)addItemEffectText.LanguageId,
-                Text = addItemEffectText.Value
+                Text = addItemEffectText.Value,
+                EffectType = (ItemEffectType)addItemEffectText.EntityId
             };
             _dbContext.ItemEffectTypeTexts.Add(itemEffectTypeText);
             await _dbContext.SaveChangesAsync();

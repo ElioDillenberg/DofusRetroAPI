@@ -44,7 +44,6 @@ public class ItemStatsActionScriptParser : ActionScriptParserBase
                 string jsonToSend = JsonConvert.SerializeObject(addItemEffectDto);
                 StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
                 HttpResponseMessage response =  await _httpClient.PostAsync("http://localhost:5067/api/v1/item/effect", stringContent);
-                Console.WriteLine($"Response.Status = {response.StatusCode}");
             }
         }
     }
