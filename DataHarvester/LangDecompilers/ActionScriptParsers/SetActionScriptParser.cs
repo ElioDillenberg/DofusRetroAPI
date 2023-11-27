@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using ClassLibrary.DTOs.Localization;
 using ClassLibrary.DTOs.Sets.SetDto;
+using ClassLibrary.Enums.Languages;
 using DataHarvester.LangDecompilers.JsonStructures;
 using Newtonsoft.Json;
 
@@ -12,7 +14,16 @@ public class SetActionScriptParser : ActionScriptParserBase
     {
         string[] itemSourceDirectories = GetItemSourceDirectories("itemsets_*");
         
-        // To retrieve the use the french source files
+        await AddSetsToApi(itemSourceDirectories);
+        
+        await AddSetNamestoApi(itemSourceDirectories, Language.FR, "_fr");
+        await AddSetNamestoApi(itemSourceDirectories, Language.EN, "_en");
+        await AddSetNamestoApi(itemSourceDirectories, Language.ES, "_es");
+    }
+    
+    private async Task AddSetsToApi(string[] itemSourceDirectories)
+    {
+        // To retrieve the SetJson from the french source files
         Dictionary<int, SetJson>? rawSetData = null;
         string? frenchDirectory = itemSourceDirectories.FirstOrDefault(x => x.Contains("_fr"));
         if (frenchDirectory != null)
@@ -31,6 +42,35 @@ public class SetActionScriptParser : ActionScriptParserBase
                 StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PostAsync("http://localhost:5067/api/v1/Set", stringContent);
             }
+    }
+    
+    private async Task AddSetNamestoApi(
+        string[] itemSourceDirectories,
+        Language language,
+        string languageFileExtension)
+    {
+        // Retrieve the SetJson from the target language source files
+        Dictionary<int, SetJson>? rawSetData = null;
+        string? directory = itemSourceDirectories.FirstOrDefault(x => x.Contains(languageFileExtension));
+        if (directory != null)
+            rawSetData = ParseSetFiles(directory);
+        if (rawSetData != null)
+        {
+            foreach (KeyValuePair<int, SetJson> set in rawSetData)
+            {
+                // Add SetName
+                AddLocalizedStringDto addLocalizedStringDto = new AddLocalizedStringDto(
+                    EntityId: set.Key,
+                    LanguageId: (int)language,
+                    Value: set.Value.Name
+                );
+                string jsonToSend = JsonConvert.SerializeObject(addLocalizedStringDto);
+                StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
+                HttpResponseMessage response =
+                    await _httpClient.PostAsync("http://localhost:5067/api/v1/set/name", stringContent);
+                Console.WriteLine(response.StatusCode);
+            }
+        }
     }
 
     private Dictionary<int, SetJson> ParseSetFiles(string folderPath)
