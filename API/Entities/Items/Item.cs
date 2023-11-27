@@ -2,7 +2,7 @@
 using DofusRetroAPI.Entities.Drops;
 using DofusRetroAPI.Entities.Items.Conditions;
 using DofusRetroAPI.Entities.Items.Effects;
-using DofusRetroAPI.Entities.Items.Recipes;
+using DofusRetroAPI.Entities.Recipes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DofusRetroAPI.Entities.Items;

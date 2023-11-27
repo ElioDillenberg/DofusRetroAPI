@@ -18,9 +18,9 @@ public class SetController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<ServiceResponse<GetSetDto>>> AddSet(AddSetDto addItemDto)
+    public async Task<ActionResult<ServiceResponse<GetSetDto>>> AddSet(AddSetDto addSetDto)
     {
-        ServiceResponse<GetSetDto> response = await _service.AddSet(addItemDto);
+        ServiceResponse<GetSetDto> response = await _service.AddSet(addSetDto);
         return StatusCode((int)response.StatusCode!, response);
     }
     

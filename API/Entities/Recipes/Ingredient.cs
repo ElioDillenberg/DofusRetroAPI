@@ -1,6 +1,8 @@
-﻿namespace DofusRetroAPI.Entities.Items.Recipes;
+﻿using DofusRetroAPI.Entities.Items;
 
-public class Ingredient
+namespace DofusRetroAPI.Entities.Recipes;
+
+public sealed class Ingredient
 {
     // Database Id
     public int Id { get; set; }

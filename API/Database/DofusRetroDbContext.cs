@@ -8,10 +8,10 @@ using DofusRetroAPI.Entities.Items.Equipments;
 using DofusRetroAPI.Entities.Items.Equipments.Gear;
 using DofusRetroAPI.Entities.Items.Equipments.Pets;
 using DofusRetroAPI.Entities.Items.Equipments.Weapons;
-using DofusRetroAPI.Entities.Items.Recipes;
 using DofusRetroAPI.Entities.Items.Resources;
 using DofusRetroAPI.Entities.Localization;
 using DofusRetroAPI.Entities.Monsters;
+using DofusRetroAPI.Entities.Recipes;
 using DofusRetroAPI.Entities.Sets;
 using Microsoft.EntityFrameworkCore;
 

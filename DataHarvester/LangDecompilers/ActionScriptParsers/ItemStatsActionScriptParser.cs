@@ -10,12 +10,7 @@ public class ItemStatsActionScriptParser : ActionScriptParserBase
 {
     public override async Task ParseDecompiledFiles()
     {
-        string[] itemSourceDirectories =
-            Directory.GetDirectories($"{_decompiledFilesDirectoryBasePath}", "itemstats_*");
-
-        // Add the frame_1 folder to the path
-        for (int i = 0; i < itemSourceDirectories.Length; i++)
-            itemSourceDirectories[i] = String.Concat(itemSourceDirectories[i], "\\frame_1");
+        string[] itemSourceDirectories = GetItemSourceDirectories("itemstats_*");
 
         await AddItemStatsToApi(itemSourceDirectories);
     }

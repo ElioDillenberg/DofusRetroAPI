@@ -10,11 +10,7 @@ public class SetActionScriptParser : ActionScriptParserBase
 {
     public override async Task ParseDecompiledFiles()
     {
-        // Get all directories in the decompiled files directory that start with "items_"
-        string[] itemSourceDirectories = Directory.GetDirectories($"{_decompiledFilesDirectoryBasePath}", "itemsets_*");
-        // Add the frame_1 folder to the path
-        for (int i = 0; i < itemSourceDirectories.Length; i++)
-            itemSourceDirectories[i] = String.Concat(itemSourceDirectories[i], "\\frame_1");
+        string[] itemSourceDirectories = GetItemSourceDirectories("itemsets_*");
         
         // To retrieve the use the french source files
         Dictionary<int, SetJson>? rawSetData = null;

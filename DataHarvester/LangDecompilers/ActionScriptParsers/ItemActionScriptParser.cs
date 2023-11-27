@@ -15,11 +15,7 @@ public class ItemActionScriptParser : ActionScriptParserBase
     public override async Task ParseDecompiledFiles()
     {
         // Get all directories in the decompiled files directory that start with "items_"
-        string[] itemSourceDirectories = Directory.GetDirectories($"{_decompiledFilesDirectoryBasePath}", "items_*");
-        
-        // Add the frame_1 folder to the path
-        for (int i = 0; i < itemSourceDirectories.Length; i++)
-            itemSourceDirectories[i] = String.Concat(itemSourceDirectories[i], "\\frame_1");
+        string[] itemSourceDirectories = GetItemSourceDirectories("items_*");
 
         // Add the Items to the API
         await AddItemsToApi(itemSourceDirectories);

@@ -7,7 +7,8 @@ public enum SwfSourceFileType
     Items,
     ItemStats,
     ItemSets,
-    ItemEffects
+    ItemEffects,
+    Recipes
 }
 
 public static class SwfSourceFileNameBuilder
@@ -24,7 +25,8 @@ public static class SwfSourceFileNameBuilder
                 { SwfSourceFileType.Items, "items_" },
                 { SwfSourceFileType.ItemStats, "itemstats_" },
                 { SwfSourceFileType.ItemSets, "itemsets_" },
-                { SwfSourceFileType.ItemEffects, "effects_" }
+                { SwfSourceFileType.ItemEffects, "effects_" },
+                { SwfSourceFileType.Recipes, "crafts_"}
             };
         if (LanguageElements == null || LanguageElements.Count == 0)
             LanguageElements = new  Dictionary<Language, string>

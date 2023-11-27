@@ -14,12 +14,7 @@ public class EffectsActionScriptParser : ActionScriptParserBase
 {
     public override async Task ParseDecompiledFiles()
     {
-        string[] effectsSourceDirectories =
-            Directory.GetDirectories($"{_decompiledFilesDirectoryBasePath}", "effects_*");
-
-        // Add the frame_1 folder to the path
-        for (int i = 0; i < effectsSourceDirectories.Length; i++)
-            effectsSourceDirectories[i] = String.Concat(effectsSourceDirectories[i], "\\frame_1");
+        string[] effectsSourceDirectories = GetItemSourceDirectories("effects_*");
 
         // Add the localized names and descriptions to the API
         await AddLocalizedEffectsNameToApi(effectsSourceDirectories, Language.FR, "_fr");
