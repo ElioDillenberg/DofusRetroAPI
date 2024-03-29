@@ -8,8 +8,8 @@ using DataHarvester.LangDecompilers.SwfDecompiling;
 
 using DataHarvester.Scrapers;
 
-// IScraper monsterScraper = new MonsterScraper(false);
-// await monsterScraper.Scrape();
+IScraper monsterScraper = new MonsterScraper(false);
+await monsterScraper.Scrape();
 //
 SwfDecompiler swfDecompiler = new SwfDecompiler();
 // swfDecompiler.DecompileFiles(SwfSourceFileType.ItemEffects, Language.FR);
@@ -28,21 +28,21 @@ SwfDecompiler swfDecompiler = new SwfDecompiler();
 // swfDecompiler.DecompileFiles(SwfSourceFileType.Recipes, Language.EN);
 // swfDecompiler.DecompileFiles(SwfSourceFileType.Recipes, Language.ES);
 
-//
-IActionScriptParser itemActionScriptParser = new ItemActionScriptParser();
-await itemActionScriptParser.ParseDecompiledFiles();
-//
-IActionScriptParser setActionScriptParser = new SetActionScriptParser();
-await setActionScriptParser.ParseDecompiledFiles();
-//
-IActionScriptParser itemStatsActionScriptParser = new ItemStatsActionScriptParser();
-await itemStatsActionScriptParser.ParseDecompiledFiles();
-//
-IActionScriptParser itemEffectsActionScriptParser = new EffectsActionScriptParser();
-await itemEffectsActionScriptParser.ParseDecompiledFiles();
 
-IActionScriptParser recipeActionScriptParser = new RecipeActionScriptParser();
-await recipeActionScriptParser.ParseDecompiledFiles();
+// IActionScriptParser itemActionScriptParser = new ItemActionScriptParser();
+// await itemActionScriptParser.ParseDecompiledFiles();
+//
+// IActionScriptParser setActionScriptParser = new SetActionScriptParser();
+// await setActionScriptParser.ParseDecompiledFiles();
+//
+// IActionScriptParser itemStatsActionScriptParser = new ItemStatsActionScriptParser();
+// await itemStatsActionScriptParser.ParseDecompiledFiles();
+//
+// IActionScriptParser itemEffectsActionScriptParser = new EffectsActionScriptParser();
+// await itemEffectsActionScriptParser.ParseDecompiledFiles();
+
+// IActionScriptParser recipeActionScriptParser = new RecipeActionScriptParser();
+// await recipeActionScriptParser.ParseDecompiledFiles();
 
 // SandBox.ParseConditionString("Sc=15&(PB=2|PB=96|PB=480)&(Sc!1003|PB!2)&(Sc!1006|PB!96)", 1);
 // SandBox.ParseConditionString("Sc=15&(PB=2|PB=96|PB=480)&(Sc!1003|PB!2)&(Sc!1006|PB!96)", 1);

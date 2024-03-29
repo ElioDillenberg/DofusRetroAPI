@@ -1,0 +1,49 @@
+﻿@page "/counter"
+@using ClassLibrary.DTOs.Items.ItemDto
+@using System.Net
+@using ClassLibrary.DTOs.ServiceResponse
+@inject HttpClient HttpClient
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Item Fetcher</h1>
+
+<form @onsubmit="HandleSubmit">
+    <label for="username">ItemId:</label>
+    <input type="text" @bind="_userInput" id="username" name="username" placeholder="Enter your username">
+    <button type="submit">Submit</button>
+</form>
+
+<p role="status">Current item: @_itemName</p>
+
+@code {
+
+    private string _itemName = "";
+    private string _userInput = "";
+    private GetItemDto? _item = null;
+    
+    private async void HandleSubmit()
+    {
+        if (int.TryParse(_userInput, out int itemId) == false)
+            return;
+        
+        HttpResponseMessage responseMessage = await HttpClient.GetAsync($"http://localhost:5067/api/v1/item/byId?itemId={itemId}&language=1");
+        if (responseMessage.StatusCode == HttpStatusCode.OK)
+        {
+            ServiceResponse<GetItemDto>? response = await responseMessage.Content.ReadFromJsonAsync<ServiceResponse<GetItemDto>>();
+            if (response != null)
+            {
+                _item = response.Data;
+                _itemName = _item!.Name;
+                
+            }
+            
+        }
+        else
+        {
+            _item = null;
+            _itemName = "";
+        }
+        StateHasChanged();
+    }
+}

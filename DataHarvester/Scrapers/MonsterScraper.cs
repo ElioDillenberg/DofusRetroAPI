@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+using ClassLibrary.DTOs.Drop;
 using ClassLibrary.DTOs.Localization;
 using ClassLibrary.DTOs.Monsters.MonsterDto;
 using ClassLibrary.Enums.Languages;
@@ -25,6 +27,9 @@ public class MonsterScraper : BaseScraper
         
         // Go to entry url
         await page.GoToAsync(EntryUrlFr);
+        
+        // Accept cookies
+        await AcceptCookies(page);
 
         // Scroll to the bottom of the page
         await ScrollToBottom(page);
@@ -33,39 +38,54 @@ public class MonsterScraper : BaseScraper
         IElementHandle[] monsterDataElements = await ExtractMonsterDataElements(page);
         
         // Go through the list and send all NormalMonsters to the API
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await AddMonsterToApi(monsterDataElement);
+        
+        // Go through the list again and send all the drops to the API
         foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await AddMonsterToApi(monsterDataElement);
+            await AddDropsToApi(monsterDataElement);
         
-        // Update monster with monster relations
-        foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await UpdateMonstersWithRelatedMonsters(monsterDataElement);
+        // // Update monster with monster relations
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await UpdateMonstersWithRelatedMonsters(monsterDataElement);
+        //
+        // // AddMonster Characteristics to the API
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await AddMonsterCharacteristicsToApi(monsterDataElement);
+        //
+        // // Go through the list again and send all the Names in french to the API
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await AddNameToTheApi(monsterDataElement, Language.FR);
+        //
+        // // Now change the language to english and send all the Names in english to the API
+        // await page.GoToAsync(EntryUrlEn);
+        // await ScrollToBottom(page);
+        //
+        // monsterDataElements = await ExtractMonsterDataElements(page);
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await AddNameToTheApi(monsterDataElement, Language.EN);
+        //
+        // // Now change the language to spanish and send all the names in spanish to the API
+        // await page.GoToAsync(EntryUrlEs);
+        // await ScrollToBottom(page);
+        //
+        // monsterDataElements = await ExtractMonsterDataElements(page);
+        // foreach (IElementHandle monsterDataElement in monsterDataElements)
+        //     await AddNameToTheApi(monsterDataElement, Language.ES);
         
-        // AddMonster Characteristics to the API
-        foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await AddMonsterCharacteristicsToApi(monsterDataElement);
-        
-        // Go through the list again and send all the Names in french to the API
-        foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await AddNameToTheApi(monsterDataElement, Language.FR);
-        
-        // Now change the language to english and send all the Names in english to the API
-        await page.GoToAsync(EntryUrlEn);
-        await ScrollToBottom(page);
-        
-        monsterDataElements = await ExtractMonsterDataElements(page);
-        foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await AddNameToTheApi(monsterDataElement, Language.EN);
-        
-        // Now change the language to spanish and send all the names in spanish to the API
-        await page.GoToAsync(EntryUrlEs);
-        await ScrollToBottom(page);
-        
-        monsterDataElements = await ExtractMonsterDataElements(page);
-        foreach (IElementHandle monsterDataElement in monsterDataElements)
-            await AddNameToTheApi(monsterDataElement, Language.ES);
-        
-        // Close
-        await _browser.CloseAsync();
+        // Close browser
+        // await _browser.CloseAsync();
+    }
+
+    private async Task AcceptCookies(IPage page)
+    {
+        // Selector for the element you want to click
+        string selector = ".fc-cta-consent";
+
+        // Query for the element using the selector and click if found
+        IElementHandle? element = await page.QuerySelectorAsync(selector);
+        if (element != null)
+            await element.ClickAsync();
     }
 
     //
@@ -173,7 +193,7 @@ public class MonsterScraper : BaseScraper
             Console.WriteLine(jsonToSend);
             StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync("http://localhost:5067/api/v1/monster/characteristic", stringContent);
-            Console.WriteLine($"Post request status code = {response.StatusCode}");
+            Console.WriteLine($"{response.StatusCode}");
         }
     }
 
@@ -221,10 +241,151 @@ public class MonsterScraper : BaseScraper
         );
         
         string jsonToSend = JsonConvert.SerializeObject(addMonsterDto);
-        Console.WriteLine(jsonToSend);
         StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PostAsync("http://localhost:5067/api/v1/monster", stringContent);
         Console.WriteLine($"Post request status code = {response.StatusCode}");
+    }
+
+    private async Task AddDropsToApi(IElementHandle mobDataElement)
+    {
+        string wrapperSelector = "[data-collapse-target='bestiaryCollapseDrops']";
+        
+        // Check if the monster has a drops compartment!
+        IElementHandle? dropWrapperElementHandle = await mobDataElement.QuerySelectorAsync(wrapperSelector);
+        if (dropWrapperElementHandle == null)
+            return;
+        
+        // Extract Monster Id
+        int monsterId = await GetMonsterId(mobDataElement);
+        
+        // Extract all the anchor elements that hold the monster Ids
+        IElementHandle[] anchorElements = await dropWrapperElementHandle.QuerySelectorAllAsync("a");
+        int numberOfDrops = anchorElements.Length;
+        
+        // Retrieve all item Ids
+        int[] itemIds = await ExtractIdsAnchorElements(anchorElements);
+
+        // Extract all the abbr elements
+        IElementHandle[] abbrElements = await dropWrapperElementHandle.QuerySelectorAllAsync("abbr");
+        // Extract the prospection thresholds
+        int[] prospectionThresholds = await ExtractProspectionThresholdsFromAbbrElements(abbrElements, numberOfDrops);
+
+        // Extract drop caps
+        int?[] dropCaps = await ExtractDropCapsFromAbbrElements(abbrElements, numberOfDrops);
+
+        // Extract drop chances
+        string innerText =
+            await dropWrapperElementHandle.EvaluateFunctionAsync<string>("element => element.textContent");
+        float?[] dropChances = ExtractDropChancesFromTextContent(innerText, numberOfDrops);
+
+        // Build the AddDropDtos and send them to the API
+        for (int i = 0; i < numberOfDrops; i++)
+        {
+            AddDropDto addDropDto = new AddDropDto(
+                MonsterId: monsterId,
+                ItemId: itemIds[i],
+                Rate: dropChances[i],
+                DropCap: dropCaps[i],
+                ProspectionThreshold: prospectionThresholds[i]
+            );
+            string jsonToSend = JsonConvert.SerializeObject(addDropDto);
+            StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync("http://localhost:5067/api/v1/drop", stringContent);
+        }
+    }
+
+    private float?[] ExtractDropChancesFromTextContent(string innerText, int numberOfDrops)
+    {
+        float?[] dropChances = ExtractNumbersBetweenBrackets(innerText, numberOfDrops);
+        return dropChances;
+    }
+
+    private async Task<int?[]> ExtractDropCapsFromAbbrElements(IElementHandle[] abbrElements, int numberOfDrops)
+    {
+        int?[] dropCaps = new int?[numberOfDrops];
+        int index = 0;
+        
+        foreach (IElementHandle elementHandle in abbrElements)
+        {
+            string dropCapTitle = await elementHandle.EvaluateFunctionAsync<string>("element => element.title");
+            if (dropCapTitle != "Drops maximum")
+                continue;
+            
+            string dropCapInnerText = await elementHandle.EvaluateFunctionAsync<string>("element => element.innerText");
+            if (int.TryParse(dropCapInnerText, NumberStyles.Integer, null, out int prospectionThreshold))
+                dropCaps[index] = prospectionThreshold;
+            else
+                dropCaps[index] = null;
+            index++;
+        }
+
+        return dropCaps;
+    }
+    
+    private float?[] ExtractNumbersBetweenBrackets(string input, int numberOfDrops)
+    {
+        // List<int> result = new List<int>();
+        float?[] result = new float?[numberOfDrops];
+
+        // Define the regular expression pattern
+        string pattern = @"\((\d+(\.\d+)?)% \)";
+
+        // Match the pattern in the input string
+        MatchCollection matches = Regex.Matches(input, pattern);
+        
+        // Extract the floats
+        for (int i = 0; i < matches.Count; i++)
+        {
+            if (matches[i].Groups.Count == 3 && float.TryParse(matches[i].Groups[1].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out float value))
+                result[i] = value;
+            else
+                result[i] = null;
+        }
+        return result;
+    }
+
+    private async Task<int[]> ExtractProspectionThresholdsFromAbbrElements(IElementHandle[] abbrElements, int numberOfDrops)
+    {
+        int[] prospectionThresholds = new int[numberOfDrops];
+        int index = 0;
+        
+        foreach (IElementHandle elementHandle in abbrElements)
+        {
+            string prospectionThresholdTitle = await elementHandle.EvaluateFunctionAsync<string>("element => element.title");
+            if (prospectionThresholdTitle == "Drops maximum")
+                continue;
+            prospectionThresholdTitle = prospectionThresholdTitle.Replace("PP", "");
+            if (int.TryParse(prospectionThresholdTitle, NumberStyles.Integer, null, out int prospectionThreshold))
+                prospectionThresholds[index] = prospectionThreshold;
+            else
+                prospectionThresholds[index] = 0;
+            index++;
+        }
+        return prospectionThresholds;
+    }
+
+    private async Task<int[]> ExtractIdsAnchorElements(IElementHandle[] anchorElements)
+    {
+        int[] ids = new int[anchorElements.Length];
+        
+        for (int i = 0; i < anchorElements.Length; i++)
+        {
+            ids[i] = await ExtractIdFromAnchorElement(anchorElements[i]);
+        }
+
+        return ids;
+    }
+
+    private async Task<string[]> ExtractHrefsFromAnchorElements(IElementHandle[] anchorElements)
+    {
+        string[] hrefs = new string[anchorElements.Length];
+        
+        for (int i = 0; i < anchorElements.Length; i++)
+        {
+            hrefs[i] = await anchorElements[i].EvaluateFunctionAsync<string>("element => element.href");
+        }
+
+        return hrefs;
     }
 
     private async Task UpdateMonstersWithRelatedMonsters(IElementHandle mobDataElement) 
@@ -251,7 +412,6 @@ public class MonsterScraper : BaseScraper
         );
         
         string jsonToSend = JsonConvert.SerializeObject(updateMonsterDto);
-        Console.WriteLine(jsonToSend);
         StringContent stringContent = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PutAsync("http://localhost:5067/api/v1/monster", stringContent);
         Console.WriteLine($"Put request status code = {response.StatusCode}");

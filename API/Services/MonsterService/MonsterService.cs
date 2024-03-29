@@ -1,6 +1,7 @@
 using System.Net;
 using ClassLibrary.DTOs.Localization;
 using ClassLibrary.DTOs.Monsters.MonsterDto;
+using ClassLibrary.DTOs.ServiceResponse;
 using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Monsters;

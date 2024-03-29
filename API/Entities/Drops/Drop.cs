@@ -8,8 +8,6 @@ public class Drop
 {
     // Database Id
     public int Id { get; set; }
-    
-    public int DropTableId { get; set; }
 
     public Monster Monster { get; set; } = null!;
     public int MonsterId { get; set; }
@@ -18,7 +16,7 @@ public class Drop
     public int ItemId { get; set; }
 
     [Range(0, 100)]
-    public int Rate { get; set; }
+    public float? Rate { get; set; }
     
     public int? DropCap { get; set; }
     

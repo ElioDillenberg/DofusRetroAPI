@@ -35,9 +35,6 @@ namespace DofusRetroAPI.Migrations
                     b.Property<int?>("DropCap")
                         .HasColumnType("int");
 
-                    b.Property<int>("DropTableId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
@@ -47,8 +44,8 @@ namespace DofusRetroAPI.Migrations
                     b.Property<int?>("ProspectionThreshold")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rate")
-                        .HasColumnType("int");
+                    b.Property<float?>("Rate")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -649,7 +646,7 @@ namespace DofusRetroAPI.Migrations
             modelBuilder.Entity("DofusRetroAPI.Entities.Drops.Drop", b =>
                 {
                     b.HasOne("DofusRetroAPI.Entities.Items.Item", "Item")
-                        .WithMany("DropTable")
+                        .WithMany("Drops")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -764,7 +761,7 @@ namespace DofusRetroAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("DofusRetroAPI.Entities.Recipes.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -901,7 +898,7 @@ namespace DofusRetroAPI.Migrations
 
                     b.Navigation("Descriptions");
 
-                    b.Navigation("DropTable");
+                    b.Navigation("Drops");
 
                     b.Navigation("Effects");
 
@@ -915,6 +912,11 @@ namespace DofusRetroAPI.Migrations
                     b.Navigation("Characteristics");
 
                     b.Navigation("MonsterNames");
+                });
+
+            modelBuilder.Entity("DofusRetroAPI.Entities.Recipes.Recipe", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("DofusRetroAPI.Entities.Sets.Set", b =>

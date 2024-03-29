@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using System.Security.AccessControl;
 using ClassLibrary.DTOs.Ingredients;
 using ClassLibrary.DTOs.Recipe;
+using ClassLibrary.DTOs.ServiceResponse;
 using DofusRetroAPI.Database;
 using DofusRetroAPI.Entities.Items;
 using DofusRetroAPI.Entities.Recipes;
@@ -20,7 +20,7 @@ public class RecipeService : IRecipeService
     
     public async Task<ServiceResponse<GetRecipeDto>> AddRecipe(AddRecipeDto addRecipeDto)
     {
-        ServiceResponse<GetRecipeDto> serviceResponse = new ServiceResponse<GetRecipeDto>();
+        ServiceResponse<GetRecipeDto> serviceResponse = new ();
         try
         {
             // Check if Item the Recipe is for does exist

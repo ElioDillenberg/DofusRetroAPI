@@ -1,5 +1,6 @@
 using ClassLibrary.DTOs.Localization;
 using ClassLibrary.DTOs.Monsters.MonsterDto;
+using ClassLibrary.DTOs.ServiceResponse;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 

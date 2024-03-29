@@ -1,4 +1,5 @@
 using DofusRetroAPI.Database;
+using DofusRetroAPI.Services.DropService;
 using DofusRetroAPI.Services.ItemService;
 using DofusRetroAPI.Services.MonsterService;
 using DofusRetroAPI.Services.RecipeService;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IMonsterService, MonsterService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<ISetService, SetService>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
+builder.Services.AddScoped<IDropService, DropService>();
 
 WebApplication app = builder.Build();
 

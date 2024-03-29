@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.DTOs.Recipe;
+using ClassLibrary.DTOs.ServiceResponse;
 using DofusRetroAPI.Services;
 using DofusRetroAPI.Services.RecipeService;
 using Microsoft.AspNetCore.Mvc;

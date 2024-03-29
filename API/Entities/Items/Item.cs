@@ -32,7 +32,7 @@ public abstract class Item
     public int Pods { get; set; } = 0;
 
     // If the item can be looted from monsters is has a drop table
-    public List<Drop> DropTable { get; set; } = new();
+    public List<Drop> Drops { get; set; } = new();
     
     // If the item can be crafted
     public Recipe? Recipe { get; set; }

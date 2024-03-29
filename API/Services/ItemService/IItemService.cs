@@ -2,6 +2,7 @@
 using ClassLibrary.DTOs.Items.ItemDto;
 using ClassLibrary.DTOs.Items.ItemEffectDto;
 using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.ServiceResponse;
 
 namespace DofusRetroAPI.Services.ItemService;
 

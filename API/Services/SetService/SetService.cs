@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.ServiceResponse;
 using ClassLibrary.DTOs.Sets.SetDto;
 using ClassLibrary.Enums.Languages;
 using DofusRetroAPI.Database;

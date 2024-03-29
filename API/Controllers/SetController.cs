@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.ServiceResponse;
 using ClassLibrary.DTOs.Sets.SetDto;
 using DofusRetroAPI.Services;
 using DofusRetroAPI.Services.SetService;

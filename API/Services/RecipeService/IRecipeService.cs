@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.DTOs.Recipe;
+using ClassLibrary.DTOs.ServiceResponse;
 
 namespace DofusRetroAPI.Services.RecipeService;
 
