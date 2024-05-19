@@ -3,9 +3,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using ClassLibrary.DTOs.Drop;
 using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using ClassLibrary.DTOs.Monsters.MonsterDto;
 using ClassLibrary.Enums.Languages;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 using Newtonsoft.Json;
 using PuppeteerSharp;
@@ -45,14 +45,14 @@ public class MonsterScraper : BaseScraper
         foreach (IElementHandle monsterDataElement in monsterDataElements)
             await AddDropsToApi(monsterDataElement);
         
-        // // Update monster with monster relations
-        // foreach (IElementHandle monsterDataElement in monsterDataElements)
-        //     await UpdateMonstersWithRelatedMonsters(monsterDataElement);
-        //
-        // // AddMonster Characteristics to the API
-        // foreach (IElementHandle monsterDataElement in monsterDataElements)
-        //     await AddMonsterCharacteristicsToApi(monsterDataElement);
-        //
+        // Update monster with monster relations
+        foreach (IElementHandle monsterDataElement in monsterDataElements)
+            await UpdateMonstersWithRelatedMonsters(monsterDataElement);
+        
+        // AddMonster Characteristics to the API
+        foreach (IElementHandle monsterDataElement in monsterDataElements)
+            await AddMonsterCharacteristicsToApi(monsterDataElement);
+        
         // // Go through the list again and send all the Names in french to the API
         // foreach (IElementHandle monsterDataElement in monsterDataElements)
         //     await AddNameToTheApi(monsterDataElement, Language.FR);
@@ -69,12 +69,12 @@ public class MonsterScraper : BaseScraper
         // await page.GoToAsync(EntryUrlEs);
         // await ScrollToBottom(page);
         //
-        // monsterDataElements = await ExtractMonsterDataElements(page);
+        // // monsterDataElements = await ExtractMonsterDataElements(page);
         // foreach (IElementHandle monsterDataElement in monsterDataElements)
         //     await AddNameToTheApi(monsterDataElement, Language.ES);
         
         // Close browser
-        // await _browser.CloseAsync();
+        await _browser.CloseAsync();
     }
 
     private async Task AcceptCookies(IPage page)

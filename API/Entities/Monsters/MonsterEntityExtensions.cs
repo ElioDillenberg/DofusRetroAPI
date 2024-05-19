@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.DTOs.Localization;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
+using ClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 namespace DofusRetroAPI.Entities.Monsters;
 

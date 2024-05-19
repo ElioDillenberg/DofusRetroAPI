@@ -1,5 +1,6 @@
 using System.Net;
 using ClassLibrary.DTOs.Localization;
+using ClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using ClassLibrary.DTOs.Monsters.MonsterDto;
 using ClassLibrary.DTOs.ServiceResponse;
 using ClassLibrary.Enums.Languages;
@@ -8,9 +9,9 @@ using DofusRetroAPI.Entities.Monsters;
 using DofusRetroAPI.Entities.Monsters.Breeds;
 using DofusRetroAPI.Entities.Monsters.Ecosystems;
 using DofusRetroAPI.Localization;
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 using DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 using Microsoft.EntityFrameworkCore;
+using DofusRetroAPI.Utils;
 
 namespace DofusRetroAPI.Services.MonsterService;
 
@@ -184,17 +185,18 @@ public class MonsterService: ServiceBase, IMonsterService
             MonsterCharacteristic? monsterCharacteristic = await _dbContext.MonsterCharacteristics
                 .FirstOrDefaultAsync(mc => mc.MonsterId == monster.Id && mc.Level == addMonsterCharacteristicDto.Level);
             if (monsterCharacteristic != null)
-                throw new HttpRequestException(
-                    $"MonsterCharacteristic for Monster with Id {addMonsterCharacteristicDto.MonsterId} and Level {addMonsterCharacteristicDto.Level} already exists.",
-                    null,
-                    HttpStatusCode.Conflict);
-
-            // Add MonsterCharacteristic to DB
-            monsterCharacteristic = addMonsterCharacteristicDto.AsMonsterCharacteristic(monster.Id);
-            _dbContext.MonsterCharacteristics.Add(monsterCharacteristic);
-            await _dbContext.SaveChangesAsync();
+                monsterCharacteristic = APIUtilities.UpdateNullProperties(monsterCharacteristic, addMonsterCharacteristicDto.AsMonsterCharacteristic(monster.Id));
+            else
+                monsterCharacteristic = addMonsterCharacteristicDto.AsMonsterCharacteristic(monster.Id);
             
-            serviceResponse.Data = monsterCharacteristic.AsGetMonsterCharacteristicDto();
+            // Save DB
+            if (monsterCharacteristic != null)
+            {
+                _dbContext.MonsterCharacteristics.Add(monsterCharacteristic);
+                await _dbContext.SaveChangesAsync();
+            }
+            
+            serviceResponse.Data = monsterCharacteristic?.AsGetMonsterCharacteristicDto();
         }
         catch (HttpRequestException e)
         {

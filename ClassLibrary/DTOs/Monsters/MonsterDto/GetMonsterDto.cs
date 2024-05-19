@@ -1,4 +1,4 @@
-using DofusRetroClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
+using ClassLibrary.DTOs.Monsters.MonsterCharacteristicDto;
 
 namespace DofusRetroClassLibrary.DTOs.Monsters.MonsterDto;
 
