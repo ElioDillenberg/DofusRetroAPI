@@ -19,10 +19,10 @@ public class ItemActionScriptParser : ActionScriptParserBase
 
         // Add the Items to the API
         await AddItemsToApi(itemSourceDirectories);
-
+        
         // Add the ItemConditions to the API
         await AddItemConditionsToApi(itemSourceDirectories);
-
+        
         // Add the localized names and descriptions to the API
         await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.FR, "_fr");
         await AddLocalizedNameAndDescriptionToApi(itemSourceDirectories, Language.EN, "_en");

@@ -12,18 +12,26 @@ namespace DataHarvester.LangDecompilers.ActionScriptParsers;
 
 public class MonstersActionScriptParser : ActionScriptParserBase
 {
-    public async override Task ParseDecompiledFiles()
+    public override async Task ParseDecompiledFiles()
     {
         // Get all directories in the decompiled files directory that start with "items_"
-        string[] monstersSourceDirectories = GetItemSourceDirectories("items_*");
+        string[] monstersSourceDirectories = GetItemSourceDirectories("monsters_*");
+        foreach (string monstersSourceDirectory in monstersSourceDirectories)
+        {
+            Console.WriteLine(monstersSourceDirectory);
+        }
+        
 
-        // Add the Items to the API
-        await AddMonstersToApi(monstersSourceDirectories);
+        // Add the Monsters to the API
+        // await AddMonstersToApi(monstersSourceDirectories);
+        
+        // Add Monster Characteristics to the API (what can be extracted from LANG)
+        // await AddMonsterCharacteristicsToApi(monstersSourceDirectories, "_fr");
 
         // Add the localized names and descriptions to the API
-        await AddLocalizedNamesToApi(monstersSourceDirectories, Language.FR, "_fr");
-        await AddLocalizedNamesToApi(monstersSourceDirectories, Language.EN, "_en");
-        await AddLocalizedNamesToApi(monstersSourceDirectories, Language.ES, "_es");
+        // await AddLocalizedNamesToApi(monstersSourceDirectories, Language.FR, "_fr");
+        // await AddLocalizedNamesToApi(monstersSourceDirectories, Language.EN, "_en");
+        // await AddLocalizedNamesToApi(monstersSourceDirectories, Language.ES, "_es");
     }
     
     
@@ -32,7 +40,7 @@ public class MonstersActionScriptParser : ActionScriptParserBase
     /// </summary>
     /// <param name="monstersSourceDirectories"></param>
     /// <param name="languageFileExtension"></param>
-    private async Task AddMonsterStatsToApi(
+    private async Task AddMonsterCharacteristicsToApi(
         string[] monstersSourceDirectories,
         string languageFileExtension)
     {
